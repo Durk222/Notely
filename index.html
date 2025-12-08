@@ -118,13 +118,13 @@
 
         const rc = rough.canvas(canvas);
         
-        // ** LÓGICA DEL FONDO ** (Cross-hatch)
+        // ** LÓGICA DEL FONDO ** (dashed)
         rc.rectangle(0, 0, canvas.width, canvas.height, {
             roughness: 2.8, 
             strokeWidth: 3, // Muy delgado para la textura
             stroke: STROKE_COLOR, 
             fill: STROKE_COLOR, // El relleno es del mismo color para que la textura se note
-            fillStyle: 'zigzag' 
+            fillStyle: 'dashed' 
         });
     }
 
@@ -151,7 +151,7 @@
             stroke: STROKE_COLOR, 
             strokeWidth: 1, 
             fill: FILL_COLOR // Relleno sólido como base de la app
-            fillStyle: 'zigzag-line' // Tipo de fill sólido
+            //fillStyle: 'solid' // Tipo de fill sólido
         });
     }
 
