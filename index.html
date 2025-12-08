@@ -50,6 +50,15 @@
             font-family: sans-serif; 
             position: relative; 
         }
+        /* NUEVA REGLA: El Canvas de Fondo Ocupa toda la ventana */
+        #backgroundCanvas {
+           position: fixed; /* Fijo para que no se mueva con el scroll */
+           top: 0;
+           left: 0;
+           width: 100vw;
+           height: 100vh;
+           z-index: -1; /* CLAVE: Debe estar detrás de todo */
+         }
         
         /* Contenedor del Canvas: 98% del viewport */
         #frame-container {
@@ -78,51 +87,76 @@
     </style>
 </head>
 <body>
+<canvas id="backgroundCanvas"></canvas> 
+    
     <div id="frame-container">
         <canvas id="notelyCanvas"></canvas>
         
         <div id="app-wrapper">
             <h1>Notely</h1>
-            <p>El marco ya ocupa el 98% de la pantalla.</p>
+            <p>El fondo con textura cross-hatch está detrás del marco sólido.</p>
         </div>
     </div>
 
     <script>
-        // Función que encapsula la lógica para que pueda ser llamada en cualquier momento
-        function drawNotelyFrame() {
-            const canvas = document.getElementById('notelyCanvas');
-            
-            // **IMPORTANTE:** Borrar el lienzo antes de redibujar (para el evento resize)
-            const ctx = canvas.getContext('2d');
-            ctx.clearRect(0, 0, canvas.width, canvas.height); 
-            
-            // *** CORRECCIÓN CLAVE: LEER Y APLICAR EL TAMAÑO ***
-            // Necesitamos asegurarnos de que el canvas interno (buffer) coincida 
-            // con el tamaño visual (CSS) del contenedor.
-            canvas.width = canvas.clientWidth;
-            canvas.height = canvas.clientHeight;
+// --- VARIABLES GLOBALES DE COLORES ---
+    const STROKE_COLOR = '#21211D'; 
+    const FILL_COLOR = '#F3F2EE';   
 
-            const rc = rough.canvas(canvas);
-            
-            // --- LÓGICA DE DIBUJO ROUGH.JS (SIMPLE) ---
-            // 1. Definición de colores (Estático por simplicidad)
-            const STROKE_COLOR = '#21211D'; 
-            const FILL_COLOR = '#F3F2EE';   
+    // 1. Dibuja el fondo con textura (Cross-Hatch)
+    function drawBackgroundTexture() {
+        const canvas = document.getElementById('backgroundCanvas');
+        
+        // Ajustamos el canvas al tamaño completo de la ventana
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-            // 2. Dibujar el rectángulo (x, y, ancho, alto)
-            rc.rectangle(5, 5, canvas.width - 10, canvas.height - 10, {
-                roughness: 2.8, 
-                stroke: STROKE_COLOR, 
-                strokeWidth: 0.2, 
-                fill: FILL_COLOR 
-            });
-        }
+        const rc = rough.canvas(canvas);
         
-        // Ejecuta la función al cargar la página (la más segura)
-        window.addEventListener('load', drawNotelyFrame);
+        // ** LÓGICA DEL FONDO **
+        // x, y = (0, 0) para empezar en la esquina
+        // width, height = tamaño total de la ventana
+        rc.rectangle(0, 0, canvas.width, canvas.height, {
+            roughness: 2.8, 
+            strokeWidth: 0.2, // Muy delgado para la textura
+            stroke: STROKE_COLOR, 
+            fill: STROKE_COLOR, // El relleno es del mismo color para que la textura se note
+            fillStyle: 'cross-hatch' 
+        });
+    }
+
+    // 2. Dibuja el marco principal (Sólido)
+    function drawNotelyFrame() {
+        const canvas = document.getElementById('notelyCanvas');
         
-        // Ejecuta la función cada vez que el usuario cambia el tamaño de la ventana
-        window.addEventListener('resize', drawNotelyFrame);
+        // Limpiar y ajustar el tamaño del Canvas del marco
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height); 
+        canvas.width = canvas.clientWidth;
+        canvas.height = canvas.clientHeight;
+
+        const rc = rough.canvas(canvas);
+        
+        // --- LÓGICA DEL MARCO PRINCIPAL (3 LÍNEAS) ---
+        // Dibujar el rectángulo (x, y, ancho, alto)
+        rc.rectangle(5, 5, canvas.width - 10, canvas.height - 10, {
+            roughness: 1, 
+            stroke: STROKE_COLOR, 
+            strokeWidth: 3, 
+            fill: FILL_COLOR // Relleno sólido como base de la app
+        });
+    }
+
+    // 3. Ejecución y Redimensionamiento
+    function initialDraw() {
+        drawBackgroundTexture();
+        drawNotelyFrame();
+    }
+
+    window.addEventListener('load', initialDraw);
+    
+    // Redibujar ambos al cambiar el tamaño de la ventana
+    window.addEventListener('resize', initialDraw);
     </script>
 </body>
 </html>
