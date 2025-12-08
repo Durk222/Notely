@@ -66,24 +66,29 @@
             width: 98vw; 
             height: 98vh; 
             margin: 0.5vh auto;
-            position: relative;
+            position: fixed;
+            top: 1vh;
+            left: 1vw;
+            z-index: 1;
         }
 
         /* El Canvas que dibuja el borde */
         #notelyCanvas {
+            /*
             position: absolute;
             top: 0;
             left: 0;
+            */
             /* Estos deben ser 100% para que el JS los lea correctamente */
             width: 100%;
             height: 100%;
-            z-index: 2;
+            /*z-index: 2; */
         }
 
         /* Wrapper para el contenido de la App (se superpone al canvas) */
         #app-wrapper {
             position: relative;
-            z-index: 1;
+            z-index: 2;
             padding: 15px; 
             /* Se ELIMINA el background-color, ya que el relleno lo pone el canvas #notelyCanvas */
             
@@ -131,13 +136,14 @@
     // 2. Dibuja el marco principal (Sólido)
     function drawNotelyFrame() {
     const canvas = document.getElementById('notelyCanvas');
+        const container = document.getElementById('frame-container');
         
         // Limpiar y ajustar el tamaño del Canvas del marco
         const ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height); 
         // NOTA: Multiplicamos por 0.98 ya que el contenedor es 98% del viewport (98vw/98vh)
-        const containerWidth = window.innerWidth * 0.98;
-        const containerHeight = window.innerHeight * 0.98;
+        const containerWidth = container.clientWidth;
+        const containerHeight = container.clientHeight;
 
         canvas.width = containerWidth;
         canvas.height = containerHeight;
@@ -151,7 +157,7 @@
             stroke: STROKE_COLOR, 
             strokeWidth: 1, 
             fill: FILL_COLOR // Relleno sólido como base de la app
-            //fillStyle: 'solid' // Tipo de fill sólido
+            fillStyle: 'solid' // Tipo de fill sólido
         });
     }
 
