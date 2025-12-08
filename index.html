@@ -31,8 +31,18 @@
             /* VARIABLES DINÁMICAS (DEFAULT: Ecru Light) */
             --color-bg: var(--color-light-ecru);
             --color-fg: var(--color-dark-ecru);
+
+            /* Almacena el modo claro y oscuro */
+            --theme-mode: light;
             
             transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* 🚀 NUEVAS REGLAS: Tema Oscuro */
+     body[data-theme="dark"] {
+    --color-bg: var(--color-dark-ecru); /* Fondo de oscuro (negro) */
+    --color-fg: var(--color-light-ecru); /* Tinta de claro (blanco) */
+    --theme-mode: dark;
         }
         /* ---------------------------------------------------- */
         /* 2. ESTILOS GLOBALES BÁSICOS Y LIENZO */
