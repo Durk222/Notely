@@ -34,18 +34,16 @@
             
             transition: background-color 0.3s, color 0.3s;
         }
-
         /* ---------------------------------------------------- */
         /* 2. ESTILOS GLOBALES BÁSICOS Y LIENZO */
         /* ---------------------------------------------------- */
         html, body {
             margin: 0; 
             padding: 0;
-            overflow-x: hidden; 
+            overflow-x: hidden; /* Evita el scroll horizontal */
         }
 
         body {
-            /* Colores */
             background-color: var(--color-bg); 
             color: var(--color-fg);
             min-height: 100vh; 
@@ -53,11 +51,11 @@
             position: relative; 
         }
         
-        /* Contenedor del Canvas para centrar el marco */
+        /* Contenedor del Canvas: 98% del viewport */
         #frame-container {
-            width: 98vw;
+            width: 98vw; 
             height: 98vh; 
-            margin: 5vh auto;
+            margin: 1vh auto;
             position: relative;
         }
 
@@ -66,6 +64,7 @@
             position: absolute;
             top: 0;
             left: 0;
+            /* Estos deben ser 100% para que el JS los lea correctamente */
             width: 100%;
             height: 100%;
         }
@@ -84,30 +83,46 @@
         
         <div id="app-wrapper">
             <h1>Notely</h1>
-            <p>El marco sketch está dibujado con Rough.js v4.6.6.</p>
+            <p>El marco ya ocupa el 98% de la pantalla.</p>
         </div>
     </div>
 
     <script>
-        // *** Lógica de Rough.js (Simple y Editable) ***
-        const canvas = document.getElementById('notelyCanvas');
-        canvas.width = canvas.clientWidth;
-        canvas.height = canvas.clientHeight;
+        // Función que encapsula la lógica para que pueda ser llamada en cualquier momento
+        function drawNotelyFrame() {
+            const canvas = document.getElementById('notelyCanvas');
+            
+            // **IMPORTANTE:** Borrar el lienzo antes de redibujar (para el evento resize)
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height); 
+            
+            // *** CORRECCIÓN CLAVE: LEER Y APLICAR EL TAMAÑO ***
+            // Necesitamos asegurarnos de que el canvas interno (buffer) coincida 
+            // con el tamaño visual (CSS) del contenedor.
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
 
-        const rc = rough.canvas(canvas);
+            const rc = rough.canvas(canvas);
+            
+            // --- LÓGICA DE DIBUJO ROUGH.JS (SIMPLE) ---
+            // 1. Definición de colores (Estático por simplicidad)
+            const STROKE_COLOR = '#21211D'; 
+            const FILL_COLOR = '#F3F2EE';   
+
+            // 2. Dibujar el rectángulo (x, y, ancho, alto)
+            rc.rectangle(5, 5, canvas.width - 10, canvas.height - 10, {
+                roughness: 1, 
+                stroke: STROKE_COLOR, 
+                strokeWidth: 3, 
+                fill: FILL_COLOR 
+            });
+        }
         
-        // --- LÓGICA DEL BORDE (3 LÍNEAS) ---
-        // 1. Definición de colores (Estático por simplicidad)
-        const STROKE_COLOR = '#21211D'; // Tinta: --color-dark-ecru
-        const FILL_COLOR = '#F3F2EE';   // Fondo: --color-light-ecru
-
-        // 2. Dibujar el rectángulo (x, y, ancho, alto)
-        rc.rectangle(5, 5, canvas.width - 10, canvas.height - 10, {
-            roughness: 1, 
-            stroke: STROKE_COLOR, 
-            strokeWidth: 2, 
-            fill: FILL_COLOR 
-        });
+        // Ejecuta la función al cargar la página (la más segura)
+        window.addEventListener('load', drawNotelyFrame);
+        
+        // Ejecuta la función cada vez que el usuario cambia el tamaño de la ventana
+        window.addEventListener('resize', drawNotelyFrame);
     </script>
 </body>
 </html>
