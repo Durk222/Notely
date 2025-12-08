@@ -152,10 +152,10 @@
         // ** LÓGICA DEL FONDO ** (dashed)
         rc.rectangle(0, 0, canvas.width, canvas.height, {
             roughness: 2.8, 
-            strokeWidth: 3, // Muy delgado para la textura
-            stroke: STROKE_COLOR, 
-            fill: STROKE_COLOR, // El relleno es del mismo color para que la textura se note
-            fillStyle: 'dots' 
+            strokeWidth: 3,
+            stroke: STROKE_COLOR, //El color del trazo (bolígrafo)
+            fill: STROKE_COLOR, // El color del relleno, usa el ucre negro
+            fillStyle: 'dashed' // El tipo de relleno, en este caso, dashed
         });
     }
 
