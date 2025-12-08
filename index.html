@@ -1,1 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notely - The Little Letters</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <style>
+        /* ---------------------------------------------------- */
+        /* 1. SISTEMA DE VARIABLES DE NOTELY (Temas B/N) */
+        /* ---------------------------------------------------- */
+        :root {
+            /* ---------------------------------------------------- */
+            /* PALETA ESTÁTICA (6 PARES B/N) */
+            /* ---------------------------------------------------- */
+            --color-light-ecru: #F3F2EE; /* Isabelline */
+            --color-dark-ecru: #21211D;  /* Raisin Black */
 
+            --color-light-swizzle: #F7F6E3; /* Old Lace */
+            --color-dark-swizzle: #060409;  /* Vampire Black */
+
+            --color-light-satin: #E2E2DF; /* Chinese White */
+            --color-dark-satin: #131212;  /* Chinese Black */
+
+            --color-light-timber: #D9D4C8; /* Timberwolf */
+            --color-dark-timber: #2B3031;  /* Dark Charcoal */
+
+            --color-light-coffee: #E8DED6; /* White Coffee */
+            --color-dark-coffee: #2C261E;  /* Pine Tree */
+
+            --color-light-olive: #E7E4DB; /* Mercury */
+            --color-dark-olive: #383F33;  /* Black Olive */
+
+            /* ---------------------------------------------------- */
+            /* VARIABLES DINÁMICAS (DEFAULT: Ecru Light) */
+            /* ---------------------------------------------------- */
+            --color-bg: var(--color-light-ecru);   /* Fondo (Actual: Isabelline) */
+            --color-fg: var(--color-dark-ecru);    /* Foreground/Tinta (Actual: Raisin Black) */
+
+            /* Para evitar el parpadeo de fondo al cargar */
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* ---------------------------------------------------- */
+        /* 2. ESTILOS GLOBALES BÁSICOS (Pintar el Fondo) */
+        /* ---------------------------------------------------- */
+        html, body {
+            /* Remueve márgenes predeterminados */
+            margin: 0; 
+            padding: 0;
+            /* Asegura que el contenido no cause scroll horizontal */
+            overflow-x: hidden; 
+        }
+
+/* ---------------------------------------------------- */
+/* 2. ESTILOS GLOBALES BÁSICOS (Pintar el Fondo y Añadir Borde) */
+/* ---------------------------------------------------- */
+body {
+    /* PINTA EL FONDO con la variable dinámica */
+    background-color: var(--color-bg); 
+    
+    /* Configura el color de la tinta */
+    color: var(--color-fg);
+    
+    /* Ocupa toda la altura disponible */
+    min-height: 100vh; 
+    
+    /* Por ahora, usamos una fuente genérica hasta que la custom esté lista */
+    font-family: sans-serif; 
+
+    /* ---------------------------------------------------- */
+    /* NUEVO: BORDE DE MARCO PARA LA APLICACIÓN */
+    /* ---------------------------------------------------- */
+    /* Borde de 6px, color de tinta oscura (--color-fg), sólido */
+    border: 2px solid var(--color-fg); 
+    
+    /* Borde ligeramente redondeado */
+    border-radius: 12px; /* Usamos un valor más alto que el borde (6px) para un efecto suave */
+    
+    /* Relleno interno para que el contenido no choque con el borde */
+    padding: 10px; 
+    
+    /* Asegura que el borde no añada ancho extra, sino que lo contenga */
+    box-sizing: border-box; 
+    
+    /* Este margen es clave para que el borde se vea completo y no se "corte" en los bordes de la pantalla */
+    margin: 10px; 
+    }
+    </style>
+</head>
+<body>
+    
+    </body>
+</html>
