@@ -48,9 +48,15 @@
             background-color: var(--color-bg);
             color: var(--color-fg);
             min-height: 100vh; 
-            font-family: sans-serif; 
+            font-family:'Exin Regular', sans-serif; 
             position: relative; 
         }
+
+        h1, h2, h3, h4 {
+    /* Usar Flabby Bums para los encabezados */
+    font-family: 'Flabby Bums', cursive;
+          }
+        
         /* NUEVA REGLA: El Canvas de Fondo Ocupa toda la ventana */
         #backgroundCanvas {
            position: fixed; /* Fijo para que no se mueva con el scroll */
@@ -98,6 +104,23 @@
     padding: 15px;
             
         }
+
+        /* --- Flabby Bums para Títulos --- */
+@font-face {
+    font-family: 'Flabby Bums'; /* Nombre que usarás para referirte a ella */
+    src: url('assets/Flabby_Bums_handwriting.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+        }
+
+/* --- Exin para Texto General --- */
+@font-face {
+    font-family: 'Exin Regular'; /* Nombre que usarás para referirte a ella */
+    src: url('assets/exin_memesbrush03.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+       }
+        
     </style>
 </head>
 <body>
