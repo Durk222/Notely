@@ -45,7 +45,7 @@
         }
 
         body {
-            /*background-color: var(--color-bg); */
+            background-color: var(--color-bg);
             color: var(--color-fg);
             min-height: 100vh; 
             font-family: sans-serif; 
@@ -135,8 +135,12 @@
         // Limpiar y ajustar el tamaño del Canvas del marco
         const ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height); 
-        canvas.width = canvas.clientWidth;
-        canvas.height = canvas.clientHeight;
+        // NOTA: Multiplicamos por 0.98 ya que el contenedor es 98% del viewport (98vw/98vh)
+        const containerWidth = window.innerWidth * 0.98;
+        const containerHeight = window.innerHeight * 0.98;
+
+        canvas.width = containerWidth;
+        canvas.height = containerHeight;
 
         const rc = rough.canvas(canvas);
         
@@ -147,7 +151,7 @@
             stroke: STROKE_COLOR, 
             strokeWidth: 1, 
             fill: FILL_COLOR // Relleno sólido como base de la app
-            //fillStyle: 'solid' // Tipo de fill sólido
+            fillStyle: 'solid' // Tipo de fill sólido
         });
     }
 
