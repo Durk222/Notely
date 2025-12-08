@@ -1,6 +1,10 @@
 // --- VARIABLES GLOBALES Y DE ANIMACIÓN ---
-const STROKE_COLOR = '#21211D';
-const FILL_COLOR = '#F3F2EE';
+//const STROKE_COLOR = '#21211D';
+//const FILL_COLOR = '#F3F2EE';
+//Eliminadas porque son valores estáticos, usar variables dinámicas de color en su lugar.
+// --- NUEVAS VARIABLES PARA EL BOTÓN DE TEMA (cuadrado) ---
+const THEME_BTN_SIZE = 40; // Tamaño del botón cuadrado del tema
+const THEME_BTN_MARGIN = 20; // Margen desde la esquina inferior izquierda
 
 // Configuraciones para la animación de 4 FPS
 const FPS = 4;
@@ -18,6 +22,9 @@ function drawBackgroundTexture() {
     const canvas = document.getElementById('backgroundCanvas');
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Obtener los colores dinámicos:
+    const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
     
     // Ajustamos el canvas al tamaño completo de la ventana
     canvas.width = window.innerWidth;
@@ -29,8 +36,8 @@ function drawBackgroundTexture() {
     rc.rectangle(0, 0, canvas.width, canvas.height, {
         roughness: 2.8, 
         strokeWidth: 3,
-        stroke: STROKE_COLOR, 
-        fill: STROKE_COLOR, 
+        stroke: strokeColor, 
+        fill: strokeColor, 
         fillStyle: 'dashed' 
     });
 }
@@ -41,6 +48,10 @@ function drawBackgroundTexture() {
 function drawNotelyFrame() {
     const canvas = document.getElementById('notelyCanvas');
     const container = document.getElementById('frame-container');
+
+    // Obtener los colores dinámicos:
+    const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
+    const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
     
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height); 
@@ -54,48 +65,57 @@ function drawNotelyFrame() {
     // El marco se redibujará aleatoriamente cada frame
     rc.rectangle(5, 5, canvas.width - 10, canvas.height - 10, {
         roughness: 2.8, 
-        stroke: STROKE_COLOR, 
+        stroke: strokeColor, 
         strokeWidth: 1, 
-        fill: FILL_COLOR, 
+        fill: fillColor, 
         fillStyle: 'solid' 
     });
 }
 
 
 // ------------------------------------------------------------------
-// 3. DIBUJO DEL BOTÓN DE TEMA (Sol/Luna)
+// 3. DIBUJO DEL BOTÓN DE TEMA (Cuadrado con Icono)
 // ------------------------------------------------------------------
 function drawThemeButton() {
     const canvas = document.getElementById('notelyCanvas');
     const rc = rough.canvas(canvas);
 
-    // Obtener el modo actual desde la hoja de estilos
+    // Obtener los colores dinámicos:
+    const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
+    const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
     const themeMode = getComputedStyle(document.body).getPropertyValue('--theme-mode').trim();
     
     // Posición: Inferior Izquierda, con un margen
-    const x = ICON_MARGIN + ICON_SIZE / 2;
-    const y = canvas.height - ICON_MARGIN - ICON_SIZE / 2;
-    const radius = ICON_SIZE / 2;
+    const x = THEME_BTN_MARGIN;
+    const y = canvas.height - THEME_BTN_MARGIN - THEME_BTN_SIZE;
+    
+    // Dibujar el fondo del botón cuadrado (el contenedor visible)
+    rc.rectangle(x, y, THEME_BTN_SIZE, THEME_BTN_SIZE, {
+        roughness: 2.5,
+        stroke: strokeColor,
+        strokeWidth: 2,
+        fill: fillColor, // Relleno con el color de fondo para que se vea como un botón
+        fillStyle: 'solid'
+    });
 
-    // Colores basados en el modo actual
-    const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
-    const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
+    // --- Dibujar el Icono (Sol o Luna) DENTRO del cuadrado ---
+    const centerX = x + THEME_BTN_SIZE / 2;
+    const centerY = y + THEME_BTN_SIZE / 2;
+    const radius = 10; // Radio más pequeño para que quepa
 
     if (themeMode === 'light') {
-        // Modo Claro: Dibujar un Sol (Círculo lleno)
-        rc.circle(x, y, radius, {
+        // Modo Claro: Dibujar un Sol
+        rc.circle(centerX, centerY, radius, {
             roughness: 2.5,
             stroke: strokeColor,
             strokeWidth: 1,
             fill: strokeColor, // El sol es oscuro
             fillStyle: 'solid'
         });
-        // Opcional: Dibujar rayos alrededor del círculo. (Por simplicidad, lo dejamos como un círculo por ahora).
 
     } else {
-        // Modo Oscuro: Dibujar una Luna Creciente (Dos círculos)
-        // Círculo base (Luna)
-        rc.circle(x, y, radius, {
+        // Modo Oscuro: Dibujar una Luna Creciente
+        rc.circle(centerX, centerY, radius, {
             roughness: 2.5,
             stroke: strokeColor,
             strokeWidth: 1,
@@ -103,11 +123,11 @@ function drawThemeButton() {
             fillStyle: 'solid'
         });
         
-        // Círculo de "mordida" (Relleno con el color de fondo para crear la forma de luna)
-        rc.circle(x + radius / 3, y - radius / 3, radius, {
+        // Círculo de "mordida"
+        rc.circle(centerX + radius / 3, centerY - radius / 3, radius, {
             roughness: 2.5,
             stroke: fillColor,
-            strokeWidth: 0, // Sin trazo para la mordida
+            strokeWidth: 0, 
             fill: fillColor, 
             fillStyle: 'solid'
         });
@@ -161,16 +181,17 @@ function handleCanvasClick(event) {
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
-    // Coordenadas del área del botón (para el NotelyCanvas que lo contiene)
-    const buttonXMin = ICON_MARGIN;
-    const buttonXMax = ICON_MARGIN + ICON_SIZE;
-    const buttonYMin = canvas.height - ICON_MARGIN - ICON_SIZE;
-    const buttonYMax = canvas.height - ICON_MARGIN;
+    // Coordenadas del área del botón de tema (Cuadrado 40x40px, margen 20px)
+    const buttonXMin = THEME_BTN_MARGIN;
+    const buttonXMax = THEME_BTN_MARGIN + THEME_BTN_SIZE;
+    const buttonYMin = canvas.height - THEME_BTN_MARGIN - THEME_BTN_SIZE;
+    const buttonYMax = canvas.height - THEME_BTN_MARGIN;
 
-    // Chequeamos si el clic ocurrió dentro del área del botón
+    // Chequeamos si el clic ocurrió dentro del área del botón del tema
     if (x >= buttonXMin && x <= buttonXMax && y >= buttonYMin && y <= buttonYMax) {
         toggleTheme();
     }
+    // NOTA: Si añades más botones en el futuro, irían aquí con su propia lógica de coordenadas.
 }
 // ------------------------------------------------------------------
 // 7. CONFIGURACIÓN DE EVENTOS (Se ejecuta UNA SOLA VEZ)
