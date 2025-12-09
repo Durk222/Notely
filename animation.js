@@ -425,7 +425,7 @@ function drawProfileButton() {
     `;
     
     rc.path(bodyPath, {
-        roughness: 2.5,
+        roughness: 2,
         stroke: strokeColor,
         strokeWidth: 1.5,
         fill: strokeColor, // ✅ CAMBIO CRÍTICO: Relleno con color de tinta (SILUETA SÓLIDA)
@@ -437,7 +437,7 @@ function drawProfileButton() {
     const headY = bodyY - bodyHeight * 1.1; 
     
     rc.circle(centerX, headY, headRadius, {
-        roughness: 2.5,
+        roughness: 2,
         stroke: strokeColor,
         strokeWidth: 1.5,
         fill: strokeColor, // ✅ CAMBIO CRÍTICO: Relleno con color de tinta (SILUETA SÓLIDA)
