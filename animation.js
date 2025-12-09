@@ -1,3 +1,7 @@
+// --- VARIABLES PARA EL BOTÓN DE TEMA (cuadrado) ---
+const THEME_BTN_SIZE = 40; // Tamaño del botón cuadrado del tema
+const THEME_BTN_MARGIN = 20; // Margen desde la esquina inferior izquierda
+
 // BARRA DE NAVEGACIÓN ---
 const NAV_BAR_WIDTH = THEME_BTN_SIZE; // Usaremos el mismo ancho que el botón de tema (40px)
 const NAV_BAR_MARGIN_TOP = 20; // Margen superior de la barra
@@ -6,10 +10,6 @@ const BUTTON_HEIGHT = THEME_BTN_SIZE + 10; // Altura de la celda de cada botón 
 
 // --- VARIABLES PARA EL BOTÓN DE BÚSQUEDA ---
 const SEARCH_ICON_SIZE = 12; // Radio del círculo de la lupa
-
-// --- VARIABLES PARA EL BOTÓN DE TEMA (cuadrado) ---
-const THEME_BTN_SIZE = 40; // Tamaño del botón cuadrado del tema
-const THEME_BTN_MARGIN = 20; // Margen desde la esquina inferior izquierda
 
 // Configuraciones para la animación de 4 FPS
 const FPS = 4;
