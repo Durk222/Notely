@@ -1,8 +1,13 @@
-// --- VARIABLES GLOBALES Y DE ANIMACIÓN ---
-//const STROKE_COLOR = '#21211D';
-//const FILL_COLOR = '#F3F2EE';
-//Eliminadas porque son valores estáticos, usar variables dinámicas de color en su lugar.
-// --- NUEVAS VARIABLES PARA EL BOTÓN DE TEMA (cuadrado) ---
+// BARRA DE NAVEGACIÓN ---
+const NAV_BAR_WIDTH = THEME_BTN_SIZE; // Usaremos el mismo ancho que el botón de tema (40px)
+const NAV_BAR_MARGIN_TOP = 20; // Margen superior de la barra
+const BUTTON_SPACING = 15; // Espacio entre el fondo de la barra y el siguiente elemento (Botón de Tema)
+const BUTTON_HEIGHT = THEME_BTN_SIZE + 10; // Altura de la celda de cada botón (40 + 10 = 50px)
+
+// --- VARIABLES PARA EL BOTÓN DE BÚSQUEDA ---
+const SEARCH_ICON_SIZE = 12; // Radio del círculo de la lupa
+
+// --- VARIABLES PARA EL BOTÓN DE TEMA (cuadrado) ---
 const THEME_BTN_SIZE = 40; // Tamaño del botón cuadrado del tema
 const THEME_BTN_MARGIN = 20; // Margen desde la esquina inferior izquierda
 
@@ -135,7 +140,80 @@ function drawThemeButton() {
 }
 
 // ------------------------------------------------------------------
-// 4. LÓGICA DE ALTERNANCIA DEL TEMA
+// 4. DIBUJO DE LA BARRA DE NAVEGACIÓN VERTICAL
+// ------------------------------------------------------------------
+function drawVerticalNavBar() {
+    const canvas = document.getElementById('notelyCanvas');
+    const rc = rough.canvas(canvas);
+
+    const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
+    const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
+
+    // Posición X: Igual que el botón de tema (THEME_BTN_MARGIN)
+    const x = THEME_BTN_MARGIN;
+    // Posición Y: Parte superior (NAV_BAR_MARGIN_TOP)
+    const y = NAV_BAR_MARGIN_TOP;
+    // Ancho: Igual que el botón de tema (NAV_BAR_WIDTH)
+    const width = NAV_BAR_WIDTH;
+    
+    // Altura: Desde el margen superior hasta el margen superior del botón de tema, menos el espacio.
+    const buttonThemeY = canvas.height - THEME_BTN_MARGIN - THEME_BTN_SIZE;
+    const height = buttonThemeY - NAV_BAR_MARGIN_TOP - BUTTON_SPACING;
+    
+    // Dibujar el fondo rectangular
+    rc.rectangle(x, y, width, height, {
+        roughness: 2.5,
+        stroke: strokeColor,
+        strokeWidth: 2,
+        fill: fillColor,
+        fillStyle: 'solid'
+    });
+}
+
+// ------------------------------------------------------------------
+// 5. DIBUJO DEL BOTÓN DE BÚSQUEDA (Lupa)
+// ------------------------------------------------------------------
+function drawSearchButton() {
+    const canvas = document.getElementById('notelyCanvas');
+    const rc = rough.canvas(canvas);
+
+    const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
+    const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
+    
+    // Coordenadas del centro del botón (parte superior de la barra):
+    const centerX = THEME_BTN_MARGIN + NAV_BAR_WIDTH / 2;
+    const centerY = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT / 2; 
+
+    // --- 1. Círculo de la Lupa ---
+    const circleRadius = SEARCH_ICON_SIZE;
+    rc.circle(centerX, centerY - 2, circleRadius, { // -2 para centrar verticalmente mejor
+        roughness: 2.5,
+        stroke: strokeColor,
+        strokeWidth: 2,
+        fill: fillColor, // La lupa debe estar hueca
+        fillStyle: 'solid'
+    });
+    
+    // --- 2. Mango de la Lupa (rc.line) ---
+    const lineLength = circleRadius * 0.8; 
+    
+    // Posición de inicio (en el borde inferior derecho del círculo)
+    const x1 = centerX + circleRadius * Math.cos(Math.PI / 4); // x + r*cos(45deg)
+    const y1 = centerY - 2 + circleRadius * Math.sin(Math.PI / 4); // y + r*sin(45deg)
+
+    // Posición final (abajo a la derecha)
+    const x2 = x1 + lineLength * Math.cos(Math.PI / 4);
+    const y2 = y1 + lineLength * Math.sin(Math.PI / 4);
+    
+    rc.line(x1, y1, x2, y2, {
+        roughness: 2.5,
+        stroke: strokeColor,
+        strokeWidth: 2
+    });
+}
+
+// ------------------------------------------------------------------
+// 5. LÓGICA DE ALTERNANCIA DEL TEMA
 // ------------------------------------------------------------------
 function toggleTheme() {
     const body = document.body;
@@ -150,7 +228,7 @@ function toggleTheme() {
 }
 
 // ------------------------------------------------------------------
-// 3. BUCLE DE ANIMACIÓN (Limitado a 4 FPS)
+// 6. BUCLE DE ANIMACIÓN (Limitado a 4 FPS)
 // ------------------------------------------------------------------
 function animate(timestamp) {
     // timestamp es el tiempo que ha pasado desde que el navegador cargó la página
@@ -168,12 +246,14 @@ function animate(timestamp) {
         // --- DIBUJAR LOS ELEMENTOS QUE NECESITAN SER REGENERADOS ---
         drawBackgroundTexture();
         drawNotelyFrame();
-        drawThemeButton(); // 🚀 ¡NUEVO! Dibuja el botón del tema
+        drawThemeButton(); // Dibuja el botón del tema
+        drawVerticalNavBar(); // Dibuja la barra de navegación
+        drawSearchButton(); // La lupa
     }
 }
 
 // ------------------------------------------------------------------
-// 6. DETECCIÓN DE CLIC EN EL BOTÓN
+// 7. DETECCIÓN DE CLIC EN EL BOTÓN
 // ------------------------------------------------------------------
 function handleCanvasClick(event) {
     const canvas = event.currentTarget;
@@ -190,11 +270,25 @@ function handleCanvasClick(event) {
     // Chequeamos si el clic ocurrió dentro del área del botón del tema
     if (x >= buttonXMin && x <= buttonXMax && y >= buttonYMin && y <= buttonYMax) {
         toggleTheme();
+        return; // Detenemos la ejecución después de un clic exitoso
+    }
+    // --- 2. Detección del Botón de Búsqueda (Parte superior) ---
+    const buttonSearchXMin = THEME_BTN_MARGIN;
+    const buttonSearchXMax = THEME_BTN_MARGIN + NAV_BAR_WIDTH;
+    const buttonSearchYMin = NAV_BAR_MARGIN_TOP;
+    const buttonSearchYMax = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT;
+
+    if (x >= buttonSearchXMin && x <= buttonSearchXMax && y >= buttonSearchYMin && y <= buttonSearchYMax) {
+        // Lógica futura para la búsqueda:
+        console.log("Clic en el botón de búsqueda.");
+        // Por ahora no hacemos nada, solo registramos el clic.
+        return;
     }
     // NOTA: Si añades más botones en el futuro, irían aquí con su propia lógica de coordenadas.
+    
 }
 // ------------------------------------------------------------------
-// 7. CONFIGURACIÓN DE EVENTOS (Se ejecuta UNA SOLA VEZ)
+// 8. CONFIGURACIÓN DE EVENTOS (Se ejecuta UNA SOLA VEZ)
 // ------------------------------------------------------------------
 function setupEventListeners() {
 // Añadir el listener de clic solo al cargar, no en cada redibujado
@@ -207,13 +301,15 @@ window.addEventListener('resize', initialDraw);
 window.addEventListener('load', initialDraw);
 }
 // ------------------------------------------------------------------
-// 4. INICIALIZACIÓN
+// 9. INICIALIZACIÓN
 // ------------------------------------------------------------------
 function initialDraw() {
     // Dibujar una vez para que Rough.js calcule la primera semilla
     drawBackgroundTexture();
     drawNotelyFrame(); 
     drawThemeButton();
+    drawVerticalNavBar();
+    drawSearchButton();
     
     // Iniciar el bucle de animación
     requestAnimationFrame(animate);
@@ -221,6 +317,6 @@ function initialDraw() {
 }
 
 // ------------------------------------------------------------------
-// 8. PUNTO DE ENTRADA (Llamar a la configuración de eventos)
+// 10. PUNTO DE ENTRADA (Llamar a la configuración de eventos)
 // ------------------------------------------------------------------
 setupEventListeners(); // Llamamos a la función para configurar todos los listeners.
