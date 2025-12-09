@@ -120,3 +120,6 @@ function handleInfiniteScroll() {
 // 4. Llamar a la inicialización cuando el DOM esté listo
 // Usamos DOMContentLoaded para asegurar que feed-container exista
 document.addEventListener('DOMContentLoaded', loadInitialFeed);
+
+// Exportar la función globalmente para que animation_right.js pueda llamarla
+window.drawPlaceholderCanvas = drawPlaceholderCanvas;
