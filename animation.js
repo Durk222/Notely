@@ -292,7 +292,7 @@ function drawAddNoteButton() {
     const centerY = NAV_BAR_MARGIN_TOP + (BUTTON_HEIGHT * 3) + (BUTTON_HEIGHT / 2); 
 
     // *** NUEVO: Offset para mover el icono dentro de la celda. ***
-    const iconOffset = 10;
+    const iconOffset = 50;
 
     const sheetWidth = 20;
     const sheetHeight = 25;
