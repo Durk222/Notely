@@ -111,24 +111,25 @@ function drawSketchyScrollbar(scrollbarYRatio) {
 }
 
 /**
- * Redibuja todos los placeholders existentes en el feed.
- * Se llama cuando cambia el tema (Dark/Light).
+ * Anima (redibuja) todos los placeholders existentes en el feed.
+ * Se llama 4 veces por segundo desde animation.js para dar vida a los posts.
  */
-function redrawAllPlaceholders() {
+function animateAllPlaceholders() {
     const placeholders = document.querySelectorAll('.post-placeholder');
     placeholders.forEach(postDiv => {
-        // 1. Encontrar el canvas dentro del div
         const postCanvas = postDiv.querySelector('canvas');
         if (postCanvas) {
-            // 2. Limpiar el canvas antes de dibujar el nuevo tema
+            // 1. Limpiar el canvas antes de dibujar el nuevo rough
             const ctx = postCanvas.getContext('2d');
             ctx.clearRect(0, 0, postCanvas.width, postCanvas.height);
             
-            // 3. Redibujar con los nuevos colores del tema
-            drawPlaceholderCanvas(postCanvas); 
+            // 2. Redibujar el placeholder (que incluye el marco y los puntos)
+            // drawPlaceholderCanvas debe ser accesible globalmente o importado/copiado aquí.
+            // ASUMIMOS que drawPlaceholderCanvas está declarado globalmente en scroll_handler.js
+            window.drawPlaceholderCanvas(postCanvas); 
         }
     });
 }
 
-// Exportar la función globalmente para que animation.js pueda llamarla
-window.redrawAllPlaceholders = redrawAllPlaceholders;
+// ✅ Exponer la nueva función
+window.animateAllPlaceholders = animateAllPlaceholders;
