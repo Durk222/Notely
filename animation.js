@@ -398,7 +398,7 @@ function drawSettingsButton() {
 }
 
 // ------------------------------------------------------------------
-// 10. DIBUJO DEL BOTÓN DE PERFIL (Usuario) - CORREGIDO VISUALMENTE
+// 10. DIBUJO DEL BOTÓN DE PERFIL (Usuario) - AJUSTE FINAL (Silueta Sólida)
 // ------------------------------------------------------------------
 function drawProfileButton() {
     const canvas = document.getElementById('notelyCanvas');
@@ -416,11 +416,9 @@ function drawProfileButton() {
     const bodyHeight = 10;
     
     // --- 1. Cuerpo/Hombros (Path) ---
-    // Lo dibujamos primero para que la cabeza quede encima.
-    const bodyWidth = 2 * headRadius + 8; // Ancho de los hombros
+    const bodyWidth = 2 * headRadius + 8;
     const bodyY = centerY + headRadius * 0.4; // Posición Y baja
     
-    // Usaremos un path para hacer una U invertida ancha
     const bodyPath = `
         M ${centerX - bodyWidth / 2} ${bodyY} 
         A ${bodyWidth / 2} ${bodyHeight * 0.8}, 0, 0, 1, ${centerX + bodyWidth / 2} ${bodyY}
@@ -430,26 +428,21 @@ function drawProfileButton() {
         roughness: 2.5,
         stroke: strokeColor,
         strokeWidth: 1.5,
-        fill: fillColor, // *** CAMBIO CLAVE: Relleno con COLOR DE FONDO ***
+        fill: strokeColor, // ✅ CAMBIO CRÍTICO: Relleno con color de tinta (SILUETA SÓLIDA)
         fillStyle: 'solid'
     });
     
     // --- 2. Cabeza (Círculo) ---
-    // Posicionamos la cabeza justo encima del cuerpo.
-    const headY = bodyY - bodyHeight * 0.6; // Posición Y más alta
+    // Posicionamos la cabeza más arriba (bodyY - bodyHeight * 1.1) para separarla del cuerpo
+    const headY = bodyY - bodyHeight * 1.1; 
     
     rc.circle(centerX, headY, headRadius, {
         roughness: 2.5,
         stroke: strokeColor,
         strokeWidth: 1.5,
-        fill: fillColor, // *** CAMBIO CLAVE: Relleno con COLOR DE FONDO ***
+        fill: strokeColor, // ✅ CAMBIO CRÍTICO: Relleno con color de tinta (SILUETA SÓLIDA)
         fillStyle: 'solid'
     });
-
-    // Para el modo oscuro, si quieres que la cabeza sea un "relleno" sólido de color de tinta
-    // (o si prefieres el estilo sólido general), puedes mantener fill: strokeColor. 
-    // Sin embargo, usar fill: fillColor para la cabeza y el cuerpo garantiza que el contorno
-    // de 1.5px sea siempre visible contra el relleno.
 }
 // ------------------------------------------------------------------
 // 5. LÓGICA DE ALTERNANCIA DEL TEMA
