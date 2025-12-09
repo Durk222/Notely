@@ -40,7 +40,7 @@ function drawPlaceholderCanvas(canvas) {
     
     // Usamos las variables globales de color (deberían estar disponibles)
     const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
-    const fillColor = getComputedStyle(document.body).getPropertyValue('--color-light-ecru').trim(); 
+    const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim(); 
 
     // Dibujar el marco (Roughness bajo para que no distraiga)
     rc.rectangle(5, 5, canvas.width - 10, canvas.height - 10, {
