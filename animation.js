@@ -495,19 +495,23 @@ function animate(timestamp) {
         // El botón de autenticación debe ir AQUÍ, para estar SOBRE el marco principal.
         drawAuthButton(); // ⬅️ ¡Asegúrate de que esta llamada vaya aquí!
 
-// ✅ CÓDIGO DE SCROLL SKETCHY (SE MANTIENE IGUAL)
+// ✅ CÓDIGO DE SCROLL SKETCHY (DEBE SER CORREGIDO)
     const feedContainer = document.getElementById('feed-container');
     let scrollbarYRatio = 0; 
     
     if (feedContainer && feedContainer.scrollHeight > feedContainer.clientHeight) {
         scrollbarYRatio = feedContainer.scrollTop / (feedContainer.scrollHeight - feedContainer.clientHeight);
     }
-    drawSketchyScrollbar(scrollbarYRatio); // ⬅️ Dibuja con el ratio actualizado
+    
+// 💡 APLICAR LA COMPROBACIÓN AQUÍ:
+    if (window.drawSketchyScrollbar) { 
+        drawSketchyScrollbar(scrollbarYRatio); // ⬅️ Dibuja con el ratio actualizado
+    }
 
     // ✅ LLAMADA A LA ANIMACIÓN DE LOS POSTS (SE MANTIENE IGUAL)
     if (window.animateAllPlaceholders) {
         animateAllPlaceholders(); // ⬅️ Mantiene los posts "vivos"
-    }
+        }
         //Aquí irían otros draw
     }
 }
