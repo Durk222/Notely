@@ -277,6 +277,76 @@ function drawHomeButton() {
 }
 
 // ------------------------------------------------------------------
+// 8. DIBUJO DEL BOTÓN DE AÑADIR NOTA (Hoja con +)
+// ------------------------------------------------------------------
+function drawAddNoteButton() {
+    const canvas = document.getElementById('notelyCanvas');
+    const rc = rough.canvas(canvas);
+
+    const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
+    const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
+    
+    // Coordenadas del centro: 
+    // Este es el cuarto botón (Index 3): NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 3 + BUTTON_HEIGHT / 2
+    const centerX = THEME_BTN_MARGIN + NAV_BAR_WIDTH / 2;
+    const centerY = NAV_BAR_MARGIN_TOP + (BUTTON_HEIGHT * 3) + (BUTTON_HEIGHT / 2); 
+
+    const sheetWidth = 20;
+    const sheetHeight = 25;
+    
+    const x = centerX - sheetWidth / 2;
+    const y = centerY - sheetHeight / 2;
+    
+    // --- 1. Base de la Hoja (Rectángulo) ---
+    rc.rectangle(x, y, sheetWidth, sheetHeight, {
+        roughness: 2,
+        stroke: strokeColor,
+        strokeWidth: 2,
+        fill: fillColor, 
+        fillStyle: 'solid'
+    });
+    
+    // --- 2. Pliegue de la Esquina Superior Derecha (rc.path) ---
+    const foldSize = 6;
+    const foldPath = `M ${x + sheetWidth - foldSize} ${y} L ${x + sheetWidth} ${y + foldSize} L ${x + sheetWidth - foldSize} ${y + foldSize} Z`;
+    
+    // Dibujar el triángulo que representa el pliegue
+    rc.path(foldPath, {
+        roughness: 1.5,
+        stroke: strokeColor,
+        strokeWidth: 1,
+        fill: fillColor, // El pliegue es del color de fondo de la hoja
+        fillStyle: 'solid'
+    });
+    
+    // Dibujar la línea de doblez interior
+    rc.line(x + sheetWidth - foldSize, y, x + sheetWidth, y + foldSize, {
+        roughness: 1.5,
+        stroke: strokeColor,
+        strokeWidth: 1
+    });
+
+    // --- 3. Símbolo de + (rc.line) ---
+    const plusSize = 10;
+    const plusMargin = 5;
+    const plusX = x + plusMargin;
+    const plusY = y + sheetHeight - plusSize - plusMargin;
+    
+    // Línea horizontal
+    rc.line(plusX, plusY + plusSize / 2, plusX + plusSize, plusY + plusSize / 2, {
+        roughness: 1.5,
+        stroke: strokeColor,
+        strokeWidth: 2
+    });
+    // Línea vertical
+    rc.line(plusX + plusSize / 2, plusY, plusX + plusSize / 2, plusY + plusSize, {
+        roughness: 1.5,
+        stroke: strokeColor,
+        strokeWidth: 2
+    });
+}
+
+// ------------------------------------------------------------------
 // 5. LÓGICA DE ALTERNANCIA DEL TEMA
 // ------------------------------------------------------------------
 function toggleTheme() {
@@ -314,6 +384,7 @@ function animate(timestamp) {
         drawVerticalNavBar(); // Dibuja la barra de navegación
         drawSearchButton(); // La lupa
         drawHomeButton(); // El botón de casa
+        drawAddNoteButton(); // añadir publicación, botón
     }
 }
 
@@ -361,6 +432,19 @@ if (x >= buttonHomeXMin && x <= buttonHomeXMax && y >= buttonHomeYMin && y <= bu
     // Lógica futura para volver al inicio:
     return;
     }
+
+    // --- 5. Detección del Botón de Añadir Nota (Index 3) ---
+const buttonAddXMin = THEME_BTN_MARGIN;
+const buttonAddXMax = THEME_BTN_MARGIN + NAV_BAR_WIDTH;
+// Cuarto segmento de la barra:
+const buttonAddYMin = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 3;
+const buttonAddYMax = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 4;
+
+if (x >= buttonAddXMin && x <= buttonAddXMax && y >= buttonAddYMin && y <= buttonAddYMax) {
+    console.log("Clic en el botón de Añadir Nota.");
+    // Lógica futura para crear una nueva nota:
+    return;
+    }
     // NOTA: Si añades más botones en el futuro, irían aquí con su propia lógica de coordenadas.
     
 }
@@ -388,6 +472,7 @@ function initialDraw() {
     drawVerticalNavBar();
     drawSearchButton();
     drawHomeButton(); // el botón de casa
+    drawAddNoteButton(); // añadir nota (publicación)
     
     // Iniciar el bucle de animación
     requestAnimationFrame(animate);
