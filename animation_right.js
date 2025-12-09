@@ -15,9 +15,9 @@ function drawAuthButton() {
     const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
     
     // --- Posicionamiento y Dimensiones ---
-    const btnWidth = 180; // Un poco más ancho para el texto
+    // Aumentamos el ancho de 180 a 230px para dar margen al texto largo
+    const btnWidth = 230; 
     const btnHeight = 40;
-    const margin = THEME_BTN_MARGIN; // Margen de 20px
 
     // Calcula la posición X (desde la derecha)
     const x = canvas.width - margin - btnWidth;
@@ -37,7 +37,7 @@ function drawAuthButton() {
     const text = "Inicia Sesión o Crea una Cuenta";
 
     // *** LÍNEA CLAVE CORREGIDA: Usando 'Flabby Bums' ***
-    ctx.font = `bold 16px 'Flabby Bums', cursive`; 
+    ctx.font = `bold 14px 'Flabby Bums', cursive`; 
     ctx.fillStyle = strokeColor;
     ctx.textAlign = 'center'; 
     ctx.textBaseline = 'middle';
