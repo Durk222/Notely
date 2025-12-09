@@ -595,6 +595,11 @@ function handleCanvasClick(event) {
 
 // --- 8. Detección y Lógica de Scrollbar (AL FINAL) ---
 const canvas = event.currentTarget;
+// ➡️ CORRECCIÓN CRÍTICA: Añadir verificación de existencia de la función.
+if (!window.calculateScrollbarDimensions) {
+    console.warn("calculateScrollbarDimensions no está cargado.");
+    return; // Evitar el crash si animation_right.js no se ha cargado.
+}
 //const dims = window.calculateScrollbarDimensions(canvas.height);
 const dims = window.calculateScrollbarDimensions(canvas.width, canvas.height); // ⬅️ ¡CORREGIDO!
 
