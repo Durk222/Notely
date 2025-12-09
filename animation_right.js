@@ -167,3 +167,6 @@ function calculateScrollbarDimensions(canvasWidth, canvasHeight) { // ⬅️ ¡C
 
 // ✅ EXPORTAR LA FUNCIÓN
 window.calculateScrollbarDimensions = calculateScrollbarDimensions;
+
+// EXPORTS
+window.drawSketchyScrollbar = drawSketchyScrollbar;
