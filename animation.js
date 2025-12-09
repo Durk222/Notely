@@ -492,6 +492,8 @@ function animate(timestamp) {
         drawAddNoteButton(); // añadir publicación, botón
         drawSettingsButton(); // Botón de configuraciones
         drawProfileButton(); // Ingresar al perfil de usuario
+        drawSettingsButton(); // Añadido
+        drawProfileButton(); // Añadido
     }
 }
 
@@ -601,11 +603,8 @@ function initialDraw() {
     drawAddNoteButton(); // añadir nota (publicación)
     drawSettingsButton(); // botón de configuraciones
     drawProfileButton(); // botón de perfil
-
-    // --- LLAMADA AL CONTENIDO DERECHO ---
-    if (typeof drawAuthButton === 'function') {
-        drawAuthButton(); // ¡NUEVO! Dibuja el botón de autenticación
-    }
+    drawAuthButton(); // ⬅️ LLAMADA DIRECTA (Sin el 'if')
+    
     // Iniciar el bucle de animación
     requestAnimationFrame(animate);
 
