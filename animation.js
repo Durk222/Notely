@@ -492,8 +492,9 @@ function animate(timestamp) {
         drawAddNoteButton(); // añadir publicación, botón
         drawSettingsButton(); // Botón de configuraciones
         drawProfileButton(); // Ingresar al perfil de usuario
-        drawSettingsButton(); // Añadido
-        drawProfileButton(); // Añadido
+        // 3. DIBUJAR ELEMENTOS SOBRE EL ÁREA DE CONTENIDO
+        // El botón de autenticación debe ir AQUÍ, para estar SOBRE el marco principal.
+        drawAuthButton(); // ⬅️ ¡Asegúrate de que esta llamada vaya aquí!
     }
 }
 
