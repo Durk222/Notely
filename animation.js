@@ -213,6 +213,70 @@ function drawSearchButton() {
 }
 
 // ------------------------------------------------------------------
+// 7. DIBUJO DEL BOTÓN DE CASA (Home)
+// ------------------------------------------------------------------
+function drawHomeButton() {
+    const canvas = document.getElementById('notelyCanvas');
+    const rc = rough.canvas(canvas);
+
+    const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
+    const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
+    
+    // Coordenadas del centro: 
+    // Primer botón (Search) Index 0: NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT / 2
+    // Segundo botón (Notes) Index 1: NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT + BUTTON_HEIGHT / 2
+    // Tercer botón (Home) Index 2: NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 2 + BUTTON_HEIGHT / 2
+    const centerX = THEME_BTN_MARGIN + NAV_BAR_WIDTH / 2;
+    const centerY = NAV_BAR_MARGIN_TOP + (BUTTON_HEIGHT * 2) + (BUTTON_HEIGHT / 2); 
+
+    const baseWidth = 22;
+    const baseHeight = 15;
+    const roofHeight = 8;
+    
+    const x = centerX - baseWidth / 2;
+    const y = centerY - baseHeight / 2 + roofHeight / 2; // Ajuste para el tejado
+
+    // --- 1. Cuerpo de la Casa (Rectángulo) ---
+    rc.rectangle(x, y, baseWidth, baseHeight, {
+        roughness: 2.5,
+        stroke: strokeColor,
+        strokeWidth: 2,
+        fill: fillColor, 
+        fillStyle: 'solid'
+    });
+    
+    // --- 2. Tejado (rc.path o rc.polygon) ---
+    // Usaremos rc.path para mayor control sobre los puntos del triángulo
+    const roofPoints = [
+        [x, y], // Esquina izquierda (comienzo del rectángulo)
+        [centerX, y - roofHeight], // Pico superior
+        [x + baseWidth, y] // Esquina derecha (comienzo del rectángulo)
+    ];
+    
+    // Convertir los puntos a una cadena de path SVG y dibujarlos
+    const pathData = `M ${roofPoints[0][0]} ${roofPoints[0][1]} L ${roofPoints[1][0]} ${roofPoints[1][1]} L ${roofPoints[2][0]} ${roofPoints[2][1]} Z`;
+    
+    rc.path(pathData, {
+        roughness: 2.5,
+        stroke: strokeColor,
+        strokeWidth: 2,
+        fill: fillColor,
+        fillStyle: 'solid'
+    });
+    
+    // --- 3. Puerta (Pequeño rectángulo con relleno sólido) ---
+    const doorWidth = 6;
+    const doorHeight = 8;
+    rc.rectangle(centerX - doorWidth / 2, y + baseHeight - doorHeight, doorWidth, doorHeight, {
+        roughness: 1.5,
+        stroke: strokeColor,
+        strokeWidth: 1,
+        fill: strokeColor, // Relleno con el color de la tinta para que se vea sólido
+        fillStyle: 'solid'
+    });
+}
+
+// ------------------------------------------------------------------
 // 5. LÓGICA DE ALTERNANCIA DEL TEMA
 // ------------------------------------------------------------------
 function toggleTheme() {
@@ -249,6 +313,7 @@ function animate(timestamp) {
         drawThemeButton(); // Dibuja el botón del tema
         drawVerticalNavBar(); // Dibuja la barra de navegación
         drawSearchButton(); // La lupa
+        drawHomeButton(); // El botón de casa
     }
 }
 
@@ -284,6 +349,18 @@ function handleCanvasClick(event) {
         // Por ahora no hacemos nada, solo registramos el clic.
         return;
     }
+       // --- 4. Detección del Botón de Casa (Home) (Index 2) ---
+const buttonHomeXMin = THEME_BTN_MARGIN;
+const buttonHomeXMax = THEME_BTN_MARGIN + NAV_BAR_WIDTH;
+      // Tercer segmento de la barra: 
+const buttonHomeYMin = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 2;
+const buttonHomeYMax = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 3;
+
+if (x >= buttonHomeXMin && x <= buttonHomeXMax && y >= buttonHomeYMin && y <= buttonHomeYMax) {
+    console.log("Clic en el botón de Casa (Home).");
+    // Lógica futura para volver al inicio:
+    return;
+    }
     // NOTA: Si añades más botones en el futuro, irían aquí con su propia lógica de coordenadas.
     
 }
@@ -310,6 +387,7 @@ function initialDraw() {
     drawThemeButton();
     drawVerticalNavBar();
     drawSearchButton();
+    drawHomeButton(); // el botón de casa
     
     // Iniciar el bucle de animación
     requestAnimationFrame(animate);
