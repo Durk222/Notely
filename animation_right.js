@@ -7,22 +7,22 @@
  * Asume que el usuario está "desconectado" (datos de sesión = 0).
  */
 function drawAuthButton() {
-    const canvas = document.getElementById('notelyCanvas');
-    const rc = rough.canvas(canvas);
-    const ctx = canvas.getContext('2d'); // Necesario para dibujar texto
+    // ... (canvas, rc, ctx, strokeColor, fillColor)
 
-    const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
-    const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
-    
+    // ASUMIMOS que las variables globales son NAV_BAR_MARGIN_TOP y THEME_BTN_MARGIN
+    // Creamos copias locales para evitar errores de referencia:
+    const margin = THEME_BTN_MARGIN; 
+    const navBarMarginTop = NAV_BAR_MARGIN_TOP; // Usamos un nombre local más claro
+
     // --- Posicionamiento y Dimensiones ---
-    // Aumentamos el ancho de 180 a 230px para dar margen al texto largo
     const btnWidth = 230; 
     const btnHeight = 40;
 
     // Calcula la posición X (desde la derecha)
-    const x = canvas.width - margin - btnWidth;
-    // Calcula la posición Y (desde arriba, alineada con la barra de navegación)
-    const y = NAV_BAR_MARGIN_TOP; 
+    const x = canvas.width - margin - btnWidth; 
+    
+    // Calcula la posición Y (desde arriba, usando la variable local)
+    const y = navBarMarginTop;
 
     // 1. Dibujar el marco del botón (Rectángulo) con Rough.js
     rc.rectangle(x, y, btnWidth, btnHeight, {
