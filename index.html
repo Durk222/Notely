@@ -103,18 +103,45 @@
             z-index: 1;
         }
 
-        /* Wrapper para el contenido de la App (se superpone al canvas) */
-        #app-wrapper {
-    position: absolute; 
+/* Wrapper para el contenido de la App (se superpone al canvas) */
+#app-wrapper {
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 2; /* Siempre encima del canvas (z-index: 1) */
-    padding: 15px;
-            
-            pointer-events: none;
-        }
+    z-index: 2;
+    padding: 15px; /* Mismo padding que usamos para el botón de auth */
+    
+    /* 1. Definir el área de la máscara (clipping) */
+    overflow: hidden; 
+    /* El contenido que se mueva dentro de app-wrapper será recortado */
+    pointer-events: none; /* Dejamos que los clics lleguen al canvas por defecto */
+}
+
+        /* Contenedor del Scroll del Feed */
+#feed-container {
+    position: absolute;
+    /* Ajustamos el feed para que empiece justo debajo del botón de auth */
+    top: 70px; /* 20px (NAV_BAR_MARGIN_TOP) + 40px (AUTH_BTN_HEIGHT) + 10px (SPACING) */
+    left: 80px; /* 20px (THEME_BTN_MARGIN) + 40px (NAV_BAR_WIDTH) + 20px (SPACING) */
+    
+    /* Calculamos el ancho restante */
+    width: calc(100% - 80px - 20px); /* 100% - left - right_margin (20px) */
+    height: calc(100% - 70px - 20px); /* 100% - top - bottom_margin (20px) */
+    
+    overflow-y: scroll; /* Permite el scroll vertical */
+    pointer-events: auto; /* CLAVE: Permite que el feed reciba clics/scroll */
+    
+    /* 2. Propiedad de recorte */
+    /* Aseguramos que el contenido sea recortado en los bordes de este contenedor */
+}
+
+/* Contenido dentro del Feed */
+#feed-scroller {
+    /* Este div contendrá los posts, su ancho es 100% del contenedor */
+    width: 100%;
+}
 
         /* --- Flabby Bums para Títulos --- */
 @font-face {
@@ -141,9 +168,12 @@
         <canvas id="notelyCanvas"></canvas>
         
         <div id="app-wrapper">
+            <div id="feed-container">
+                </div>
         </div>
     </div>
 <script src="animation.js"></script> 
 <script src="animation_right.js"></script>
+<script src="scroll_handler.js"></script>
 </body>
 </html>
