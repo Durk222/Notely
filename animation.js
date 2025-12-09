@@ -519,7 +519,7 @@ function animate(timestamp) {
 // ------------------------------------------------------------------
 // 7. DETECCIÓN DE CLIC EN EL BOTÓN
 // ------------------------------------------------------------------
-function handleCanvasClick(event) {
+function handleCanvasMouseDown(event) {
     const canvas = event.currentTarget;
     const rect = canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
@@ -596,6 +596,9 @@ function handleCanvasClick(event) {
 
     // --- 7. Detección del Botón de Autenticación (Auth) ---
     // ...
+     if (isDraggingScrollbar) {
+        event.preventDefault(); 
+    }
 
 // --- 8. Detección y Lógica de Scrollbar (AL FINAL) ---
 // ➡️ CORRECCIÓN CRÍTICA: Añadir verificación de existencia de la función.
@@ -631,8 +634,7 @@ if (x >= scrollbarXMin && x <= scrollbarXMax && y >= scrollbarYMin && y <= scrol
 // 8. CONFIGURACIÓN DE EVENTOS (Se ejecuta UNA SOLA VEZ)
 // ------------------------------------------------------------------
 function setupEventListeners() {
-// Añadir el listener de clic solo al cargar, no en cada redibujado
-document.getElementById('notelyCanvas').addEventListener('click', handleCanvasClick);
+document.getElementById('notelyCanvas').addEventListener('mousedown', handleCanvasMouseDown);
 
 // Escuchar evento de redimensionamiento (opcional, pero buena práctica)
 window.addEventListener('resize', initialDraw);
@@ -664,7 +666,6 @@ function handleCanvasMove(event) {
     const feedContainer = document.getElementById('feed-container');
 
     // 1. Calcular la posición del THUMB (centro del thumb)
-    // mouseY - (scrollbarThumbHeight / 2) sería la posición Y superior del thumb si el cursor está en el centro.
     let thumbCenterY = mouseY;
     let thumbTopY = thumbCenterY - scrollbarThumbHeight / 2;
     
