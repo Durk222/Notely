@@ -595,7 +595,8 @@ function handleCanvasClick(event) {
 
 // --- 8. Detección y Lógica de Scrollbar (AL FINAL) ---
 const canvas = event.currentTarget;
-const dims = window.calculateScrollbarDimensions(canvas.height);
+//const dims = window.calculateScrollbarDimensions(canvas.height);
+const dims = window.calculateScrollbarDimensions(canvas.width, canvas.height); // ⬅️ ¡CORREGIDO!
 
 const scrollbarXMin = dims.trackXStart;
 const scrollbarXMax = dims.trackXStart + 8; // trackXStart + SCROLL_WIDTH
