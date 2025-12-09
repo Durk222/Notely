@@ -20,6 +20,12 @@ let lastTime = 0;
 var ICON_SIZE = 30; // Tamaño del ícono Sol/Luna
 var ICON_MARGIN = 20; // Margen desde la esquina inferior izquierda
 
+// --- NUEVAS VARIABLES PARA EL DRAG DE SCROLLBAR ---
+let isDraggingScrollbar = false;
+let scrollbarYStart = 0; // Posición Y del inicio del track
+let scrollbarTrackHeight = 0; // Altura total del track
+let scrollbarThumbHeight = 0; // Altura calculada del thumb
+
 // ------------------------------------------------------------------
 // 1. DIBUJO DEL FONDO (Textura)
 // ------------------------------------------------------------------
@@ -583,6 +589,34 @@ function handleCanvasClick(event) {
         return;
     }
     // NOTA: Si añades más botones en el futuro, irían aquí con su propia lógica de coordenadas.
+
+    // --- 7. Detección del Botón de Autenticación (Auth) ---
+    // ...
+
+// --- 8. Detección y Lógica de Scrollbar (AL FINAL) ---
+const canvas = event.currentTarget;
+const dims = window.calculateScrollbarDimensions(canvas.height);
+
+const scrollbarXMin = dims.trackXStart;
+const scrollbarXMax = dims.trackXStart + 8; // trackXStart + SCROLL_WIDTH
+const scrollbarYMin = dims.trackYStart;
+const scrollbarYMax = dims.trackYStart + dims.trackHeight;
+
+if (x >= scrollbarXMin && x <= scrollbarXMax && y >= scrollbarYMin && y <= scrollbarYMax) {
+    // Si se hace clic en el área de la barra de scroll
+    isDraggingScrollbar = true;
+    
+    // Almacenar las dimensiones críticas globalmente
+    scrollbarYStart = dims.trackYStart;
+    scrollbarTrackHeight = dims.trackHeight;
+    scrollbarThumbHeight = dims.thumbHeight;
+
+    // Llamar al manejador de movimiento inmediatamente para empezar a arrastrar
+    handleCanvasMove(event); 
+    
+    // Devolver el foco al cuerpo para escuchar mouseup en cualquier lugar
+    document.body.style.userSelect = 'none'; // Previene la selección de texto
+    }
     
 }
 // ------------------------------------------------------------------
@@ -597,7 +631,59 @@ window.addEventListener('resize', initialDraw);
 
 // Escuchar evento de carga de página para iniciar el dibujo y la animación
 window.addEventListener('load', initialDraw);
+
+    const notelyCanvas = document.getElementById('notelyCanvas');
+
+    // 1. INICIA el arrastre con MOUSEMOVE (para mover la barra)
+    notelyCanvas.addEventListener('mousemove', handleCanvasMove);
+    
+    // 2. DETIENE el arrastre con MOUSEUP (para soltar la barra)
+    notelyCanvas.addEventListener('mouseup', handleCanvasStopDrag);
+    // **IMPORTANTE**: También escuchamos mouseup en el documento por si suelta fuera del canvas
+    document.addEventListener('mouseup', handleCanvasStopDrag);
 }
+
+// animation.js (Nuevas funciones)
+
+function handleCanvasMove(event) {
+    if (!isDraggingScrollbar) return;
+
+    // Posición Y del ratón relativa al Canvas
+    const canvas = document.getElementById('notelyCanvas');
+    const rect = canvas.getBoundingClientRect();
+    const mouseY = event.clientY - rect.top;
+
+    const feedContainer = document.getElementById('feed-container');
+
+    // 1. Calcular la posición del THUMB (centro del thumb)
+    // mouseY - (scrollbarThumbHeight / 2) sería la posición Y superior del thumb si el cursor está en el centro.
+    let thumbCenterY = mouseY;
+    let thumbTopY = thumbCenterY - scrollbarThumbHeight / 2;
+    
+    // 2. Limitar la posición dentro del TRACK
+    const maxThumbMovement = scrollbarTrackHeight - scrollbarThumbHeight;
+
+    // Clamp: Asegurarse de que thumbTopY esté entre trackYStart y trackYStart + maxThumbMovement
+    thumbTopY = Math.max(scrollbarYStart, Math.min(thumbTopY, scrollbarYStart + maxThumbMovement));
+
+    // 3. Calcular el Ratio de Scroll
+    const currentMovement = thumbTopY - scrollbarYStart;
+    const newRatio = currentMovement / maxThumbMovement;
+    
+    // 4. Aplicar el Scroll al Contenedor Nativo
+    const maxScroll = feedContainer.scrollHeight - feedContainer.clientHeight;
+    feedContainer.scrollTop = maxScroll * newRatio;
+    
+    // Forzar redibujado inmediato (para que no haya lag visual)
+    initialDraw(); 
+}
+
+function handleCanvasStopDrag() {
+    isDraggingScrollbar = false;
+    document.body.style.userSelect = 'auto'; // Restaurar la selección de texto
+}
+
+
 // ------------------------------------------------------------------
 // 9. INICIALIZACIÓN
 // ------------------------------------------------------------------
