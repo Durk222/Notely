@@ -611,10 +611,11 @@ function initialDraw() {
     drawSettingsButton(); // botón de configuraciones
     drawProfileButton(); // botón de perfil
     drawAuthButton(); // ⬅️ LLAMADA DIRECTA (Sin el 'if')
-    // ✅ AÑADIR LA LLAMADA AL REDIBUJO DE POSTS AQUÍ
+    // ✅ AÑADIR LA LLAMADA CONDICIONAL AL REDIBUJO DE POSTS
     if (window.redrawAllPlaceholders) {
-    redrawAllPlaceholders();
-    
+        redrawAllPlaceholders(); // Llama a la función de scroll_handler.js
+    }
+
     // Iniciar el bucle de animación
     requestAnimationFrame(animate);
 
