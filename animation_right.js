@@ -69,6 +69,8 @@ function drawSketchyScrollbar(scrollbarYRatio) {
     const AUTH_BTN_HEIGHT = 40; 
     const NAV_BAR_MARGIN_TOP = window.NAV_BAR_MARGIN_TOP || 20; // Usar global o default
     const THEME_BTN_MARGIN = window.THEME_BTN_MARGIN || 20; // Usar global o default
+
+    const dims = calculateScrollbarDimensions(canvas.width, canvas.height); // ⬅️ Debe pasar ANCHO y ALTO
     
     // 1. DIMENSIONES Y POSICIÓN DEL TRACK (Contenedor de la barra)
     const SCROLL_WIDTH = 8; 
@@ -81,7 +83,7 @@ function drawSketchyScrollbar(scrollbarYRatio) {
     const trackHeight = canvas.height - trackYStart - THEME_BTN_MARGIN; 
     
     // trackXStart: canvas.width - THEME_BTN_MARGIN - SCROLL_WIDTH
-    const trackXStart = canvas.width - THEME_BTN_MARGIN - SCROLL_WIDTH; 
+    const trackXStart = dims.trackXStart;
 
     // Dibujar el TRACK (Fondo de la barra)
     rc.rectangle(trackXStart, trackYStart, SCROLL_WIDTH, trackHeight, {
