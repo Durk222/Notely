@@ -291,11 +291,14 @@ function drawAddNoteButton() {
     const centerX = THEME_BTN_MARGIN + NAV_BAR_WIDTH / 2;
     const centerY = NAV_BAR_MARGIN_TOP + (BUTTON_HEIGHT * 3) + (BUTTON_HEIGHT / 2); 
 
+    // *** NUEVO: Offset para mover el icono dentro de la celda. ***
+    const iconOffset = 5;
+
     const sheetWidth = 20;
     const sheetHeight = 25;
     
     const x = centerX - sheetWidth / 2;
-    const y = centerY - sheetHeight / 2;
+    const y = centerY - sheetHeight / 2 + iconOffset;
     
     // --- 1. Base de la Hoja (Rectángulo) ---
     rc.rectangle(x, y, sheetWidth, sheetHeight, {
@@ -330,7 +333,7 @@ function drawAddNoteButton() {
     const plusSize = 10;
     const plusMargin = 5;
     const plusX = x + plusMargin;
-    const plusY = y + sheetHeight - plusSize - plusMargin;
+    const plusY = y + sheetHeight - plusSize - plusMargin; // Se basa en la nueva 'y'
     
     // Línea horizontal
     rc.line(plusX, plusY + plusSize / 2, plusX + plusSize, plusY + plusSize / 2, {
