@@ -1,24 +1,24 @@
 // --- VARIABLES PARA EL BOTÓN DE TEMA (cuadrado) ---
-const THEME_BTN_SIZE = 40; // Tamaño del botón cuadrado del tema
-const THEME_BTN_MARGIN = 20; // Margen desde la esquina inferior izquierda
+var THEME_BTN_SIZE = 40; // Tamaño del botón cuadrado del tema
+var THEME_BTN_MARGIN = 20; // Margen desde la esquina inferior izquierda
 
 // BARRA DE NAVEGACIÓN ---
-const NAV_BAR_WIDTH = THEME_BTN_SIZE; // Usaremos el mismo ancho que el botón de tema (40px)
-const NAV_BAR_MARGIN_TOP = 20; // Margen superior de la barra
-const BUTTON_SPACING = 15; // Espacio entre el fondo de la barra y el siguiente elemento (Botón de Tema)
-const BUTTON_HEIGHT = THEME_BTN_SIZE + 25; // Altura de la celda de cada botón (40 + 10 = 50px)
+var NAV_BAR_WIDTH = THEME_BTN_SIZE; // Usaremos el mismo ancho que el botón de tema (40px)
+var NAV_BAR_MARGIN_TOP = 20; // Margen superior de la barra
+var BUTTON_SPACING = 15; // Espacio entre el fondo de la barra y el siguiente elemento (Botón de Tema)
+var BUTTON_HEIGHT = THEME_BTN_SIZE + 25; // Altura de la celda de cada botón (40 + 10 = 50px)
 
 // --- VARIABLES PARA EL BOTÓN DE BÚSQUEDA ---
-const SEARCH_ICON_SIZE = 12; // Radio del círculo de la lupa
+var SEARCH_ICON_SIZE = 12; // Radio del círculo de la lupa
 
 // Configuraciones para la animación de 4 FPS
-const FPS = 4;
-const FRAME_INTERVAL = 1000 / FPS; // Intervalo en milisegundos entre cuadros (1000ms / 4 = 250ms)
+var FPS = 4;
+var FRAME_INTERVAL = 1000 / FPS; // Intervalo en milisegundos entre cuadros (1000ms / 4 = 250ms)
 let lastTime = 0;
 
 // --- NUEVA VARIABLE GLOBAL ---
-const ICON_SIZE = 30; // Tamaño del ícono Sol/Luna
-const ICON_MARGIN = 20; // Margen desde la esquina inferior izquierda
+var ICON_SIZE = 30; // Tamaño del ícono Sol/Luna
+var ICON_MARGIN = 20; // Margen desde la esquina inferior izquierda
 
 // ------------------------------------------------------------------
 // 1. DIBUJO DEL FONDO (Textura)
