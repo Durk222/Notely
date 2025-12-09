@@ -398,7 +398,7 @@ function drawSettingsButton() {
 }
 
 // ------------------------------------------------------------------
-// 10. DIBUJO DEL BOTÓN DE PERFIL (Usuario)
+// 10. DIBUJO DEL BOTÓN DE PERFIL (Usuario) - CORREGIDO VISUALMENTE
 // ------------------------------------------------------------------
 function drawProfileButton() {
     const canvas = document.getElementById('notelyCanvas');
@@ -407,42 +407,49 @@ function drawProfileButton() {
     const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
     const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
     
-// Coordenadas del centro de la CELDA: Ahora es el Índice 3
+    // Coordenadas del centro de la CELDA: Índice 3
     const centerX = THEME_BTN_MARGIN + NAV_BAR_WIDTH / 2;
-    const centerY = NAV_BAR_MARGIN_TOP + (BUTTON_HEIGHT * 3) + (BUTTON_HEIGHT / 2); // CÁLCULO CORREGIDO
+    const centerY = NAV_BAR_MARGIN_TOP + (BUTTON_HEIGHT * 3) + (BUTTON_HEIGHT / 2); 
     
     // Parámetros del Icono
     const headRadius = 7;
     const bodyHeight = 10;
     
-    // --- 1. Cabeza (Círculo) ---
-    const headY = centerY - headRadius - (bodyHeight * 0.2); // Posicionamos la cabeza un poco más arriba
-    rc.circle(centerX, headY, headRadius, {
-        roughness: 2.5,
-        stroke: strokeColor,
-        strokeWidth: 1.5,
-        fill: strokeColor, 
-        fillStyle: 'solid'
-    });
-    
-    // --- 2. Cuerpo/Hombros (Arco o Path) ---
-    // Simular un arco: un semicírculo grande y achatado que actúa como los hombros.
+    // --- 1. Cuerpo/Hombros (Path) ---
+    // Lo dibujamos primero para que la cabeza quede encima.
     const bodyWidth = 2 * headRadius + 8; // Ancho de los hombros
-    const bodyY = headY + headRadius * 0.7; 
+    const bodyY = centerY + headRadius * 0.4; // Posición Y baja
     
     // Usaremos un path para hacer una U invertida ancha
     const bodyPath = `
         M ${centerX - bodyWidth / 2} ${bodyY} 
-        A ${bodyWidth / 2} ${bodyHeight}, 0, 0, 1, ${centerX + bodyWidth / 2} ${bodyY}
+        A ${bodyWidth / 2} ${bodyHeight * 0.8}, 0, 0, 1, ${centerX + bodyWidth / 2} ${bodyY}
     `;
     
     rc.path(bodyPath, {
         roughness: 2.5,
         stroke: strokeColor,
         strokeWidth: 1.5,
-        fill: strokeColor, 
+        fill: fillColor, // *** CAMBIO CLAVE: Relleno con COLOR DE FONDO ***
         fillStyle: 'solid'
     });
+    
+    // --- 2. Cabeza (Círculo) ---
+    // Posicionamos la cabeza justo encima del cuerpo.
+    const headY = bodyY - bodyHeight * 0.6; // Posición Y más alta
+    
+    rc.circle(centerX, headY, headRadius, {
+        roughness: 2.5,
+        stroke: strokeColor,
+        strokeWidth: 1.5,
+        fill: fillColor, // *** CAMBIO CLAVE: Relleno con COLOR DE FONDO ***
+        fillStyle: 'solid'
+    });
+
+    // Para el modo oscuro, si quieres que la cabeza sea un "relleno" sólido de color de tinta
+    // (o si prefieres el estilo sólido general), puedes mantener fill: strokeColor. 
+    // Sin embargo, usar fill: fillColor para la cabeza y el cuerpo garantiza que el contorno
+    // de 1.5px sea siempre visible contra el relleno.
 }
 // ------------------------------------------------------------------
 // 5. LÓGICA DE ALTERNANCIA DEL TEMA
