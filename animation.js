@@ -488,6 +488,19 @@ function animate(timestamp) {
         // 3. DIBUJAR ELEMENTOS SOBRE EL ÁREA DE CONTENIDO
         // El botón de autenticación debe ir AQUÍ, para estar SOBRE el marco principal.
         drawAuthButton(); // ⬅️ ¡Asegúrate de que esta llamada vaya aquí!
+
+        // ✅ CÓDIGO DE LA BARRA DE SCROLL SKETCHY AÑADIDO AQUÍ
+    const feedContainer = document.getElementById('feed-container');
+    let scrollbarYRatio = 0; 
+    
+    if (feedContainer) {
+        // Solo calcular si hay contenido scrollable
+        if (feedContainer.scrollHeight > feedContainer.clientHeight) {
+            scrollbarYRatio = feedContainer.scrollTop / (feedContainer.scrollHeight - feedContainer.clientHeight);
+        }
+    }
+    // Llama a la función de dibujo en animation_right.js
+    drawSketchyScrollbar(scrollbarYRatio);
     }
 }
 
@@ -598,6 +611,9 @@ function initialDraw() {
     drawSettingsButton(); // botón de configuraciones
     drawProfileButton(); // botón de perfil
     drawAuthButton(); // ⬅️ LLAMADA DIRECTA (Sin el 'if')
+    // ✅ AÑADIR LA LLAMADA AL REDIBUJO DE POSTS AQUÍ
+    if (window.redrawAllPlaceholders) {
+    redrawAllPlaceholders();
     
     // Iniciar el bucle de animación
     requestAnimationFrame(animate);
