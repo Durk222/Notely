@@ -57,7 +57,7 @@ function drawAuthButton() {
 // ------------------------------------------------------------------
 // (Las funciones futuras como drawPostFrame irán aquí)
 // ------------------------------------------------------------------
-// --- NUEVA FUNCIÓN EN animation_right.js ---
+// --- NUEVA FUNCIÓN CORREGIDA EN animation_right.js ---
 function drawSketchyScrollbar(scrollbarYRatio) {
     const canvas = document.getElementById('notelyCanvas');
     const rc = rough.canvas(canvas);
@@ -65,34 +65,38 @@ function drawSketchyScrollbar(scrollbarYRatio) {
     const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
     const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
 
+    // ✅ OBTENEMOS LAS CONSTANTES GLOBALES DE animation.js
+    const AUTH_BTN_HEIGHT = 40; 
+    const NAV_BAR_MARGIN_TOP = window.NAV_BAR_MARGIN_TOP || 20; // Usar global o default
+    const THEME_BTN_MARGIN = window.THEME_BTN_MARGIN || 20; // Usar global o default
+    
     // 1. DIMENSIONES Y POSICIÓN DEL TRACK (Contenedor de la barra)
-    const SCROLL_WIDTH = 8; // Ancho de la barra
-    const MARGIN = 20; // Margen usado en toda la app
+    const SCROLL_WIDTH = 8; 
 
-    // Altura y posición Y del track (igual que la zona de feed)
-    const trackYStart = 70; // 20 (Margin Top) + 50 (Altura Botón Auth)
-    const trackHeight = canvas.height - trackYStart - MARGIN; // Altura hasta el margen inferior
-    const trackXStart = canvas.width - MARGIN - SCROLL_WIDTH; // Lado derecho, con margen
+    // CALCULAMOS LAS POSICIONES DINÁMICAMENTE
+    // trackYStart: NAV_BAR_MARGIN_TOP (20) + AUTH_BTN_HEIGHT (40) + ESPACIO (10) = 70.
+    const trackYStart = NAV_BAR_MARGIN_TOP + AUTH_BTN_HEIGHT + 10; 
+    
+    // trackHeight: canvas.height - trackYStart - THEME_BTN_MARGIN
+    const trackHeight = canvas.height - trackYStart - THEME_BTN_MARGIN; 
+    
+    // trackXStart: canvas.width - THEME_BTN_MARGIN - SCROLL_WIDTH
+    const trackXStart = canvas.width - THEME_BTN_MARGIN - SCROLL_WIDTH; 
 
     // Dibujar el TRACK (Fondo de la barra)
     rc.rectangle(trackXStart, trackYStart, SCROLL_WIDTH, trackHeight, {
         roughness: 1.5,
         stroke: strokeColor,
         strokeWidth: 1,
-        fill: fillColor, // Color de fondo (blanco/oscuro)
+        fill: fillColor, 
         fillStyle: 'solid'
     });
 
     // 2. DIBUJO DEL THUMB (El 'pulgar' que se mueve)
-    const thumbMinHeight = 20; // Altura mínima para que sea visible
-    
-    // Asumimos un thumb que ocupa el 10% del track
+    const thumbMinHeight = 20; 
     let thumbHeight = Math.max(thumbMinHeight, trackHeight * 0.15); 
-    
-    // Aseguramos que el thumb no sea más alto que el track
     if (thumbHeight > trackHeight) thumbHeight = trackHeight;
 
-    // Calcular la posición Y del thumb (Limitado por los bordes)
     const maxThumbMovement = trackHeight - thumbHeight;
     const thumbY = trackYStart + maxThumbMovement * scrollbarYRatio;
 
@@ -101,7 +105,7 @@ function drawSketchyScrollbar(scrollbarYRatio) {
         roughness: 2.0,
         stroke: strokeColor,
         strokeWidth: 1,
-        fill: strokeColor, // Relleno con color de tinta
+        fill: strokeColor, 
         fillStyle: 'solid'
     });
 }
