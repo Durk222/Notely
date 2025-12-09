@@ -6,7 +6,7 @@
  * Dibuja el botón de "Iniciar Sesión o Crear Cuenta" en la esquina superior derecha.
  * Asume que el usuario está "desconectado" (datos de sesión = 0).
  */
-export function drawAuthButton() {
+function drawAuthButton() {
     const canvas = document.getElementById('notelyCanvas');
     const rc = rough.canvas(canvas);
     const ctx = canvas.getContext('2d'); // Necesario para dibujar texto
