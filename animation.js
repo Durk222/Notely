@@ -277,7 +277,7 @@ function drawHomeButton() {
 }
 
 // ------------------------------------------------------------------
-// 8. DIBUJO DEL BOTÓN DE AÑADIR NOTA (Hoja con +)
+// 8. DIBUJO DEL BOTÓN DE AÑADIR NOTA (Hoja con +) - POSICIÓN DINÁMICA
 // ------------------------------------------------------------------
 function drawAddNoteButton() {
     const canvas = document.getElementById('notelyCanvas');
@@ -286,19 +286,23 @@ function drawAddNoteButton() {
     const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
     const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
     
-    // Coordenadas del centro: 
-    // Este es el cuarto botón (Index 3): NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 3 + BUTTON_HEIGHT / 2
-    const centerX = THEME_BTN_MARGIN + NAV_BAR_WIDTH / 2;
-    const centerY = NAV_BAR_MARGIN_TOP + (BUTTON_HEIGHT * 3) + (BUTTON_HEIGHT / 2); 
+    // 1. Calcular el punto Y donde TERMINA el botón de Casa (Índice 2)
+    const endOfHomeButtonY = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 3;
+    
+    // 2. Calcular el punto Y donde COMIENZA el área del botón de Tema
+    const startOfThemeAreaY = canvas.height - THEME_BTN_MARGIN - THEME_BTN_SIZE - BUTTON_SPACING;
 
-    // *** NUEVO: Offset para mover el icono dentro de la celda. ***
-    const iconOffset = 50;
+    // 3. Calcular la POSICIÓN CENTRAL entre esos dos puntos
+    const centerY = (endOfHomeButtonY + startOfThemeAreaY) / 2;
+
+    const centerX = THEME_BTN_MARGIN + NAV_BAR_WIDTH / 2;
 
     const sheetWidth = 20;
     const sheetHeight = 25;
     
+    // Calculamos el inicio Y del icono usando el nuevo centerY dinámico
     const x = centerX - sheetWidth / 2;
-    const y = centerY - sheetHeight / 2 + iconOffset;
+    const y = centerY - sheetHeight / 2;
     
     // --- 1. Base de la Hoja (Rectángulo) ---
     rc.rectangle(x, y, sheetWidth, sheetHeight, {
@@ -313,16 +317,14 @@ function drawAddNoteButton() {
     const foldSize = 6;
     const foldPath = `M ${x + sheetWidth - foldSize} ${y} L ${x + sheetWidth} ${y + foldSize} L ${x + sheetWidth - foldSize} ${y + foldSize} Z`;
     
-    // Dibujar el triángulo que representa el pliegue
     rc.path(foldPath, {
         roughness: 1.5,
         stroke: strokeColor,
         strokeWidth: 1,
-        fill: fillColor, // El pliegue es del color de fondo de la hoja
+        fill: fillColor,
         fillStyle: 'solid'
     });
     
-    // Dibujar la línea de doblez interior
     rc.line(x + sheetWidth - foldSize, y, x + sheetWidth, y + foldSize, {
         roughness: 1.5,
         stroke: strokeColor,
@@ -333,7 +335,7 @@ function drawAddNoteButton() {
     const plusSize = 10;
     const plusMargin = 5;
     const plusX = x + plusMargin;
-    const plusY = y + sheetHeight - plusSize - plusMargin; // Se basa en la nueva 'y'
+    const plusY = y + sheetHeight - plusSize - plusMargin;
     
     // Línea horizontal
     rc.line(plusX, plusY + plusSize / 2, plusX + plusSize, plusY + plusSize / 2, {
