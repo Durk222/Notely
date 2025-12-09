@@ -133,3 +133,34 @@ function animateAllPlaceholders() {
 
 // ✅ Exponer la nueva función
 window.animateAllPlaceholders = animateAllPlaceholders;
+
+
+// animation_right.js (al final)
+
+function calculateScrollbarDimensions(canvasHeight) {
+    const AUTH_BTN_HEIGHT = 40; 
+    const NAV_BAR_MARGIN_TOP = window.NAV_BAR_MARGIN_TOP || 20;
+    const THEME_BTN_MARGIN = window.THEME_BTN_MARGIN || 20;
+
+    const SCROLL_WIDTH = 8; 
+
+    // CALCULAMOS LAS POSICIONES DINÁMICAMENTE
+    const trackYStart = NAV_BAR_MARGIN_TOP + AUTH_BTN_HEIGHT + 10;
+    const trackHeight = canvasHeight - trackYStart - THEME_BTN_MARGIN;
+    const trackXStart = canvasHeight - THEME_BTN_MARGIN - SCROLL_WIDTH;
+
+    // CÁLCULO DEL THUMB
+    const thumbMinHeight = 20; 
+    let thumbHeight = Math.max(thumbMinHeight, trackHeight * 0.15); 
+    if (thumbHeight > trackHeight) thumbHeight = trackHeight;
+
+    return {
+        trackYStart,
+        trackHeight,
+        trackXStart: canvasHeight - THEME_BTN_MARGIN - SCROLL_WIDTH, // Se calcula X aquí
+        thumbHeight
+    };
+}
+
+// ✅ EXPORTAR LA FUNCIÓN
+window.calculateScrollbarDimensions = calculateScrollbarDimensions;
