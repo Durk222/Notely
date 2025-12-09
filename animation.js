@@ -187,7 +187,7 @@ function drawSearchButton() {
     // --- 1. Círculo de la Lupa ---
     const circleRadius = SEARCH_ICON_SIZE;
     rc.circle(centerX, centerY - 2, circleRadius, { // -2 para centrar verticalmente mejor
-        roughness: 2.5,
+        roughness: 2,
         stroke: strokeColor,
         strokeWidth: 2,
         fill: fillColor, // La lupa debe estar hueca
@@ -206,7 +206,7 @@ function drawSearchButton() {
     const y2 = y1 + lineLength * Math.sin(Math.PI / 4);
     
     rc.line(x1, y1, x2, y2, {
-        roughness: 2.5,
+        roughness: 2,
         stroke: strokeColor,
         strokeWidth: 2
     });
