@@ -489,18 +489,20 @@ function animate(timestamp) {
         // El botón de autenticación debe ir AQUÍ, para estar SOBRE el marco principal.
         drawAuthButton(); // ⬅️ ¡Asegúrate de que esta llamada vaya aquí!
 
-        // ✅ CÓDIGO DE LA BARRA DE SCROLL SKETCHY AÑADIDO AQUÍ
+// ✅ CÓDIGO DE SCROLL SKETCHY (SE MANTIENE IGUAL)
     const feedContainer = document.getElementById('feed-container');
     let scrollbarYRatio = 0; 
     
-    if (feedContainer) {
-        // Solo calcular si hay contenido scrollable
-        if (feedContainer.scrollHeight > feedContainer.clientHeight) {
-            scrollbarYRatio = feedContainer.scrollTop / (feedContainer.scrollHeight - feedContainer.clientHeight);
-        }
+    if (feedContainer && feedContainer.scrollHeight > feedContainer.clientHeight) {
+        scrollbarYRatio = feedContainer.scrollTop / (feedContainer.scrollHeight - feedContainer.clientHeight);
     }
-    // Llama a la función de dibujo en animation_right.js
-    drawSketchyScrollbar(scrollbarYRatio);
+    drawSketchyScrollbar(scrollbarYRatio); // ⬅️ Dibuja con el ratio actualizado
+
+    // ✅ LLAMADA A LA ANIMACIÓN DE LOS POSTS (SE MANTIENE IGUAL)
+    if (window.animateAllPlaceholders) {
+        animateAllPlaceholders(); // ⬅️ Mantiene los posts "vivos"
+    }
+        //Aquí irían otros draw
     }
 }
 
@@ -611,11 +613,20 @@ function initialDraw() {
     drawSettingsButton(); // botón de configuraciones
     drawProfileButton(); // botón de perfil
     drawAuthButton(); // ⬅️ LLAMADA DIRECTA (Sin el 'if')
-    // ✅ AÑADIR LA LLAMADA CONDICIONAL AL REDIBUJO DE POSTS
-    if (window.redrawAllPlaceholders) {
-        redrawAllPlaceholders(); // Llama a la función de scroll_handler.js
-    }
 
+    // ✅ LLAMADA 1: Redibujar/Animar los posts inmediatamente
+    // Esto asegura que los posts se animen y, CRUCIALMENTE, se redibujen
+    // con el color correcto si toggleTheme() llamó a initialDraw().
+    if (window.animateAllPlaceholders) {
+        animateAllPlaceholders();
+    }
+    
+    // ✅ LLAMADA 2: Dibujar la barra de scroll en su posición inicial (ratio 0)
+    // El ratio de scroll es 0 al inicio. Esto asegura que se dibuje inmediatamente.
+    if (window.drawSketchyScrollbar) {
+        drawSketchyScrollbar(0); 
+    }
+    
     // Iniciar el bucle de animación
     requestAnimationFrame(animate);
 
