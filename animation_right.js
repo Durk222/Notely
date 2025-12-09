@@ -36,11 +36,11 @@ export function drawAuthButton() {
     // 2. Dibujar el texto (usando el contexto 2D estándar)
     const text = "Inicia Sesión o Crea una Cuenta";
 
-    // Configuración del texto
-    ctx.font = `bold 14px sans-serif`; // Usamos una fuente simple para garantizar que se vea
+    // *** LÍNEA CLAVE CORREGIDA: Usando 'Flabby Bums' ***
+    ctx.font = `bold 16px 'Flabby Bums', cursive`; 
     ctx.fillStyle = strokeColor;
-    ctx.textAlign = 'center'; // Centrar horizontalmente
-    ctx.textBaseline = 'middle'; // Centrar verticalmente
+    ctx.textAlign = 'center'; 
+    ctx.textBaseline = 'middle';
 
     // Posición del texto (centro del botón)
     const textX = x + btnWidth / 2;
