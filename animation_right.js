@@ -137,7 +137,7 @@ window.animateAllPlaceholders = animateAllPlaceholders;
 
 // animation_right.js (al final)
 
-function calculateScrollbarDimensions(canvasHeight) {
+function calculateScrollbarDimensions(canvasWidth, canvasHeight) { // ⬅️ ¡CORREGIDO!
     const AUTH_BTN_HEIGHT = 40; 
     const NAV_BAR_MARGIN_TOP = window.NAV_BAR_MARGIN_TOP || 20;
     const THEME_BTN_MARGIN = window.THEME_BTN_MARGIN || 20;
@@ -147,7 +147,8 @@ function calculateScrollbarDimensions(canvasHeight) {
     // CALCULAMOS LAS POSICIONES DINÁMICAMENTE
     const trackYStart = NAV_BAR_MARGIN_TOP + AUTH_BTN_HEIGHT + 10;
     const trackHeight = canvasHeight - trackYStart - THEME_BTN_MARGIN;
-    const trackXStart = canvasHeight - THEME_BTN_MARGIN - SCROLL_WIDTH;
+    // ✅ CORRECCIÓN CLAVE: Usar canvasWidth para calcular X
+    const trackXStart = canvasWidth - THEME_BTN_MARGIN - SCROLL_WIDTH;
 
     // CÁLCULO DEL THUMB
     const thumbMinHeight = 20; 
@@ -157,7 +158,7 @@ function calculateScrollbarDimensions(canvasHeight) {
     return {
         trackYStart,
         trackHeight,
-        trackXStart: canvasHeight - THEME_BTN_MARGIN - SCROLL_WIDTH, // Se calcula X aquí
+        trackXStart, // ⬅️ Ahora usamos la variable local calculada con canvasWidth
         thumbHeight
     };
 }
