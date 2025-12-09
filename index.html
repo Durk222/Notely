@@ -138,14 +138,27 @@
 
     /* 💡 Nueva Propiedad: Mejora la experiencia táctil */
     -webkit-overflow-scrolling: touch;
+    
+    /* 💡 SOLUCIÓN DE CENTRADO */
+    display: flex;
+    justify-content: center; /* Centra el contenido horizontalmente (los posts) */
 }
 
 /* Contenido dentro del Feed */
 #feed-scroller {
-    /* Este div contendrá los posts, su ancho es 100% del contenedor */
-    width: 100%;
+      width: auto; /* Permite que el contenido se centre */
 }
 
+        /* Ocultar la barra de scroll en Webkit (Chrome, Safari, Edge) */
+#feed-container::-webkit-scrollbar {
+    width: 0; /* Ancho de la barra */
+    height: 0; /* Altura de la barra (para scroll horizontal) */
+}
+
+/* Ocultar la barra de scroll en Firefox */
+#feed-container {
+    scrollbar-width: none; /* 'none' oculta la barra */
+}
         /* --- Flabby Bums para Títulos --- */
 @font-face {
     font-family: 'Flabby Bums'; /* Nombre que usarás para referirte a ella */
