@@ -105,3 +105,26 @@ function drawSketchyScrollbar(scrollbarYRatio) {
         fillStyle: 'solid'
     });
 }
+
+/**
+ * Redibuja todos los placeholders existentes en el feed.
+ * Se llama cuando cambia el tema (Dark/Light).
+ */
+function redrawAllPlaceholders() {
+    const placeholders = document.querySelectorAll('.post-placeholder');
+    placeholders.forEach(postDiv => {
+        // 1. Encontrar el canvas dentro del div
+        const postCanvas = postDiv.querySelector('canvas');
+        if (postCanvas) {
+            // 2. Limpiar el canvas antes de dibujar el nuevo tema
+            const ctx = postCanvas.getContext('2d');
+            ctx.clearRect(0, 0, postCanvas.width, postCanvas.height);
+            
+            // 3. Redibujar con los nuevos colores del tema
+            drawPlaceholderCanvas(postCanvas); 
+        }
+    });
+}
+
+// Exportar la función globalmente para que animation.js pueda llamarla
+window.redrawAllPlaceholders = redrawAllPlaceholders;
