@@ -352,6 +352,113 @@ function drawAddNoteButton() {
 }
 
 // ------------------------------------------------------------------
+// 9. DIBUJO DEL BOTÓN DE CONFIGURACIÓN (Engranaje)
+// ------------------------------------------------------------------
+function drawSettingsButton() {
+    const canvas = document.getElementById('notelyCanvas');
+    const rc = rough.canvas(canvas);
+
+    const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
+    const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
+    
+    // Coordenadas del centro de la CELDA: Índice 4
+    const centerX = THEME_BTN_MARGIN + NAV_BAR_WIDTH / 2;
+    // Cálculo fijo (puede ser reemplazado por cálculo dinámico si se necesita)
+    const centerY = NAV_BAR_MARGIN_TOP + (BUTTON_HEIGHT * 4) + (BUTTON_HEIGHT / 2); 
+
+    // Parámetros del Engranaje
+    const gearRadius = 13;
+    const gearInnerRadius = 5;
+    
+    // --- 1. Dibujar la Forma Externa del Engranaje (rc.path) ---
+    // Este path define una forma rudimentaria de 8 puntas. 
+    // Los puntos se calculan en base a gearRadius, rotados.
+    const pathSegments = [];
+    const numTeeth = 8;
+    
+    for (let i = 0; i < numTeeth * 2; i++) {
+        const radius = (i % 2 === 0) ? gearRadius : gearRadius * 0.7; // Alterna radio para los dientes
+        const angle = Math.PI / numTeeth * i - Math.PI / 8; // Ajuste de rotación
+        const x = centerX + radius * Math.cos(angle);
+        const y = centerY + radius * Math.sin(angle);
+        
+        if (i === 0) {
+            pathSegments.push(`M ${x} ${y}`);
+        } else {
+            pathSegments.push(`L ${x} ${y}`);
+        }
+    }
+    pathSegments.push('Z'); // Cierra el path
+    const gearPath = pathSegments.join(' ');
+
+    rc.path(gearPath, {
+        roughness: 2.5,
+        stroke: strokeColor,
+        strokeWidth: 2,
+        fill: strokeColor, // Rellenamos con el color de la tinta
+        fillStyle: 'solid'
+    });
+    
+    // --- 2. Crear el Hueco (rc.circle con fill: fillColor) ---
+    // Dibujamos un círculo central del color de fondo para simular un hueco.
+    rc.circle(centerX, centerY, gearInnerRadius, {
+        roughness: 1.5,
+        stroke: strokeColor,
+        strokeWidth: 1, // Borde para definir el hueco
+        fill: fillColor, // Relleno con el color del fondo
+        fillStyle: 'solid'
+    });
+}
+
+// ------------------------------------------------------------------
+// 10. DIBUJO DEL BOTÓN DE PERFIL (Usuario)
+// ------------------------------------------------------------------
+function drawProfileButton() {
+    const canvas = document.getElementById('notelyCanvas');
+    const rc = rough.canvas(canvas);
+
+    const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
+    const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
+    
+    // Coordenadas del centro de la CELDA: Índice 5
+    const centerX = THEME_BTN_MARGIN + NAV_BAR_WIDTH / 2;
+    // Cálculo fijo (puede ser reemplazado por cálculo dinámico si se necesita)
+    const centerY = NAV_BAR_MARGIN_TOP + (BUTTON_HEIGHT * 5) + (BUTTON_HEIGHT / 2); 
+    
+    // Parámetros del Icono
+    const headRadius = 7;
+    const bodyHeight = 10;
+    
+    // --- 1. Cabeza (Círculo) ---
+    const headY = centerY - headRadius - (bodyHeight * 0.2); // Posicionamos la cabeza un poco más arriba
+    rc.circle(centerX, headY, headRadius, {
+        roughness: 2.5,
+        stroke: strokeColor,
+        strokeWidth: 1.5,
+        fill: strokeColor, 
+        fillStyle: 'solid'
+    });
+    
+    // --- 2. Cuerpo/Hombros (Arco o Path) ---
+    // Simular un arco: un semicírculo grande y achatado que actúa como los hombros.
+    const bodyWidth = 2 * headRadius + 8; // Ancho de los hombros
+    const bodyY = headY + headRadius * 0.7; 
+    
+    // Usaremos un path para hacer una U invertida ancha
+    const bodyPath = `
+        M ${centerX - bodyWidth / 2} ${bodyY} 
+        A ${bodyWidth / 2} ${bodyHeight}, 0, 0, 1, ${centerX + bodyWidth / 2} ${bodyY}
+    `;
+    
+    rc.path(bodyPath, {
+        roughness: 2.5,
+        stroke: strokeColor,
+        strokeWidth: 1.5,
+        fill: strokeColor, 
+        fillStyle: 'solid'
+    });
+}
+// ------------------------------------------------------------------
 // 5. LÓGICA DE ALTERNANCIA DEL TEMA
 // ------------------------------------------------------------------
 function toggleTheme() {
@@ -390,6 +497,8 @@ function animate(timestamp) {
         drawSearchButton(); // La lupa
         drawHomeButton(); // El botón de casa
         drawAddNoteButton(); // añadir publicación, botón
+        drawSettingsButton(); // Botón de configuraciones
+        drawProfileButton(); // Ingresar al perfil de usuario
     }
 }
 
@@ -450,6 +559,30 @@ if (x >= buttonAddXMin && x <= buttonAddXMax && y >= buttonAddYMin && y <= butto
     // Lógica futura para crear una nueva nota:
     return;
     }
+
+    // --- 6. Detección del Botón de Configuración (Settings) (Index 4) ---
+const buttonSettingsXMin = THEME_BTN_MARGIN;
+const buttonSettingsXMax = THEME_BTN_MARGIN + NAV_BAR_WIDTH;
+// Quinto segmento de la barra:
+const buttonSettingsYMin = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 4;
+const buttonSettingsYMax = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 5;
+
+if (x >= buttonSettingsXMin && x <= buttonSettingsXMax && y >= buttonSettingsYMin && y <= buttonSettingsYMax) {
+    console.log("Clic en el botón de Configuración.");
+    return;
+}
+
+// --- 7. Detección del Botón de Perfil (Profile) (Index 5) ---
+const buttonProfileXMin = THEME_BTN_MARGIN;
+const buttonProfileXMax = THEME_BTN_MARGIN + NAV_BAR_WIDTH;
+// Sexto segmento de la barra:
+const buttonProfileYMin = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 5;
+const buttonProfileYMax = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 6;
+
+if (x >= buttonProfileXMin && x <= buttonProfileXMax && y >= buttonProfileYMin && y <= buttonProfileYMax) {
+    console.log("Clic en el botón de Perfil.");
+    return;
+}
     // NOTA: Si añades más botones en el futuro, irían aquí con su propia lógica de coordenadas.
     
 }
@@ -478,6 +611,8 @@ function initialDraw() {
     drawSearchButton();
     drawHomeButton(); // el botón de casa
     drawAddNoteButton(); // añadir nota (publicación)
+    drawSettingsButton(); // botón de configuraciones
+    drawProfileButton(); // botón de perfil
     
     // Iniciar el bucle de animación
     requestAnimationFrame(animate);
