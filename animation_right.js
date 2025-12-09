@@ -7,15 +7,19 @@
  * Asume que el usuario está "desconectado" (datos de sesión = 0).
  */
 function drawAuthButton() {
-    // ... (canvas, rc, ctx, strokeColor, fillColor)
+    // ✅ INICIALIZACIÓN DE VARIABLES LOCALES (¡CORREGIDO!)
+    const canvas = document.getElementById('notelyCanvas');
+    const rc = rough.canvas(canvas);
+    const ctx = canvas.getContext('2d');
 
-    // AHORA LAS REFERENCIAMOS DIRECTAMENTE YA QUE ESTÁN CON 'var' en animation.js
+    const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
+    const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
     
     // --- Posicionamiento y Dimensiones ---
     const btnWidth = 230; // Ancho ajustado
     const btnHeight = 40;
     
-    // Usamos las variables globales directamente:
+    // Usamos las variables globales de animation.js:
     const margin = THEME_BTN_MARGIN; 
     const navBarMarginTop = NAV_BAR_MARGIN_TOP; 
 
