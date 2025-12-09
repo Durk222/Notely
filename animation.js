@@ -6,7 +6,7 @@ const THEME_BTN_MARGIN = 20; // Margen desde la esquina inferior izquierda
 const NAV_BAR_WIDTH = THEME_BTN_SIZE; // Usaremos el mismo ancho que el botón de tema (40px)
 const NAV_BAR_MARGIN_TOP = 20; // Margen superior de la barra
 const BUTTON_SPACING = 15; // Espacio entre el fondo de la barra y el siguiente elemento (Botón de Tema)
-const BUTTON_HEIGHT = THEME_BTN_SIZE + 10; // Altura de la celda de cada botón (40 + 10 = 50px)
+const BUTTON_HEIGHT = THEME_BTN_SIZE + 25; // Altura de la celda de cada botón (40 + 10 = 50px)
 
 // --- VARIABLES PARA EL BOTÓN DE BÚSQUEDA ---
 const SEARCH_ICON_SIZE = 12; // Radio del círculo de la lupa
@@ -275,7 +275,7 @@ function drawHomeButton() {
 }
 
 // ------------------------------------------------------------------
-// 8. DIBUJO DEL BOTÓN DE AÑADIR NOTA (Hoja con +) - POSICIÓN DINÁMICA
+// 8. DIBUJO DEL BOTÓN DE AÑADIR NOTA (Hoja con +) - AHORA POSICIÓN FIJA (Índice 4)
 // ------------------------------------------------------------------
 function drawAddNoteButton() {
     const canvas = document.getElementById('notelyCanvas');
@@ -284,25 +284,18 @@ function drawAddNoteButton() {
     const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
     const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
     
-// 1. Calcular el punto Y donde TERMINA el último botón fijo (Perfil, Índice 3)
-    const endOfLastFixedButtonY = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 4;
-    
-    // 2. Calcular el punto Y donde COMIENZA el área del botón de Tema
-    const startOfThemeAreaY = canvas.height - THEME_BTN_MARGIN - THEME_BTN_SIZE - BUTTON_SPACING;
-
-    // 3. Calcular la POSICIÓN CENTRAL entre esos dos puntos
-    const centerY = (endOfLastFixedButtonY + startOfThemeAreaY) / 2;
-
+    // Coordenadas del centro de la CELDA: Índice 4 (Fijo)
     const centerX = THEME_BTN_MARGIN + NAV_BAR_WIDTH / 2;
-
+    const centerY = NAV_BAR_MARGIN_TOP + (BUTTON_HEIGHT * 4) + (BUTTON_HEIGHT / 2); // CÁLCULO FIJO
+    
     const sheetWidth = 20;
     const sheetHeight = 25;
     
-    // Calculamos el inicio Y del icono usando el nuevo centerY dinámico
     const x = centerX - sheetWidth / 2;
-    const y = centerY - sheetHeight / 2;
+    const y = centerY - sheetHeight / 2; // Simplemente centrado en el segmento
     
     // --- 1. Base de la Hoja (Rectángulo) ---
+    // ... (El resto del código de dibujo de la hoja, pliegue y '+')
     rc.rectangle(x, y, sheetWidth, sheetHeight, {
         roughness: 2,
         stroke: strokeColor,
@@ -333,22 +326,19 @@ function drawAddNoteButton() {
     const plusSize = 10;
     const plusMargin = 5;
     const plusX = x + plusMargin;
-    const plusY = y + sheetHeight - plusSize - plusMargin;
+    const plusY = y + sheetHeight - plusSize - plusMargin; 
     
-    // Línea horizontal
     rc.line(plusX, plusY + plusSize / 2, plusX + plusSize, plusY + plusSize / 2, {
         roughness: 1.5,
         stroke: strokeColor,
         strokeWidth: 2
     });
-    // Línea vertical
     rc.line(plusX + plusSize / 2, plusY, plusX + plusSize / 2, plusY + plusSize, {
         roughness: 1.5,
         stroke: strokeColor,
         strokeWidth: 2
     });
 }
-
 // ------------------------------------------------------------------
 // 9. DIBUJO DEL BOTÓN DE CONFIGURACIÓN (Engranaje)
 // ------------------------------------------------------------------
@@ -563,12 +553,12 @@ function handleCanvasClick(event) {
         return;
     }
 
-    // --- 6. Detección del Botón de Añadir Nota (Dinámico) ---
+// --- 6. Detección del Botón de Añadir Nota (Ahora Index 4) ---
     const buttonAddXMin = THEME_BTN_MARGIN;
     const buttonAddXMax = THEME_BTN_MARGIN + NAV_BAR_WIDTH;
-    // El área de clic es el espacio restante entre el último botón fijo y el área del tema.
-    const buttonAddYMin = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 4; // CORREGIDO (comienza después del Perfil)
-    const buttonAddYMax = canvas.height - THEME_BTN_MARGIN - THEME_BTN_SIZE - BUTTON_SPACING; // Fin de la barra
+    // Quinto segmento de la barra:
+    const buttonAddYMin = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 4; // CORREGIDO (Comienza después del Perfil)
+    const buttonAddYMax = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 5; // CORREGIDO
 
     if (x >= buttonAddXMin && x <= buttonAddXMax && y >= buttonAddYMin && y <= buttonAddYMax) {
         console.log("Clic en el botón de Añadir Nota.");
