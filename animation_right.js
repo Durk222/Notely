@@ -9,19 +9,20 @@
 function drawAuthButton() {
     // ... (canvas, rc, ctx, strokeColor, fillColor)
 
-    // ASUMIMOS que las variables globales son NAV_BAR_MARGIN_TOP y THEME_BTN_MARGIN
-    // Creamos copias locales para evitar errores de referencia:
-    const margin = THEME_BTN_MARGIN; 
-    const navBarMarginTop = NAV_BAR_MARGIN_TOP; // Usamos un nombre local más claro
-
+    // AHORA LAS REFERENCIAMOS DIRECTAMENTE YA QUE ESTÁN CON 'var' en animation.js
+    
     // --- Posicionamiento y Dimensiones ---
-    const btnWidth = 230; 
+    const btnWidth = 230; // Ancho ajustado
     const btnHeight = 40;
+    
+    // Usamos las variables globales directamente:
+    const margin = THEME_BTN_MARGIN; 
+    const navBarMarginTop = NAV_BAR_MARGIN_TOP; 
 
     // Calcula la posición X (desde la derecha)
     const x = canvas.width - margin - btnWidth; 
     
-    // Calcula la posición Y (desde arriba, usando la variable local)
+    // Calcula la posición Y (desde arriba)
     const y = navBarMarginTop;
 
     // 1. Dibujar el marco del botón (Rectángulo) con Rough.js
