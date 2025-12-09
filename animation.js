@@ -451,6 +451,33 @@ function drawProfileButton() {
     // Sin embargo, usar fill: fillColor para la cabeza y el cuerpo garantiza que el contorno
     // de 1.5px sea siempre visible contra el relleno.
 }
+
+
+// ------------------------------------------------------------------
+// NUEVA FUNCIÓN PARA CORREGIR EL SCALING Y ANTI-ALIASING (en animation.js)
+// ------------------------------------------------------------------
+function setupHighDPI(canvas) {
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    
+    // 1. Establecer el tamaño real de los píxeles internos (multiplicado por DPR)
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    
+    // 2. Establecer el tamaño de visualización (CSS)
+    canvas.style.width = rect.width + 'px';
+    canvas.style.height = rect.height + 'px';
+    
+    const ctx = canvas.getContext('2d');
+    
+    // 3. Escalar el contexto para que los dibujos se ajusten a la resolución de la pantalla
+    ctx.scale(dpr, dpr);
+    
+    // 4. (Opcional, pero recomendado) Ajuste para suavizado
+    ctx.imageSmoothingEnabled = true;
+}
+
+
 // ------------------------------------------------------------------
 // 5. LÓGICA DE ALTERNANCIA DEL TEMA
 // ------------------------------------------------------------------
@@ -594,6 +621,8 @@ window.addEventListener('load', initialDraw);
 // 9. INICIALIZACIÓN
 // ------------------------------------------------------------------
 function initialDraw() {
+    setupHighDPI(document.getElementById('notelyCanvas'));
+    setupHighDPI(document.getElementById('backgroundCanvas'));
     // Dibujar una vez para que Rough.js calcule la primera semilla
     drawBackgroundTexture();
     drawNotelyFrame(); 
