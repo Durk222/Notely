@@ -223,11 +223,9 @@ function drawHomeButton() {
     const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
     
     // Coordenadas del centro: 
-    // Primer botón (Search) Index 0: NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT / 2
-    // Segundo botón (Notes) Index 1: NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT + BUTTON_HEIGHT / 2
-    // Tercer botón (Home) Index 2: NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 2 + BUTTON_HEIGHT / 2
+    // Ahora es el Índice 1: NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 1 + BUTTON_HEIGHT / 2
     const centerX = THEME_BTN_MARGIN + NAV_BAR_WIDTH / 2;
-    const centerY = NAV_BAR_MARGIN_TOP + (BUTTON_HEIGHT * 2) + (BUTTON_HEIGHT / 2); 
+    const centerY = NAV_BAR_MARGIN_TOP + (BUTTON_HEIGHT * 1) + (BUTTON_HEIGHT / 2);
 
     const baseWidth = 22;
     const baseHeight = 15;
@@ -286,14 +284,14 @@ function drawAddNoteButton() {
     const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
     const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
     
-    // 1. Calcular el punto Y donde TERMINA el botón de Casa (Índice 2)
-    const endOfHomeButtonY = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 3;
+// 1. Calcular el punto Y donde TERMINA el último botón fijo (Perfil, Índice 3)
+    const endOfLastFixedButtonY = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 4;
     
     // 2. Calcular el punto Y donde COMIENZA el área del botón de Tema
     const startOfThemeAreaY = canvas.height - THEME_BTN_MARGIN - THEME_BTN_SIZE - BUTTON_SPACING;
 
     // 3. Calcular la POSICIÓN CENTRAL entre esos dos puntos
-    const centerY = (endOfHomeButtonY + startOfThemeAreaY) / 2;
+    const centerY = (endOfLastFixedButtonY + startOfThemeAreaY) / 2;
 
     const centerX = THEME_BTN_MARGIN + NAV_BAR_WIDTH / 2;
 
@@ -361,10 +359,9 @@ function drawSettingsButton() {
     const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
     const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
     
-    // Coordenadas del centro de la CELDA: Índice 4
+// Coordenadas del centro de la CELDA: Ahora es el Índice 2
     const centerX = THEME_BTN_MARGIN + NAV_BAR_WIDTH / 2;
-    // Cálculo fijo (puede ser reemplazado por cálculo dinámico si se necesita)
-    const centerY = NAV_BAR_MARGIN_TOP + (BUTTON_HEIGHT * 4) + (BUTTON_HEIGHT / 2); 
+    const centerY = NAV_BAR_MARGIN_TOP + (BUTTON_HEIGHT * 2) + (BUTTON_HEIGHT / 2); // CÁLCULO CORREGIDO
 
     // Parámetros del Engranaje
     const gearRadius = 13;
@@ -420,10 +417,9 @@ function drawProfileButton() {
     const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
     const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
     
-    // Coordenadas del centro de la CELDA: Índice 5
+// Coordenadas del centro de la CELDA: Ahora es el Índice 3
     const centerX = THEME_BTN_MARGIN + NAV_BAR_WIDTH / 2;
-    // Cálculo fijo (puede ser reemplazado por cálculo dinámico si se necesita)
-    const centerY = NAV_BAR_MARGIN_TOP + (BUTTON_HEIGHT * 5) + (BUTTON_HEIGHT / 2); 
+    const centerY = NAV_BAR_MARGIN_TOP + (BUTTON_HEIGHT * 3) + (BUTTON_HEIGHT / 2); // CÁLCULO CORREGIDO
     
     // Parámetros del Icono
     const headRadius = 7;
@@ -534,55 +530,50 @@ function handleCanvasClick(event) {
         // Por ahora no hacemos nada, solo registramos el clic.
         return;
     }
-       // --- 4. Detección del Botón de Casa (Home) (Index 2) ---
-const buttonHomeXMin = THEME_BTN_MARGIN;
-const buttonHomeXMax = THEME_BTN_MARGIN + NAV_BAR_WIDTH;
-      // Tercer segmento de la barra: 
-const buttonHomeYMin = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 2;
-const buttonHomeYMax = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 3;
+// --- 3. Detección del Botón de Casa (Home) (Index 1) ---
+    const buttonHomeXMin = THEME_BTN_MARGIN;
+    const buttonHomeXMax = THEME_BTN_MARGIN + NAV_BAR_WIDTH;
+    const buttonHomeYMin = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 1; // CORREGIDO
+    const buttonHomeYMax = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 2; // CORREGIDO
 
-if (x >= buttonHomeXMin && x <= buttonHomeXMax && y >= buttonHomeYMin && y <= buttonHomeYMax) {
-    console.log("Clic en el botón de Casa (Home).");
-    // Lógica futura para volver al inicio:
-    return;
+    if (x >= buttonHomeXMin && x <= buttonHomeXMax && y >= buttonHomeYMin && y <= buttonHomeYMax) {
+        console.log("Clic en el botón de Casa (Home).");
+        return;
     }
 
-    // --- 5. Detección del Botón de Añadir Nota (Index 3) ---
-const buttonAddXMin = THEME_BTN_MARGIN;
-const buttonAddXMax = THEME_BTN_MARGIN + NAV_BAR_WIDTH;
-// Cuarto segmento de la barra:
-const buttonAddYMin = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 3;
-const buttonAddYMax = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 4;
+    // --- 4. Detección del Botón de Configuración (Settings) (Index 2) ---
+    const buttonSettingsXMin = THEME_BTN_MARGIN;
+    const buttonSettingsXMax = THEME_BTN_MARGIN + NAV_BAR_WIDTH;
+    const buttonSettingsYMin = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 2; // CORREGIDO
+    const buttonSettingsYMax = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 3; // CORREGIDO
 
-if (x >= buttonAddXMin && x <= buttonAddXMax && y >= buttonAddYMin && y <= buttonAddYMax) {
-    console.log("Clic en el botón de Añadir Nota.");
-    // Lógica futura para crear una nueva nota:
-    return;
+    if (x >= buttonSettingsXMin && x <= buttonSettingsXMax && y >= buttonSettingsYMin && y <= buttonSettingsYMax) {
+        console.log("Clic en el botón de Configuración.");
+        return;
     }
 
-    // --- 6. Detección del Botón de Configuración (Settings) (Index 4) ---
-const buttonSettingsXMin = THEME_BTN_MARGIN;
-const buttonSettingsXMax = THEME_BTN_MARGIN + NAV_BAR_WIDTH;
-// Quinto segmento de la barra:
-const buttonSettingsYMin = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 4;
-const buttonSettingsYMax = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 5;
+    // --- 5. Detección del Botón de Perfil (Profile) (Index 3) ---
+    const buttonProfileXMin = THEME_BTN_MARGIN;
+    const buttonProfileXMax = THEME_BTN_MARGIN + NAV_BAR_WIDTH;
+    const buttonProfileYMin = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 3; // CORREGIDO
+    const buttonProfileYMax = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 4; // CORREGIDO
 
-if (x >= buttonSettingsXMin && x <= buttonSettingsXMax && y >= buttonSettingsYMin && y <= buttonSettingsYMax) {
-    console.log("Clic en el botón de Configuración.");
-    return;
-}
+    if (x >= buttonProfileXMin && x <= buttonProfileXMax && y >= buttonProfileYMin && y <= buttonProfileYMax) {
+        console.log("Clic en el botón de Perfil.");
+        return;
+    }
 
-// --- 7. Detección del Botón de Perfil (Profile) (Index 5) ---
-const buttonProfileXMin = THEME_BTN_MARGIN;
-const buttonProfileXMax = THEME_BTN_MARGIN + NAV_BAR_WIDTH;
-// Sexto segmento de la barra:
-const buttonProfileYMin = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 5;
-const buttonProfileYMax = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 6;
+    // --- 6. Detección del Botón de Añadir Nota (Dinámico) ---
+    const buttonAddXMin = THEME_BTN_MARGIN;
+    const buttonAddXMax = THEME_BTN_MARGIN + NAV_BAR_WIDTH;
+    // El área de clic es el espacio restante entre el último botón fijo y el área del tema.
+    const buttonAddYMin = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 4; // CORREGIDO (comienza después del Perfil)
+    const buttonAddYMax = canvas.height - THEME_BTN_MARGIN - THEME_BTN_SIZE - BUTTON_SPACING; // Fin de la barra
 
-if (x >= buttonProfileXMin && x <= buttonProfileXMax && y >= buttonProfileYMin && y <= buttonProfileYMax) {
-    console.log("Clic en el botón de Perfil.");
-    return;
-}
+    if (x >= buttonAddXMin && x <= buttonAddXMax && y >= buttonAddYMin && y <= buttonAddYMax) {
+        console.log("Clic en el botón de Añadir Nota.");
+        return;
+    }
     // NOTA: Si añades más botones en el futuro, irían aquí con su propia lógica de coordenadas.
     
 }
