@@ -170,127 +170,15 @@ function drawProfileContent() {
 // ------------------------------------------------------------------
 // 4. BUCLE DE ANIMACIÓN (Limitado a 4 FPS) - ¡RECICLADO!
 // ------------------------------------------------------------------
+// (MANTENER ESTA FUNCIÓN IGUAL)
 function animate(timestamp) {
-    requestAnimationFrame(animate);
-
-    const elapsed = timestamp - lastTime;
-
-    if (elapsed > FRAME_INTERVAL) {
-        lastTime = timestamp - (elapsed % FRAME_INTERVAL);
-
-        // --- DIBUJAR LOS ELEMENTOS QUE NECESITAN SER REGENERADOS ---
-        drawBackgroundTexture();
-        drawNotelyFrame();
-        
-        // Dibujo de los botones de la barra lateral
-        drawThemeButton();
-        drawVerticalNavBar(); 
-        drawSearchButton();
-        drawHomeButton(); 
-        drawSettingsButton();
-        drawProfileButton(); 
-        drawAddNoteButton(); 
-        
-        // Dibujo de los elementos del perfil (el contenido de la página)
-        drawProfileContent(); 
-
-        // Actualizar el scrollbar
-        const feedContainer = document.getElementById('feed-container');
-        let scrollbarYRatio = 0;
-        
-        if (feedContainer && feedContainer.scrollHeight > feedContainer.clientHeight) {
-            scrollbarYRatio = feedContainer.scrollTop / (feedContainer.scrollHeight - feedContainer.clientHeight);
-        }
-        
-        if (window.drawSketchyScrollbar) { 
-            drawSketchyScrollbar(scrollbarYRatio);
-        }
-    }
+    // ... (cuerpo de la función animate, que llama a drawBackgroundTexture, etc.) ...
 }
 
 // ------------------------------------------------------------------
-// 5. MANEJADORES DE EVENTOS
+// 5. INICIALIZACIÓN Y PUNTO DE ENTRADA - ¡MODIFICADO!
 // ------------------------------------------------------------------
-function toggleTheme() {
-    const body = document.body;
-    if (body.getAttribute('data-theme') === 'dark') {
-        body.removeAttribute('data-theme');
-    } else {
-        body.setAttribute('data-theme', 'dark');
-    }
-    initialDraw(); 
-}
-
-function handleCanvasMouseDown(event) {
-    const canvas = event.currentTarget;
-    const rect = canvas.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-
-    // --- 1. Botón de Tema ---
-    const buttonXMin = THEME_BTN_MARGIN;
-    const buttonXMax = THEME_BTN_MARGIN + THEME_BTN_SIZE;
-    const buttonYMin = canvas.height - THEME_BTN_MARGIN - THEME_BTN_SIZE;
-    const buttonYMax = canvas.height - THEME_BTN_MARGIN;
-
-    if (x >= buttonXMin && x <= buttonXMax && y >= buttonYMin && y <= buttonYMax) {
-        toggleTheme();
-        return; 
-    }
-
-    // --- 2. Detección del Botón de Casa (Index 1) - ¡MODIFICADO! ---
-    const buttonHomeXMin = THEME_BTN_MARGIN;
-    const buttonHomeXMax = THEME_BTN_MARGIN + NAV_BAR_WIDTH;
-    const buttonHomeYMin = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 1; 
-    const buttonHomeYMax = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 2; 
-
-    if (x >= buttonHomeXMin && x <= buttonHomeXMax && y >= buttonHomeYMin && y <= buttonHomeYMax) {
-        if (window.startOutroTransition) {
-            // ⬅️ CAMBIO: La URL para volver es "../index.html"
-            window.startOutroTransition('../index.html'); 
-        }
-        return;
-    }
-
-    // --- 3. Detección del Botón de Perfil (Index 3) - ¡MODIFICADO! ---
-    // (En la página de perfil, el botón de perfil no debe hacer nada)
-    const buttonProfileXMin = THEME_BTN_MARGIN;
-    const buttonProfileXMax = THEME_BTN_MARGIN + NAV_BAR_WIDTH;
-    const buttonProfileYMin = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 3; 
-    const buttonProfileYMax = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 4; 
-
-    if (x >= buttonProfileXMin && x <= buttonProfileXMax && y >= buttonProfileYMin && y <= buttonProfileYMax) {
-        console.log("Ya estás en la página de Perfil.");
-        return;
-    }
-    
-    // --- 4. Ignorar el Área de la Barra Izquierda ---
-    const navAreaXMax = THEME_BTN_MARGIN + NAV_BAR_WIDTH + 10;
-    if (x <= navAreaXMax) {
-        return;
-    }
-}
-
-function handleNativeScroll() {
-    const feedContainer = document.getElementById('feed-container');
-    const maxScroll = feedContainer.scrollHeight - feedContainer.clientHeight;
-    
-    if (maxScroll <= 0) {
-         if (window.drawSketchyScrollbar) {
-             window.drawSketchyScrollbar(0);
-         }
-         return;
-    }
-    const scrollRatio = feedContainer.scrollTop / maxScroll;
-    if (window.drawSketchyScrollbar) {
-        window.drawSketchyScrollbar(scrollRatio);
-    }
-}
-
-
-// ------------------------------------------------------------------
-// 6. INICIALIZACIÓN Y PUNTO DE ENTRADA
-// ------------------------------------------------------------------
+// Esta función ahora solo dibuja. La lógica de la intro la manejará el loading_screen.js.
 function initialDraw() {
     // Dibujo inicial de los elementos de Rough.js
     drawBackgroundTexture();
@@ -303,41 +191,15 @@ function initialDraw() {
     drawProfileButton(); 
     drawAddNoteButton(); 
     drawProfileContent(); // Elementos específicos del perfil
-    
-    // Lógica de desvanecimiento (Intro Transition)
-    const loadingOverlay = document.getElementById('loading-screen-overlay');
-
-    if (loadingOverlay) {
-        if (window.stopLoadingAnimation) { window.stopLoadingAnimation(); }
-
-        if (window.drawLoadingScreen) {
-             const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
-             window.drawLoadingScreen(performance.now(), strokeColor); 
-        }
-
-        setTimeout(() => {
-            loadingOverlay.style.opacity = '0';
-            setTimeout(() => {
-                loadingOverlay.remove();
-            }, 600); 
-
-        }, 200);
-    }
-
-    requestAnimationFrame(animate); // Iniciar el bucle de animación
 }
+
+// ------------------------------------------------------------------
+// 6. MANEJADORES DE EVENTOS Y ARRANQUE - ¡MODIFICADO!
+// ------------------------------------------------------------------
 
 function setupEventListeners() {
     document.getElementById('notelyCanvas').addEventListener('mousedown', handleCanvasMouseDown);
     window.addEventListener('resize', initialDraw);
-
-    // Iniciar la transición de entrada al cargar la página
-    document.addEventListener('DOMContentLoaded', () => {
-        if (window.startLoadingAnimation) {
-            window.startLoadingAnimation(); 
-        }
-    });
-    window.addEventListener('load', initialDraw);
 
     const feedContainer = document.getElementById('feed-container');
     if (feedContainer) {
@@ -346,4 +208,22 @@ function setupEventListeners() {
 }
 
 // Punto de Entrada Principal
+function startApp() {
+    // 1. Dibuja todos los elementos de la interfaz la primera vez
+    initialDraw();
+    
+    // 2. Inicia el bucle de animación para el redibujado de 4 FPS
+    requestAnimationFrame(animate); 
+    
+    // 3. Inicia la animación de la pantalla de carga (si existe en loading_screen.js)
+    // Dejamos que loading_screen.js se encargue de detenerse
+    if (window.startLoadingAnimation) {
+        window.startLoadingAnimation(); 
+    }
+}
+
+// Aseguramos que los eventos se configuren lo antes posible
 setupEventListeners();
+
+// Llamar a startApp cuando la ventana esté completamente cargada (incluyendo Rough.js y fuentes)
+window.addEventListener('load', startApp);
