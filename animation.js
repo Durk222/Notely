@@ -594,6 +594,25 @@ function handleCanvasMouseDown(event) {
     }
     // NOTA: Si añades más botones en el futuro, irían aquí con su propia lógica de coordenadas.
 
+    
+// --------------------------------------------------------
+    // ✅ PASO ADICIONAL: IGNORAR EL ÁREA DE LA BARRA IZQUIERDA
+    // --------------------------------------------------------
+    
+    // Si llegaste hasta aquí y el clic está en el área donde están los botones
+    // (pero falló la detección porque cayó entre ellos o en un margen muerto),
+    // debemos retornar para evitar la detección del Scrollbar.
+    
+    const navAreaXMin = 0; // Desde el borde izquierdo
+    const navAreaXMax = THEME_BTN_MARGIN + NAV_BAR_WIDTH + 10; // Hasta el final de la barra (+ un poco de margen)
+    
+    // Si el clic está en el área de la barra izquierda (X < 70, aproximadamente), ignóralo.
+    if (x >= navAreaXMin && x <= navAreaXMax) {
+        console.log("Clic ignorado: dentro del área de la barra de navegación inactiva.");
+        return; // Detenemos la función AQUÍ para que NO LLEGUE al Scrollbar.
+    }
+
+    
     // --- 7. Detección del Botón de Autenticación (Auth) ---
     // ...
      if (isDraggingScrollbar) {
