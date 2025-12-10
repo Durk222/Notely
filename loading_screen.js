@@ -1,7 +1,9 @@
 // ==================================================================
 // LOADING SCREEN (Pantalla de Carga Animada con Rough.js)
 // ==================================================================
-
+// Nota: Aquí se carga la imágen del logo
+const logoImage = new Image();
+logoImage.src = 'assets/notely_memeicon.png'; // El logo
 // --- CONSTANTES GLOBALES DEL LOADING ---
 const FRAME_DURATION = 1000 / 60; // 60 FPS (para la animación fluida de los puntos)
 
@@ -50,10 +52,13 @@ function drawLoadingScreen(timestamp, fadeColor = null) {
     // --- 2. CONTENEDOR DEL LOGO (Área de 150x150 px) ---
     const logoSize = 150;
     const logoY = centerY - 150; // Posicionamos el logo arriba del centro
-
-    // Nota: Aquí se dibujará tu PNG/GIF. Dejamos el espacio libre en el Canvas.
-    const logoImage = new Image();
-    logoImage.src = 'assets/notely_memeicon.png'; // El logo
+    // ✅ NUEVO: Dibuja la imagen del logo si ya ha cargado
+    if (logoImage.complete) {
+    ctx.drawImage(logoImage, logoX, logoY, logoSize, logoSize);
+    } else {
+    // Opcional: Si la imagen no ha cargado, puedes dibujar un placeholder temporal aquí.
+    // Por ejemplo, dibujar un círculo de Rough.js.
+    }
     
     // --- 3. ANIMACIÓN DE LOS PUNTOS DE CARGA (ELLIPSIS) ---
     const dotCenterY = centerY + 20; // Un poco abajo del centro
