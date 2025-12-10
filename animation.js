@@ -543,10 +543,15 @@ function handleCanvasMouseDown(event) {
     const buttonHomeYMin = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 1; // CORREGIDO
     const buttonHomeYMax = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 2; // CORREGIDO
 
-    if (x >= buttonHomeXMin && x <= buttonHomeXMax && y >= buttonHomeYMin && y <= buttonHomeYMax) {
-        console.log("Clic en el botón de Casa (Home).");
-        return;
+if (x >= buttonHomeXMin && x <= buttonHomeXMax && y >= buttonHomeYMin && y <= buttonHomeYMax) {
+    console.log("Clic en el botón de Casa (Home).");
+    if (window.startOutroTransition) {
+        // Si ya estamos en la página principal, simplemente recargar.
+        // Si estuviéramos en perfil_user, la URL sería "../index.html"
+        window.startOutroTransition('index.html'); 
     }
+    return;
+}
 
     // --- 4. Detección del Botón de Configuración (Settings) (Index 2) ---
     const buttonSettingsXMin = THEME_BTN_MARGIN;
@@ -565,10 +570,14 @@ function handleCanvasMouseDown(event) {
     const buttonProfileYMin = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 3; // CORREGIDO
     const buttonProfileYMax = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 4; // CORREGIDO
 
-    if (x >= buttonProfileXMin && x <= buttonProfileXMax && y >= buttonProfileYMin && y <= buttonProfileYMax) {
-        console.log("Clic en el botón de Perfil.");
-        return;
+if (x >= buttonProfileXMin && x <= buttonProfileXMax && y >= buttonProfileYMin && y <= buttonProfileYMax) {
+    console.log("Clic en el botón de Perfil.");
+    if (window.startOutroTransition) {
+        // Navegar a la nueva carpeta
+        window.startOutroTransition('profile_user/profile.html'); 
     }
+    return;
+}
 
 // --- 6. Detección del Botón de Añadir Nota (Ahora Index 4) ---
     const buttonAddXMin = THEME_BTN_MARGIN;
