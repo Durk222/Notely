@@ -52,6 +52,8 @@ function drawLoadingScreen(timestamp, fadeColor = null) {
     const logoY = centerY - 150; // Posicionamos el logo arriba del centro
 
     // Nota: Aquí se dibujará tu PNG/GIF. Dejamos el espacio libre en el Canvas.
+    const logoImage = new Image();
+    logoImage.src = 'assets/notely_memeicon.png'; // El logo
     
     // --- 3. ANIMACIÓN DE LOS PUNTOS DE CARGA (ELLIPSIS) ---
     const dotCenterY = centerY + 20; // Un poco abajo del centro
