@@ -88,6 +88,8 @@
             margin: 1vh auto;
             position: relative;
             z-index: 1;
+            /* ✅ Asegúrate de que este contenedor NO tenga un background-color */
+            background-color: transparent !important;
         }
 
         /* El Canvas que dibuja el borde */
@@ -108,6 +110,8 @@
             padding: 15px; 
             overflow: hidden; 
             pointer-events: none; 
+            /* ✅ Asegúrate de que este contenedor NO tenga un background-color */
+            background-color: transparent !important;
         }
 
     /* Contenedor del Scroll del Feed - MODIFICADO para Perfil */
