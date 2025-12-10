@@ -646,12 +646,14 @@ window.addEventListener('load', initialDraw);
 
     const notelyCanvas = document.getElementById('notelyCanvas');
 
+    // 💥 CORRECCIÓN CRÍTICA: MOUSEMOVE y MOUSEUP deben ser GLOBALES.
+
     // 1. INICIA el arrastre con MOUSEMOVE (para mover la barra)
-    notelyCanvas.addEventListener('mousemove', handleCanvasMove);
+    // Se mueve al DOCUMENT para que funcione el drag incluso fuera del canvas.
+    document.addEventListener('mousemove', handleCanvasMove); // ⬅️ ¡CAMBIADO A 'document'!
     
     // 2. DETIENE el arrastre con MOUSEUP (para soltar la barra)
-    notelyCanvas.addEventListener('mouseup', handleCanvasStopDrag);
-    // **IMPORTANTE**: También escuchamos mouseup en el documento por si suelta fuera del canvas
+    // Ya lo tenías en el 'document', lo dejamos solo en uno para evitar redundancia.
     document.addEventListener('mouseup', handleCanvasStopDrag);
 }
 
