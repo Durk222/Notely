@@ -44,7 +44,7 @@ function drawBackgroundTexture() {
 }
 
 // ------------------------------------------------------------------
-// 2. DIBUJO DEL MARCO PRINCIPAL (Relleno Sólido) - ¡MODIFICADO!
+// 2. DIBUJO DEL MARCO PRINCIPAL (Relleno Sólido) - ¡CORREGIDO!
 // ------------------------------------------------------------------
 function drawNotelyFrame() {
     const canvas = document.getElementById('notelyCanvas');
@@ -54,21 +54,36 @@ function drawNotelyFrame() {
     const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
     
     const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height); 
     
     canvas.width = container.clientWidth;
     canvas.height = container.clientHeight;
+    
+    // 💡 PASO 2a: Limpiar el Canvas Completo (de 0,0 a width, height)
+    // Esto asegura que cualquier rastro anterior de Rough.js sea eliminado.
+    ctx.clearRect(0, 0, canvas.width, canvas.height); 
 
     const rc = rough.canvas(canvas);
     
-    rc.rectangle(5, 5, canvas.width - 10, canvas.height - 10, {
-        roughness: 2.8, 
-        stroke: strokeColor, 
-        strokeWidth: 6, // ⬅️ CAMBIO: Doble de grosor (2)
-        bowing: 6,      // ⬅️ CAMBIO: Más tembloroso (6)
-        fill: fillColor, 
-        fillStyle: 'solid' 
-    });
+    // Definimos el margen interior para el dibujo del marco (seguridad > bowing de 6)
+    const MARGIN_SAFETY = 8; 
+    
+    // 💡 PASO 2b: Dibujar el rectángulo con el margen de seguridad
+    // Hacemos el rectángulo MÁS PEQUEÑO para que el efecto 'bowing: 6' no
+    // se salga de los límites visibles del contenedor.
+    rc.rectangle(
+        MARGIN_SAFETY, 
+        MARGIN_SAFETY, 
+        canvas.width - 2 * MARGIN_SAFETY, // Reducir el ancho
+        canvas.height - 2 * MARGIN_SAFETY, // Reducir la altura
+        {
+            roughness: 2.8, 
+            stroke: strokeColor, 
+            strokeWidth: 6, 
+            bowing: 6, // Máximo desbordamiento ~6px
+            fill: fillColor, 
+            fillStyle: 'solid' 
+        }
+    );
 }
 
 // --- FUNCIONES DE DIBUJO DE BOTONES (Copias sin cambios internos, solo para dibujar) ---
