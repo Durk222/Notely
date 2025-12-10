@@ -199,6 +199,7 @@ function animate(timestamp) {
     drawNotelyFrame();
     
     // DIBUJAR TODOS LOS BOTONES Y ELEMENTOS DE LA INTERFAZ
+    drawBackgroundTexture();
     drawThemeButton();
     drawVerticalNavBar();
     drawSearchButton();
@@ -218,7 +219,7 @@ function animate(timestamp) {
 // Esta función ahora solo dibuja. La lógica de la intro la manejará el loading_screen.js.
 function initialDraw() {
     // Dibujo inicial de los elementos de Rough.js
-    drawBackgroundTexture();
+    //drawBackgroundTexture();
     drawNotelyFrame();
     drawThemeButton();
     drawVerticalNavBar();
