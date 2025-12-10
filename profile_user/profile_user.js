@@ -235,8 +235,8 @@ function drawProfileContent() {
 // ------------------------------------------------------------------
 // 11. DIBUJO DE LA BARRA DE SCROLL (Rough.js Sketchy) - ¡COMPLETA!
 // ------------------------------------------------------------------
-var SCROLL_BAR_WIDTH = 5;
-var SCROLL_BAR_MARGIN = 5;
+var SCROLL_BAR_WIDTH = 10;
+var SCROLL_BAR_MARGIN = 12;
 
 function drawSketchyScrollbar(scrollRatio) {
     const canvas = document.getElementById('notelyCanvas');
@@ -256,8 +256,9 @@ function drawSketchyScrollbar(scrollRatio) {
     const contentYEnd = canvas.height - THEME_BTN_MARGIN - THEME_BTN_SIZE - BUTTON_SPACING;
     const contentHeight = contentYEnd - contentYStart;
     
-    // Posición X (borde derecho, margen interior del marco)
-    const x = canvas.width - SCROLL_BAR_MARGIN - SCROLL_BAR_WIDTH - FRAME_MARGIN; // - FRAME_MARGIN para alinearse al marco
+    // Posición X
+    const FRAME_MARGIN = MARGIN;
+    const x = canvas.width - SCROLL_BAR_MARGIN - SCROLL_BAR_WIDTH - FRAME_MARGIN;
 
     // --- 1. Dibujar el TRACK (Fondo de la barra) ---
     const trackHeight = contentHeight;
