@@ -258,7 +258,7 @@ function drawSketchyScrollbar(scrollRatio) {
     
     //      Altura y margen del área de contenido (donde debe ir el scroll)
     //      COMIENZO: Debajo del Botón de Autenticación (20px + 40px + 5px de margen)
-    const contentYStart = navBarMarginTop + btnHeight + MARGIN; // 20 + 40 + 5 = 65px    
+    const contentYStart = navBarMarginTop + btnHeight + MARGIN + 10; // 20 + 40 + 5 + 10 = 75px    
     // FIN: Hasta antes del botón de tema
     const contentYEnd = canvas.height - THEME_BTN_MARGIN - THEME_BTN_SIZE - BUTTON_SPACING;
     const contentHeight = contentYEnd - contentYStart;
