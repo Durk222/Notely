@@ -47,6 +47,25 @@
             --color-fg: var(--color-light-ecru); 
             --theme-mode: dark;
         }
+ /* ==========================================================
+   Ajuste del color de selección de texto (::selection)
+   Esto asegura que el color de selección invierta los colores del tema.
+   ========================================================== */
+
+    /* Aplica el estilo a toda la página */
+    ::selection {
+    /* El color de fondo (el cuadro de resaltado) será el color de la tinta. */
+    background-color: var(--color-fg); 
+    
+    /* El color del texto seleccionado será el color del papel. */
+    color: var(--color-bg); 
+       }
+
+/* Para compatibilidad con algunos navegadores antiguos (especialmente Firefox) */
+    ::-moz-selection {
+    background-color: var(--color-fg); 
+    color: var(--color-bg); 
+       }
         /* ---------------------------------------------------- */
         /* 2. ESTILOS GLOBALES BÁSICOS Y LIENZO */
         /* ---------------------------------------------------- */
