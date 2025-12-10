@@ -20,12 +20,6 @@ let lastTime = 0;
 var ICON_SIZE = 30; // Tamaño del ícono Sol/Luna
 var ICON_MARGIN = 20; // Margen desde la esquina inferior izquierda
 
-// --- NUEVAS VARIABLES PARA EL DRAG DE SCROLLBAR ---
-let isDraggingScrollbar = false;
-let scrollbarYStart = 0; // Posición Y del inicio del track
-let scrollbarTrackHeight = 0; // Altura total del track
-let scrollbarThumbHeight = 0; // Altura calculada del thumb
-
 // ------------------------------------------------------------------
 // 1. DIBUJO DEL FONDO (Textura)
 // ------------------------------------------------------------------
@@ -591,11 +585,8 @@ function handleCanvasMouseDown(event) {
     if (x >= buttonAddXMin && x <= buttonAddXMax && y >= buttonAddYMin && y <= buttonAddYMax) {
         console.log("Clic en el botón de Añadir Nota.");
         return;
-    }
-    // NOTA: Si añades más botones en el futuro, irían aquí con su propia lógica de coordenadas.
-
-    
-// --------------------------------------------------------
+    }    
+    // --------------------------------------------------------
     // ✅ PASO ADICIONAL: IGNORAR EL ÁREA DE LA BARRA IZQUIERDA
     // --------------------------------------------------------
     
@@ -611,112 +602,54 @@ function handleCanvasMouseDown(event) {
         console.log("Clic ignorado: dentro del área de la barra de navegación inactiva.");
         return; // Detenemos la función AQUÍ para que NO LLEGUE al Scrollbar.
     }
-
-    
-    // --- 7. Detección del Botón de Autenticación (Auth) ---
-    // ...
-     if (isDraggingScrollbar) {
-        event.preventDefault(); 
-    }
-
-// --- 8. Detección y Lógica de Scrollbar (AL FINAL) ---
-// ➡️ CORRECCIÓN CRÍTICA: Añadir verificación de existencia de la función.
-if (!window.calculateScrollbarDimensions) {
-    console.warn("calculateScrollbarDimensions no está cargado.");
-    return;
 }
-const dims = window.calculateScrollbarDimensions(canvas.width, canvas.height); // ⬅️ ¡CORREGIDO!
-
-const scrollbarXMin = dims.trackXStart - 3;
-const scrollbarXMax = dims.trackXStart + 8 + 3; // trackXStart + SCROLL_WIDTH
-const scrollbarYMin = dims.trackYStart;
-const scrollbarYMax = dims.trackYStart + dims.trackHeight;
-
-console.log(`Mouse X: ${x}, Y: ${y}`);
-console.log(`Scrollbar X: ${scrollbarXMin}-${scrollbarXMax}, Y: ${scrollbarYMin}-${scrollbarYMax}`);
+// ------------------------------------------------------------------
+// 8B. MANEJADOR DE SCROLL NATIVO (NUEVO)
+// ------------------------------------------------------------------
+function handleNativeScroll() {
+    const feedContainer = document.getElementById('feed-container');
     
-if (x >= scrollbarXMin && x <= scrollbarXMax && y >= scrollbarYMin && y <= scrollbarYMax) {
-    isDraggingScrollbar = true;
-    event.preventDefault();
-    // Almacenar las dimensiones críticas globalmente
-    scrollbarYStart      = dims.trackYStart;
-    scrollbarTrackHeight = dims.trackHeight;
-    scrollbarThumbHeight = dims.thumbHeight;
-
-    // Llamar al manejador de movimiento inmediatamente para empezar a arrastrar
-    handleCanvasMove(event); 
+    // Solo proceder si el scroll es posible
+    const maxScroll = feedContainer.scrollHeight - feedContainer.clientHeight;
     
-    // Devolver el foco al cuerpo para escuchar mouseup en cualquier lugar
-    document.body.style.userSelect = 'none';
-    return;
+    if (maxScroll <= 0) {
+        // No hay scroll, el ratio es 0. 
+        if (window.drawSketchyScrollbar) {
+             window.drawSketchyScrollbar(0);
+        }
+        return;
     }
+
+    // Calcula la proporción de scroll nativa (0.0 a 1.0)
+    const scrollRatio = feedContainer.scrollTop / maxScroll;
     
+    // Llama a la función de dibujo del sketchy scrollbar con el ratio real
+    if (window.drawSketchyScrollbar) {
+        window.drawSketchyScrollbar(scrollRatio);
+    }
 }
 // ------------------------------------------------------------------
 // 8. CONFIGURACIÓN DE EVENTOS (Se ejecuta UNA SOLA VEZ)
 // ------------------------------------------------------------------
 function setupEventListeners() {
-document.getElementById('notelyCanvas').addEventListener('mousedown', handleCanvasMouseDown);
+    // 1. Detección de clic en el canvas para botones interactivos (Tema, Nav)
+    document.getElementById('notelyCanvas').addEventListener('mousedown', handleCanvasMouseDown);
 
-// Escuchar evento de redimensionamiento (opcional, pero buena práctica)
-window.addEventListener('resize', initialDraw);
+    // 2. Escuchar evento de redimensionamiento
+    window.addEventListener('resize', initialDraw);
 
-// Escuchar evento de carga de página para iniciar el dibujo y la animación
-window.addEventListener('load', initialDraw);
+    // 3. Escuchar evento de carga de página para iniciar el dibujo y la animación
+    window.addEventListener('load', initialDraw);
 
     const notelyCanvas = document.getElementById('notelyCanvas');
 
-    // 💥 CORRECCIÓN CRÍTICA: MOUSEMOVE y MOUSEUP deben ser GLOBALES.
-
-    // 1. INICIA el arrastre con MOUSEMOVE (para mover la barra)
-    // Se mueve al DOCUMENT para que funcione el drag incluso fuera del canvas.
-    document.addEventListener('mousemove', handleCanvasMove); // ⬅️ ¡CAMBIADO A 'document'!
-    
-    // 2. DETIENE el arrastre con MOUSEUP (para soltar la barra)
-    // Ya lo tenías en el 'document', lo dejamos solo en uno para evitar redundancia.
-    document.addEventListener('mouseup', handleCanvasStopDrag);
-}
-
-// animation.js (Nuevas funciones)
-
-function handleCanvasMove(event) {
-    if (!isDraggingScrollbar) return;
-
-    // Posición Y del ratón relativa al Canvas
-    const canvas = document.getElementById('notelyCanvas');
-    const rect = canvas.getBoundingClientRect();
-    const mouseY = event.clientY - rect.top;
-
+// 4. 👂 LISTENER CRÍTICO: Escuchar el scroll nativo del contenedor de posts
     const feedContainer = document.getElementById('feed-container');
-
-    // 1. Calcular la posición del THUMB (centro del thumb)
-    let thumbCenterY = mouseY;
-    let thumbTopY = thumbCenterY - scrollbarThumbHeight / 2;
-    
-    // 2. Limitar la posición dentro del TRACK
-    const maxThumbMovement = scrollbarTrackHeight - scrollbarThumbHeight;
-
-    // Clamp: Asegurarse de que thumbTopY esté entre trackYStart y trackYStart + maxThumbMovement
-    thumbTopY = Math.max(scrollbarYStart, Math.min(thumbTopY, scrollbarYStart + maxThumbMovement));
-
-    // 3. Calcular el Ratio de Scroll
-    const currentMovement = thumbTopY - scrollbarYStart;
-    const newRatio = currentMovement / maxThumbMovement;
-    
-    // 4. Aplicar el Scroll al Contenedor Nativo
-    const maxScroll = feedContainer.scrollHeight - feedContainer.clientHeight;
-    feedContainer.scrollTop = maxScroll * newRatio;
-    
-    // Forzar redibujado inmediato (para que no haya lag visual)
-    initialDraw(); 
+    if (feedContainer) {
+        // Ejecutamos la función de manejo del scroll
+        feedContainer.addEventListener('scroll', handleNativeScroll); 
+    }
 }
-
-function handleCanvasStopDrag() {
-    isDraggingScrollbar = false;
-    document.body.style.userSelect = 'auto'; // Restaurar la selección de texto
-}
-
-
 // ------------------------------------------------------------------
 // 9. INICIALIZACIÓN
 // ------------------------------------------------------------------
@@ -731,19 +664,22 @@ function initialDraw() {
     drawAddNoteButton(); // añadir nota (publicación)
     drawSettingsButton(); // botón de configuraciones
     drawProfileButton(); // botón de perfil
-    drawAuthButton(); // ⬅️ LLAMADA DIRECTA (Sin el 'if')
-
-    // ✅ LLAMADA 1: Redibujar/Animar los posts inmediatamente
-    // Esto asegura que los posts se animen y, CRUCIALMENTE, se redibujen
-    // con el color correcto si toggleTheme() llamó a initialDraw().
-    if (window.animateAllPlaceholders) {
-        animateAllPlaceholders();
-    }
+    drawAuthButton(); // Botón de autentificación
     
-    // ✅ LLAMADA 2: Dibujar la barra de scroll en su posición inicial (ratio 0)
-    // El ratio de scroll es 0 al inicio. Esto asegura que se dibuje inmediatamente.
-    if (window.drawSketchyScrollbar) {
-        drawSketchyScrollbar(0); 
+    // ✅ CÓDIGO DE SCROLL SKETCHY (SIMPLIFICADO)
+    // Ya no necesitamos calcular el ratio aquí. Solo aseguramos que se redibuje.
+    
+    const feedContainer = document.getElementById('feed-container');
+    
+    if (feedContainer && window.drawSketchyScrollbar) {
+        // Recalculamos el ratio solo para el redibujado de 4 FPS (para animar el roughness)
+        let scrollbarYRatio = 0; 
+        const maxScroll = feedContainer.scrollHeight - feedContainer.clientHeight;
+
+        if (maxScroll > 0) {
+            scrollbarYRatio = feedContainer.scrollTop / maxScroll;
+        }
+        drawSketchyScrollbar(scrollbarYRatio); // ⬅️ Dibuja con el ratio actualizado
     }
     
     // Iniciar el bucle de animación
