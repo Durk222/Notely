@@ -52,13 +52,17 @@ function drawLoadingScreen(timestamp, fadeColor = null) {
     // --- 2. CONTENEDOR DEL LOGO (Área de 150x150 px) ---
     const logoSize = 150;
     const logoY = centerY - 150; // Posicionamos el logo arriba del centro
-    // ✅ NUEVO: Dibuja la imagen del logo si ya ha cargado
-    if (logoImage.complete) {
+    
+// ✅ LÍNEA CORREGIDA: Definir logoX (centrado horizontalmente)
+const logoX = centerX - logoSize / 2; 
+
+// ✅ NUEVO: Dibuja la imagen del logo si ya ha cargado
+if (logoImage.complete) {
     ctx.drawImage(logoImage, logoX, logoY, logoSize, logoSize);
-    } else {
+} else {
     // Opcional: Si la imagen no ha cargado, puedes dibujar un placeholder temporal aquí.
     // Por ejemplo, dibujar un círculo de Rough.js.
-    }
+}
     
     // --- 3. ANIMACIÓN DE LOS PUNTOS DE CARGA (ELLIPSIS) ---
     const dotCenterY = centerY + 20; // Un poco abajo del centro
