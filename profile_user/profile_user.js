@@ -42,48 +42,64 @@ function drawBackgroundTexture() {
         fillStyle: 'cross-hatch' // ⬅️ CAMBIO: Nueva textura de fondo
     });
 }
-
 // ------------------------------------------------------------------
-// 2. DIBUJO DEL MARCO PRINCIPAL (Relleno Sólido) - ¡CORREGIDO!
+// 2. DIBUJO DEL MARCO PRINCIPAL (Relleno Sólido) - ¡CORREGIDO Y REFORZADO!
 // ------------------------------------------------------------------
 function drawNotelyFrame() {
     // 💡 PASO 1: Inicialización de variables
-    const canvas = document.getElementById('notelyCanvas');
-    const container = document.getElementById('frame-container');
+    const canvas = document.getElementById('notelyCanvas');
+    const container = document.getElementById('frame-container');
 
-    const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
-    const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
+    const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
+    const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
     
-    // 💡 PASO 2: Obtener el contexto 2D (ctx) y ajustar el tamaño del canvas
-    const ctx = canvas.getContext('2d');
-    
-    canvas.width = container.clientWidth;
-    canvas.height = container.clientHeight;
-    
-    // 💡 PASO 3: Limpiar el Canvas Completo (Línea 53 ahora es segura)
-    ctx.clearRect(0, 0, canvas.width, canvas.height); 
+    // 💡 PASO 2: Obtener el contexto 2D (ctx) y ajustar el tamaño del canvas
+    const ctx = canvas.getContext('2d');
+    
+    canvas.width = container.clientWidth;
+    canvas.height = container.clientHeight;
+    
+    // 💡 PASO 3: Limpiar el Canvas Completo
+    ctx.clearRect(0, 0, canvas.width, canvas.height); 
 
-    const rc = rough.canvas(canvas);
-    
-    // Usamos el margen interior de 5px (como en la original)
-    const MARGIN = 5; 
-    
-    rc.rectangle(
-        MARGIN, 
-        MARGIN, 
-        canvas.width - 2 * MARGIN, 
-        canvas.height - 2 * MARGIN, 
-        {
-            roughness: 2.8, 
-            stroke: strokeColor, 
-            strokeWidth: 6, 
-            bowing: 6, 
-            fill: fillColor, 
-            fillStyle: 'solid' 
-        }
-    );
+    const rc = rough.canvas(canvas);
+    
+    // Usamos el margen interior de 5px (como en la original)
+    const MARGIN = 5; 
+    
+    // --- 1. CAPA INFERIOR: Relleno anti-bowing (Ligeramente más grande y menos rugoso) ---
+    const ANTI_BOWING_OFFSET = 8; // Mover 8px más allá del límite para asegurar cobertura
+
+    rc.rectangle(
+        MARGIN - ANTI_BOWING_OFFSET,  // Más a la izquierda
+        MARGIN - ANTI_BOWING_OFFSET,  // Más arriba
+        canvas.width - 2 * MARGIN + 2 * ANTI_BOWING_OFFSET, // Más ancho
+        canvas.height - 2 * MARGIN + 2 * ANTI_BOWING_OFFSET, // Más alto
+        {
+            // Baja rugosidad para parecer más sólido y limpio
+            roughness: 0.5, 
+            strokeWidth: 0, // Sin borde, solo relleno
+            fill: fillColor, 
+            fillStyle: 'solid'
+        }
+    );
+
+    // --- 2. CAPA SUPERIOR: El Marco Principal (Con Alto Bowing y Roughness) ---
+    rc.rectangle(
+        MARGIN, 
+        MARGIN, 
+        canvas.width - 2 * MARGIN, 
+        canvas.height - 2 * MARGIN, 
+        {
+            roughness: 2.8, 
+            stroke: strokeColor, 
+            strokeWidth: 6, 
+            bowing: 6, // Alto bowing para el efecto "arrugado"
+            fill: fillColor, 
+            fillStyle: 'solid' 
+        }
+    );
 }
-
 // --- FUNCIONES DE DIBUJO DE BOTONES (Copias sin cambios internos, solo para dibujar) ---
 
 function drawThemeButton() {
