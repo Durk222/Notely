@@ -178,7 +178,6 @@ function drawProfileContent() {
 
     // Añadir el código específico del dibujo de tu perfil aquí.
 }
-
 // ------------------------------------------------------------------
 // 3B. DIBUJO DE LA BARRA DE SCROLL (Rough.js Sketchy) - ¡NUEVO!
 // ------------------------------------------------------------------
@@ -187,47 +186,54 @@ var SCROLL_BAR_MARGIN = 5;
 
 // El ratio (0.0 a 1.0) indica la posición actual del scroll.
 function drawSketchyScrollbar(scrollRatio) {
-    const canvas = document.getElementById('notelyCanvas');
-    const rc = rough.canvas(canvas);
+    const canvas = document.getElementById('notelyCanvas');
+    const rc = rough.canvas(canvas);
 
-    const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
-    
-    // Altura y margen del área de contenido (donde debe ir el scroll)
-    const contentYStart = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 5 + BUTTON_SPACING;
-    const contentYEnd = canvas.height - THEME_BTN_MARGIN - THEME_BTN_SIZE - BUTTON_SPACING;
-    const contentHeight = contentYEnd - contentYStart;
-    
-    // Posición X (borde derecho, margen interior)
-    const x = canvas.width - SCROLL_BAR_MARGIN - SCROLL_BAR_WIDTH;
-    
-    // --- 1. Calcular el tamaño y posición del "pulgar" (thumb) ---
-    // Usamos una altura mínima o un porcentaje de la altura de contenido.
-    // Aquí usamos una altura fija para simplificar, o podrías calcularla en base al ratio.
-    const thumbMinHeight = 40; 
-    
-    // Para simplificar la posición, asumiremos que el track completo es el área de contenido
-    const trackHeight = contentHeight;
-    const thumbHeight = Math.max(thumbMinHeight, trackHeight * 0.1); // Altura mínima de 40px o 10%
-    
-    // La posición superior del pulgar se calcula con el ratio
-    const yMaxTravel = trackHeight - thumbHeight;
-    const y = contentYStart + (yMaxTravel * scrollRatio);
+    const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
+    const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim(); // ⬅️ Nuevo: Obtenemos el color de fondo
+    
+    // Altura y margen del área de contenido (donde debe ir el scroll)
+    const contentYStart = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 5 + BUTTON_SPACING;
+    const contentYEnd = canvas.height - THEME_BTN_MARGIN - THEME_BTN_SIZE - BUTTON_SPACING;
+    const contentHeight = contentYEnd - contentYStart;
+    
+    // Posición X (borde derecho, margen interior)
+    const x = canvas.width - SCROLL_BAR_MARGIN - SCROLL_BAR_WIDTH;
+    
+    // --- 1. Dibujar el TRACK (Fondo de la barra) ---
+    // Se dibuja como un rectángulo hueco o con un color de fondo sutil.
+    const trackHeight = contentHeight;
+    const trackY = contentYStart;
+    
+    rc.rectangle(x, trackY, SCROLL_BAR_WIDTH, trackHeight, {
+        roughness: 1.5,
+        stroke: strokeColor,
+        strokeWidth: 1, // Borde fino para el track
+        fill: fillColor, // Relleno con el color de fondo para que sea visible
+        fillStyle: 'solid'
+    });
+    
+    // --- 2. Calcular el tamaño y posición del "pulgar" (thumb) ---
+    const thumbMinHeight = 40; 
+    const thumbHeight = Math.max(thumbMinHeight, trackHeight * 0.1); 
+    
+    // La posición superior del pulgar se calcula con el ratio
+    const yMaxTravel = trackHeight - thumbHeight;
+    const y = contentYStart + (yMaxTravel * scrollRatio);
 
-    // Si no hay suficiente contenido para scroll, no dibujamos la barra.
-    if (trackHeight < thumbMinHeight * 2) { 
-        // Normalmente, si no hay scroll, no lo dibujamos.
-        // Pero lo dejamos vacío aquí para que no se dibuje sobre la zona.
-        return;
-    }
-    
-    // --- 2. Dibujar el Pulgar (Rough.js Rectangle) ---
-    rc.rectangle(x, y, SCROLL_BAR_WIDTH, thumbHeight, {
-        roughness: 1.5,
-        stroke: strokeColor,
-        strokeWidth: 2,
-        fill: strokeColor, // Color de la tinta
-        fillStyle: 'solid'
-    });
+    // Si no hay suficiente contenido para scroll, no dibujamos el pulgar.
+    if (trackHeight < thumbMinHeight * 2) { 
+        return;
+    }
+    
+    // --- 3. Dibujar el Pulgar (Rough.js Rectangle) ---
+    rc.rectangle(x, y, SCROLL_BAR_WIDTH, thumbHeight, {
+        roughness: 1.5,
+        stroke: strokeColor,
+        strokeWidth: 2,
+        fill: strokeColor, // Color de la tinta
+        fillStyle: 'solid'
+    });
 }
 // ------------------------------------------------------------------
 // 8B. MANEJADOR DE SCROLL NATIVO (NUEVO)
