@@ -250,7 +250,7 @@ function drawSketchyScrollbar(scrollRatio) {
     
     // Altura y margen del área de contenido (donde debe ir el scroll)
     // Usamos la variable global MARGIN para el margen del marco.
-    const contentYStart = FRAME_MARGIN;
+    const contentYStart = MARGIN;
     // Hasta antes del botón de tema
     const contentYEnd = canvas.height - THEME_BTN_MARGIN - THEME_BTN_SIZE - BUTTON_SPACING;
     const contentHeight = contentYEnd - contentYStart;
@@ -258,8 +258,8 @@ function drawSketchyScrollbar(scrollRatio) {
     // Posición X (borde derecho, margen interior del marco)
     // Utilizamos el MARGIN global (5) y los nuevos valores de SCROLL_BAR_WIDTH (10)
     // SCROLL_BAR_MARGIN ahora es el espacio visible entre el marco y la barra.
-    const x = canvas.width - SCROLL_BAR_MARGIN - SCROLL_BAR_WIDTH - MARGIN;
-
+    const x = canvas.width - SCROLL_BAR_MARGIN - SCROLL_BAR_WIDTH - MARGIN;
+    
     // --- 1. Dibujar el TRACK (Fondo de la barra) ---
     const trackHeight = contentHeight;
     const trackY = contentYStart;
