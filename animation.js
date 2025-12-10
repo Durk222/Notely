@@ -590,6 +590,13 @@ if (x >= buttonProfileXMin && x <= buttonProfileXMax && y >= buttonProfileYMin &
         console.log("Clic en el botón de Añadir Nota.");
         return;
     }    
+    // ***************************************************************
+    // ✅ PUNTO DE INTEGRACIÓN: LLAMADA AL MANEJADOR ESPECÍFICO DE PERFIL
+    // ***************************************************************
+    // Si la función de perfil existe y maneja el clic, detenemos el proceso (return).
+    if (window.handleProfilePageClicks && window.handleProfilePageClicks(x, y, canvas)) {
+    return;
+    }
     // --------------------------------------------------------
     // ✅ PASO ADICIONAL: IGNORAR EL ÁREA DE LA BARRA IZQUIERDA
     // --------------------------------------------------------
