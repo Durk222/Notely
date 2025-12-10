@@ -634,7 +634,16 @@ function setupEventListeners() {
     window.addEventListener('resize', initialDraw);
 
     // 3. Escuchar evento de carga de página para iniciar el dibujo y la animación
-    window.addEventListener('load', initialDraw);
+    //window.addEventListener('load', initialDraw);
+    
+    // NUEVO: Usamos DOMContentLoaded para asegurar que el loading screen esté activo antes de cargar JS
+    document.addEventListener('DOMContentLoaded', () => {
+        if (window.startLoadingAnimation) {
+            window.startLoadingAnimation(); // Inicia la animación de los puntos inmediatamente
+        }
+    });
+
+    window.addEventListener('load', initialDraw); // initialDraw ahora solo se encarga de iniciar el ciclo de la app
 
     const notelyCanvas = document.getElementById('notelyCanvas');
 
@@ -679,6 +688,37 @@ function initialDraw() {
     
     // Iniciar el bucle de animación
     requestAnimationFrame(animate);
+
+    // ==========================================================
+    // ✅ GESTIÓN DE LA DESAPARICIÓN DE LA PANTALLA DE CARGA
+    // ==========================================================
+    const loadingOverlay = document.getElementById('loading-screen-overlay');
+
+    if (loadingOverlay) {
+        // 1. Detener la animación de los puntos (para ahorrar recursos)
+        if (window.stopLoadingAnimation) {
+            window.stopLoadingAnimation();
+        }
+
+        // 2. Efecto Flash Blanco (Poner la capa en el color de tinta por 200ms)
+        // Llama a drawLoadingScreen con fadeColor para simular el flash.
+        if (window.drawLoadingScreen) {
+            const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
+            window.drawLoadingScreen(performance.now(), strokeColor); 
+        }
+
+        setTimeout(() => {
+            // 3. Iniciar el desvanecimiento gradual (cambiando la opacidad CSS)
+            loadingOverlay.style.opacity = '0';
+
+            // 4. Eliminar del DOM después de que termine la transición (500ms + 100ms extra)
+            setTimeout(() => {
+                loadingOverlay.remove();
+                // Opcional: Liberar la memoria del canvas si es necesario
+            }, 600); 
+
+        }, 200); // Duración del "flash"
+    }
 
 }
 
