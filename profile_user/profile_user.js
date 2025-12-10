@@ -260,6 +260,22 @@ function setupEventListeners() {
 function startApp() {
     // 1. Dibuja todos los elementos de la interfaz la primera vez
     initialDraw();
+
+    // 💡 SOLUCIÓN RÁPIDA PARA ANULAR EL FEED
+    const feedContainer = document.getElementById('feed-container');
+    const profileContent = document.getElementById('profile-content');
+    
+    if (feedContainer && profileContent) {
+        // 1. Guarda el contenido del perfil (lo saca del DOM, pero mantiene el elemento)
+        const profileContentElement = feedContainer.removeChild(profileContent);
+        
+        // 2. Limpia el contenedor (esto elimina cualquier post inyectado por otro script)
+        feedContainer.innerHTML = '';
+        
+        // 3. Reinserta solo el contenido del perfil
+        feedContainer.appendChild(profileContentElement);
+    }
+    // FIN DE SOLUCIÓN RÁPIDA
     
     // 2. Inicia el bucle de animación para el redibujado de 4 FPS
     requestAnimationFrame(animate); 
