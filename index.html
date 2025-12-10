@@ -163,17 +163,20 @@
     scrollbar-width: none; /* 'none' oculta la barra */
 }
 /* LA PANTALLA DE CARGA */
+/* 🚀 NUEVAS REGLAS: Loading Screen Overlay */
 #loading-screen-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 1000; /* Asegura que esté por encima de todo */
-    background-color: var(--color-bg); /* Fondo sólido */
+    z-index: 1000; /* CLAVE: Por encima de todo */
+    background-color: var(--color-bg); /* Color de fondo sólido */
+    opacity: 1; /* Comienza visible */
     transition: opacity 0.5s ease-out; /* Para el desvanecimiento final */
 }
 #loadingCanvas {
+    /* Toma el 100% de su contenedor */
     width: 100%;
     height: 100%;
 }
@@ -226,11 +229,16 @@
                 </div>
         </div>
     </div>
-<div id="loading-screen-overlay">
-    <canvas id="loadingCanvas"></canvas>
-</div>
 <script src="animation.js"></script> 
 <script src="animation_right.js"></script>
 <script src="scroll_handler.js"></script>
+<script src="animation.js"></script>
+    
+        <script src="animation_right.js"></script>
+        <script src="scroll_handler.js"></script>
+        <script src="loading_screen.js"></script> 
+        <div id="loading-screen-overlay">
+        <canvas id="loadingCanvas"></canvas>
+    </div>
 </body>
 </html>
