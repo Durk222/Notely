@@ -604,7 +604,7 @@ function handleCanvasMouseDown(event) {
 // ➡️ CORRECCIÓN CRÍTICA: Añadir verificación de existencia de la función.
 if (!window.calculateScrollbarDimensions) {
     console.warn("calculateScrollbarDimensions no está cargado.");
-    return; // Evitar el crash si animation_right.js no se ha cargado.
+    return;
 }
 const dims = window.calculateScrollbarDimensions(canvas.width, canvas.height); // ⬅️ ¡CORREGIDO!
 
@@ -613,6 +613,9 @@ const scrollbarXMax = dims.trackXStart + 8; // trackXStart + SCROLL_WIDTH
 const scrollbarYMin = dims.trackYStart;
 const scrollbarYMax = dims.trackYStart + dims.trackHeight;
 
+console.log(`Mouse X: ${x}, Y: ${y}`);
+console.log(`Scrollbar X: ${scrollbarXMin}-${scrollbarXMax}, Y: ${scrollbarYMin}-${scrollbarYMax}`);
+    
 if (x >= scrollbarXMin && x <= scrollbarXMax && y >= scrollbarYMin && y <= scrollbarYMax) {
     isDraggingScrollbar = true;
     
