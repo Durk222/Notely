@@ -614,11 +614,12 @@ const scrollbarYMin = dims.trackYStart;
 const scrollbarYMax = dims.trackYStart + dims.trackHeight;
 
 if (x >= scrollbarXMin && x <= scrollbarXMax && y >= scrollbarYMin && y <= scrollbarYMax) {
-    // Si se hace clic en el área de la barra de scroll
     isDraggingScrollbar = true;
     
+    // 🚨 SI NO HACES ESTO, EL BROWSER PUEDE CANCELAR EL DRAG
+    event.preventDefault();
     // Almacenar las dimensiones críticas globalmente
-    scrollbarYStart = dims.trackYStart;
+    scrollbarYStart      = dims.trackYStart;
     scrollbarTrackHeight = dims.trackHeight;
     scrollbarThumbHeight = dims.thumbHeight;
 
@@ -626,7 +627,8 @@ if (x >= scrollbarXMin && x <= scrollbarXMax && y >= scrollbarYMin && y <= scrol
     handleCanvasMove(event); 
     
     // Devolver el foco al cuerpo para escuchar mouseup en cualquier lugar
-    document.body.style.userSelect = 'none'; // Previene la selección de texto
+    document.body.style.userSelect = 'none';
+    return;
     }
     
 }
