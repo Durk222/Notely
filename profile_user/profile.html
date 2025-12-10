@@ -110,23 +110,36 @@
             pointer-events: none; 
         }
 
-        /* Contenedor del Scroll del Feed */
-        #feed-container {
-            position: absolute;
-            /* Estos valores son CLAVE y dependen de las variables JS (40+20=60, etc.) */
-            top: 70px; 
-            left: 80px; 
-            
-            width: calc(100% - 80px - 20px); 
-            height: calc(100% - 70px - 20px); 
-            
-            overflow-y: scroll; 
-            pointer-events: auto; /* Permite que el feed reciba clics/scroll */
-            
-            -webkit-overflow-scrolling: touch;
-            
-            display: flex;
-            justify-content: center; /* Centra el contenido horizontalmente */
+    /* Contenedor del Scroll del Feed - MODIFICADO para Perfil */
+    #feed-container {
+    position: absolute;
+    top: 70px; 
+    left: 80px; 
+    
+    width: calc(100% - 80px - 20px); 
+    height: calc(100% - 70px - 20px); 
+    
+    overflow-y: scroll; /* ⬅️ CLAVE: Mantiene el scroll */
+    pointer-events: auto; 
+    
+    -webkit-overflow-scrolling: touch;
+    
+    /* ❌ ELIMINAR O MODIFICAR ESTO para evitar centrado forzado del perfil */
+    /* display: flex; */
+    /* justify-content: center; */
+    
+           /* Opcional: Si quieres que el perfil empiece a la izquierda */
+          display: block; /* Vuelve al flujo normal */
+          padding-right: 15px; /* Añade un poco de espacio si no usas feed-scroller */
+         }
+
+        /* Contenido dentro del Feed - MODIFICADO */
+        #profile-content {
+        /* Permitir que el contenido ocupe el ancho disponible */
+        width: 100%; 
+        max-width: 800px; /* Puedes añadir un ancho máximo para centrar el contenido */
+        margin: 0 auto; /* Y centrarlo si usas max-width */
+        padding-top: 10px; /* Pequeño margen superior */
         }
 
         /* Contenido dentro del Feed */
