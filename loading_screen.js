@@ -4,6 +4,10 @@
 // Nota: Aquí se carga la imágen del logo
 const logoImage = new Image();
 logoImage.src = 'assets/notely_memeicon.png'; // El logo
+logoImage.onload = () => {
+    // La imagen está lista.
+    // Aquí podrías disparar la animación
+};
 // --- CONSTANTES GLOBALES DEL LOADING ---
 const FRAME_DURATION = 1000 / 60; // 60 FPS (para la animación fluida de los puntos)
 
