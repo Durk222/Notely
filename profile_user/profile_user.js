@@ -44,46 +44,33 @@ function drawBackgroundTexture() {
 }
 
 // ------------------------------------------------------------------
-// 2. DIBUJO DEL MARCO PRINCIPAL (Relleno Sólido) - ¡CORREGIDO!
+// 2. DIBUJO DEL MARCO PRINCIPAL (Relleno Sólido) - ¡FINAL!
 // ------------------------------------------------------------------
 function drawNotelyFrame() {
-    const canvas = document.getElementById('notelyCanvas');
-    const container = document.getElementById('frame-container');
+    // ... código de variables y context ...
+    
+    // ...
+    ctx.clearRect(0, 0, canvas.width, canvas.height); 
 
-    const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
-    const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
-    
-    const ctx = canvas.getContext('2d');
-    
-    canvas.width = container.clientWidth;
-    canvas.height = container.clientHeight;
-    
-    // 💡 PASO 2a: Limpiar el Canvas Completo (de 0,0 a width, height)
-    // Esto asegura que cualquier rastro anterior de Rough.js sea eliminado.
-    ctx.clearRect(0, 0, canvas.width, canvas.height); 
-
-    const rc = rough.canvas(canvas);
-    
-    // Definimos el margen interior para el dibujo del marco (seguridad > bowing de 6)
-    const MARGIN_SAFETY = 8; 
-    
-    // 💡 PASO 2b: Dibujar el rectángulo con el margen de seguridad
-    // Hacemos el rectángulo MÁS PEQUEÑO para que el efecto 'bowing: 6' no
-    // se salga de los límites visibles del contenedor.
-    rc.rectangle(
-        MARGIN_SAFETY, 
-        MARGIN_SAFETY, 
-        canvas.width - 2 * MARGIN_SAFETY, // Reducir el ancho
-        canvas.height - 2 * MARGIN_SAFETY, // Reducir la altura
-        {
-            roughness: 2.8, 
-            stroke: strokeColor, 
-            strokeWidth: 6, 
-            bowing: 6, // Máximo desbordamiento ~6px
-            fill: fillColor, 
-            fillStyle: 'solid' 
-        }
-    );
+    const rc = rough.canvas(canvas);
+    
+    // ✅ Eliminar MARGIN_SAFETY y usar un margen interior de 5px (como en la original)
+    const MARGIN = 5; 
+    
+    rc.rectangle(
+        MARGIN, 
+        MARGIN, 
+        canvas.width - 2 * MARGIN, // Reducir el ancho
+        canvas.height - 2 * MARGIN, // Reducir la altura
+        {
+            roughness: 2.8, 
+            stroke: strokeColor, 
+            strokeWidth: 6, 
+            bowing: 6, 
+            fill: fillColor, 
+            fillStyle: 'solid' 
+        }
+    );
 }
 
 // --- FUNCIONES DE DIBUJO DE BOTONES (Copias sin cambios internos, solo para dibujar) ---
