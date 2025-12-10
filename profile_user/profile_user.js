@@ -445,27 +445,47 @@ function drawAuthButton() { // <-- ¡Esta es la función de animation_right.js!
  * @returns {boolean} True si se manejó un clic, False si no.
  */
 function handleProfilePageClicks(x, y, canvas) {
-    // --- 1. Coordenadas y detección del botón de Estado de Sesión (Candado/Índice 5) ---
+    // ------------------------------------------------------------------
+    // A. DETECCIÓN DEL BOTÓN GRANDE DE AUTENTICACIÓN (Superior Derecha)
+    // ------------------------------------------------------------------
+    // Dimensiones recicladas de drawAuthButton() (Sección 12)
+    const btnWidth = 230; 
+    const btnHeight = 40;
+    const margin = THEME_BTN_MARGIN; 
+    const navBarMarginTop = NAV_BAR_MARGIN_TOP; 
+
+    // Replicar el cálculo de la posición:
+    const buttonAuthXMin = canvas.width - margin - btnWidth; 
+    const buttonAuthXMax = canvas.width - margin; 
+    const buttonAuthYMin = navBarMarginTop;
+    const buttonAuthYMax = navBarMarginTop + btnHeight;
+
+    if (x >= buttonAuthXMin && x <= buttonAuthXMax && y >= buttonAuthYMin && y <= buttonAuthYMax) {
+        console.log("Clic en el Botón GRANDE de Autenticación.");
+        // Lógica futura para iniciar el proceso de login/registro
+        return true; 
+    }
+
+    // ------------------------------------------------------------------
+    // B. DETECCIÓN DEL BOTÓN DE ESTADO DE SESIÓN (Candado/Índice 5 en barra lateral)
+    // ------------------------------------------------------------------
     const buttonSessionXMin = THEME_BTN_MARGIN;
     const buttonSessionXMax = THEME_BTN_MARGIN + NAV_BAR_WIDTH;
-    // Sexto segmento de la barra:
+    // Sexto segmento de la barra (Índice 5):
     const buttonSessionYMin = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 5; 
     const buttonSessionYMax = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 6; 
 
     if (x >= buttonSessionXMin && x <= buttonSessionXMax && y >= buttonSessionYMin && y <= buttonSessionYMax) {
-        console.log("Clic en el botón de Estado de Sesión.");
+        console.log("Clic en el botón de Estado de Sesión (Candado).");
         // Lógica de acción aquí (e.g., window.toggleSessionModal())
-        return true; // ¡Importante! Devuelve true para detener la detección
+        return true; 
     }
-    
-    // Si tienes más botones nuevos en la página de perfil, añádelos aquí
-    // ...
     
     // Si el clic no coincide con ningún botón de perfil
     return false;
 }
 
-// Hacemos la función disponible globalmente para que animation.js pueda llamarla.
+// MANTENEMOS ESTO:
 window.handleProfilePageClicks = handleProfilePageClicks;
 // ------------------------------------------------------------------
 // 4. BUCLE DE ANIMACIÓN (Limitado a 4 FPS) - ¡RECICLADO COMPLETO!
