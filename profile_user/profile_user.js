@@ -315,11 +315,9 @@ function animate(timestamp) {
     // 3. Solicitar el próximo frame
     requestAnimationFrame(animate);
 }
-
 // ------------------------------------------------------------------
-// 5. INICIALIZACIÓN Y PUNTO DE ENTRADA - ¡MODIFICADO!
+// 5. INICIALIZACIÓN Y PUNTO DE ENTRADA - ¡CORREGIDO EL CIERRE DE CARGA!
 // ------------------------------------------------------------------
-// Esta función ahora solo dibuja. La lógica de la intro la manejará el loading_screen.js.
 function initialDraw() {
     // Dibujo inicial de los elementos de Rough.js
     drawBackgroundTexture();
@@ -332,8 +330,68 @@ function initialDraw() {
     drawProfileButton(); 
     drawAddNoteButton(); 
     drawProfileContent(); // Elementos específicos del perfil
+    
+    // Aquí iría el dibujo inicial del scrollbar si es necesario
+    const feedContainer = document.getElementById('feed-container');
+    let scrollbarYRatio = 0;
+    if (feedContainer && feedContainer.scrollHeight > feedContainer.clientHeight) {
+        scrollbarYRatio = feedContainer.scrollTop / (feedContainer.scrollHeight - feedContainer.clientHeight);
+    }
+    drawSketchyScrollbar(scrollbarYRatio);
 }
 
+// Punto de Entrada Principal
+function startApp() {
+    // 1. Dibuja todos los elementos de la interfaz la primera vez (para tener tamaños correctos)
+    initialDraw();
+
+    // 💡 SOLUCIÓN RÁPIDA PARA ANULAR EL FEED (SE MANTIENE)
+    const feedContainer = document.getElementById('feed-container');
+    const profileContent = document.getElementById('profile-content');
+    
+    if (feedContainer && profileContent) {
+        const profileContentElement = feedContainer.removeChild(profileContent);
+        feedContainer.innerHTML = '';
+        feedContainer.appendChild(profileContentElement);
+    }
+    // FIN DE SOLUCIÓN RÁPIDA
+
+    // 2. Inicia el bucle de animación para el redibujado de 4 FPS
+    requestAnimationFrame(animate); 
+
+    // ==========================================================
+    // ✅ GESTIÓN DE LA DESAPARICIÓN DE LA PANTALLA DE CARGA (Añadido)
+    // ==========================================================
+    const loadingOverlay = document.getElementById('loading-screen-overlay');
+
+    if (loadingOverlay) {
+        // 1. Detener la animación de los puntos
+        if (window.stopLoadingAnimation) {
+            window.stopLoadingAnimation();
+        }
+
+        // 2. Efecto Flash Blanco (Llama a drawLoadingScreen con color de tinta por 200ms)
+        if (window.drawLoadingScreen) {
+            const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
+            window.drawLoadingScreen(performance.now(), strokeColor); 
+        }
+
+        setTimeout(() => {
+            // 3. Iniciar el desvanecimiento gradual (cambiando la opacidad CSS)
+            loadingOverlay.style.opacity = '0';
+
+            // 4. Eliminar del DOM después de que termine la transición (600ms total)
+            setTimeout(() => {
+                loadingOverlay.remove();
+            }, 600); 
+
+        }, 200); // Duración del "flash"
+    } else {
+        // Si no hay pantalla de carga, solo iniciamos la animación de la app
+        // (Aunque ya se inició arriba, esto es un fallback)
+        // requestAnimationFrame(animate); // Ya llamado, se deja solo la lógica de carga
+    }
+}
 // ------------------------------------------------------------------
 // 6. MANEJADORES DE EVENTOS Y ARRANQUE - ¡MODIFICADO!
 // ------------------------------------------------------------------
