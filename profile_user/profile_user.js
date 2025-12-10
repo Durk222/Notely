@@ -19,7 +19,7 @@ var SEARCH_ICON_SIZE = 12;
 // Configuraciones para la animación de 4 FPS
 var FPS = 4;
 var FRAME_INTERVAL = 1000 / FPS; 
-let lastTime = 0;
+lastTime = 0;
 // ------------------------------------------------------------------
 // 1. DIBUJO DEL FONDO (Textura) - ¡MODIFICADO!
 // ------------------------------------------------------------------
