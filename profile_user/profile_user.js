@@ -358,7 +358,7 @@ function drawSessionStateButton() { // <-- ¡Nuevo nombre de función!
     
     // --- 1. Cuerpo del Candado (Rectángulo) ---
     rc.rectangle(x, y, lockWidth, lockHeight, {
-        roughness: 2,
+        roughness: 1,
         stroke: strokeColor,
         strokeWidth: 2,
         fill: strokeColor, // Relleno sólido
@@ -373,7 +373,7 @@ function drawSessionStateButton() { // <-- ¡Nuevo nombre de función!
     // Dibujamos un círculo con el color de fondo para 'vaciar' el asa.
     // Esto crea un efecto de medio círculo hueco.
     rc.arc(arcX, arcY, handleRadius, handleRadius, Math.PI, 2 * Math.PI, false, {
-        roughness: 2.5,
+        roughness: 1.5,
         stroke: strokeColor,
         strokeWidth: 2.5, // Más grueso para cubrir el fondo
         fill: fillColor, // Relleno con el color de fondo para que se vea hueco
