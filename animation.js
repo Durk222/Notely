@@ -608,8 +608,8 @@ if (!window.calculateScrollbarDimensions) {
 }
 const dims = window.calculateScrollbarDimensions(canvas.width, canvas.height); // ⬅️ ¡CORREGIDO!
 
-const scrollbarXMin = dims.trackXStart;
-const scrollbarXMax = dims.trackXStart + 8; // trackXStart + SCROLL_WIDTH
+const scrollbarXMin = dims.trackXStart - 3;
+const scrollbarXMax = dims.trackXStart + 8 + 3; // trackXStart + SCROLL_WIDTH
 const scrollbarYMin = dims.trackYStart;
 const scrollbarYMax = dims.trackYStart + dims.trackHeight;
 
@@ -618,8 +618,6 @@ console.log(`Scrollbar X: ${scrollbarXMin}-${scrollbarXMax}, Y: ${scrollbarYMin}
     
 if (x >= scrollbarXMin && x <= scrollbarXMax && y >= scrollbarYMin && y <= scrollbarYMax) {
     isDraggingScrollbar = true;
-    
-    // 🚨 SI NO HACES ESTO, EL BROWSER PUEDE CANCELAR EL DRAG
     event.preventDefault();
     // Almacenar las dimensiones críticas globalmente
     scrollbarYStart      = dims.trackYStart;
