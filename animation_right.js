@@ -148,8 +148,12 @@ function calculateScrollbarDimensions(canvasWidth, canvasHeight) { // ⬅️ ¡C
 
     // CALCULAMOS LAS POSICIONES DINÁMICAMENTE
     const trackYStart = NAV_BAR_MARGIN_TOP + AUTH_BTN_HEIGHT + 10;
+    
+    // 💥 REVISIÓN CLAVE: Asegurarnos de que el track termina antes del margen inferior.
+    // Altura total del canvas - trackYStart (todo lo de arriba) - THEME_BTN_MARGIN (margen inferior).
     const trackHeight = canvasHeight - trackYStart - THEME_BTN_MARGIN;
-    // ✅ CORRECCIÓN CLAVE: Usar canvasWidth para calcular X
+    
+    // ✅ VERIFICACIÓN: El cálculo de X es correcto para el borde derecho.
     const trackXStart = canvasWidth - THEME_BTN_MARGIN - SCROLL_WIDTH;
 
     // CÁLCULO DEL THUMB
