@@ -19,6 +19,10 @@ var SEARCH_ICON_SIZE = 12;
 // Configuraciones para la animación de 4 FPS
 var FPS = 4;
 var FRAME_INTERVAL = 1000 / FPS; 
+
+// --- VARIABLES GLOBALES DEL MARCO Y ANIMACIÓN ---
+var MARGIN = 5; // ⬅️ AÑADIDO: Margen interior estándar de 5px.
+var lastTime = 0; // ⬅️ CORREGIDO: Usar 'var' para evitar el error de re-declaración con 'let' de otro archivo.
 // ------------------------------------------------------------------
 // 1. DIBUJO DEL FONDO (Textura) - ¡MODIFICADO!
 // ------------------------------------------------------------------
@@ -63,9 +67,6 @@ function drawNotelyFrame() {
     ctx.clearRect(0, 0, canvas.width, canvas.height); 
 
     const rc = rough.canvas(canvas);
-    
-    // Usamos el margen interior de 5px (como en la original)
-    const MARGIN = 5; 
     
     // --- 1. CAPA INFERIOR: Relleno anti-bowing (Ligeramente más grande y menos rugoso) ---
     const ANTI_BOWING_OFFSET = 8; // Mover 8px más allá del límite para asegurar cobertura
