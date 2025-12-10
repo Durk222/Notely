@@ -128,8 +128,54 @@ function stopLoadingAnimation() {
     }
 }
 
+/**
+ * Gestiona la transición de salida de la página (Outro).
+ * La pantalla se llena gradualmente con el color de fondo y luego navega.
+ * @param {string} targetUrl - URL a la que se debe navegar.
+ */
+function startOutroTransition(targetUrl) {
+    const body = document.body;
+    const overlay = document.getElementById('loading-screen-overlay');
 
+    if (!overlay) {
+        // En caso de que el overlay haya sido eliminado, navegamos directamente
+        window.location.href = targetUrl;
+        return;
+    }
+
+    // 1. Aplicar el tema actual al overlay para la transición
+    const currentTheme = body.getAttribute('data-theme') || 'light';
+    body.setAttribute('data-theme', currentTheme);
+
+    // 2. Insertar el overlay si fue removido (para la transición de salida)
+    if (!document.body.contains(overlay)) {
+         document.body.appendChild(overlay);
+    }
+    
+    // Forzar el overlay a estar completamente visible (opacidad 1)
+    overlay.style.opacity = '1';
+    
+    // Opcional: Asegurar que el fondo del overlay coincida con el tema actual.
+    overlay.style.backgroundColor = getComputedStyle(body).getPropertyValue('--color-bg').trim();
+
+    // 3. Simular un ligero "flash" del color de tinta antes del fade out
+    if (window.drawLoadingScreen) {
+        const strokeColor = getComputedStyle(body).getPropertyValue('--color-fg').trim();
+        window.drawLoadingScreen(performance.now(), strokeColor); 
+    }
+
+    // 4. Esperar un momento (200ms) para el "flash" y luego navegar.
+    setTimeout(() => {
+        // La navegación abrupta produce el efecto de "relleno sólido" instantáneo.
+        window.location.href = targetUrl; 
+    }, 200); 
+    
+    // Nota: El efecto de "fade gradual" al cargar la NUEVA página se logra
+    // gracias a la propiedad CSS 'transition: opacity 0.5s'
+    // que se activa en la página de destino (el intro transition).
+}
 // EXPORTACIONES GLOBALES
 window.drawLoadingScreen = drawLoadingScreen;
 window.startLoadingAnimation = startLoadingAnimation;
 window.stopLoadingAnimation = stopLoadingAnimation;
+window.startOutroTransition = startOutroTransition;
