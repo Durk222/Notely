@@ -44,29 +44,40 @@ function drawBackgroundTexture() {
 }
 
 // ------------------------------------------------------------------
-// 2. DIBUJO DEL MARCO PRINCIPAL (Relleno Sólido) - ¡FINAL!
+// 2. DIBUJO DEL MARCO PRINCIPAL (Relleno Sólido) - ¡CORREGIDO!
 // ------------------------------------------------------------------
 function drawNotelyFrame() {
-    // ... código de variables y context ...
+    // 💡 PASO 1: Inicialización de variables
+    const canvas = document.getElementById('notelyCanvas');
+    const container = document.getElementById('frame-container');
+
+    const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
+    const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
     
-    // ...
+    // 💡 PASO 2: Obtener el contexto 2D (ctx) y ajustar el tamaño del canvas
+    const ctx = canvas.getContext('2d');
+    
+    canvas.width = container.clientWidth;
+    canvas.height = container.clientHeight;
+    
+    // 💡 PASO 3: Limpiar el Canvas Completo (Línea 53 ahora es segura)
     ctx.clearRect(0, 0, canvas.width, canvas.height); 
 
     const rc = rough.canvas(canvas);
     
-    // ✅ Eliminar MARGIN_SAFETY y usar un margen interior de 5px (como en la original)
-    const MARGIN = 5; 
+    // Usamos el margen interior de 5px (como en la original)
+    const MARGIN = 5; 
     
     rc.rectangle(
         MARGIN, 
         MARGIN, 
-        canvas.width - 2 * MARGIN, // Reducir el ancho
-        canvas.height - 2 * MARGIN, // Reducir la altura
+        canvas.width - 2 * MARGIN, 
+        canvas.height - 2 * MARGIN, 
         {
             roughness: 2.8, 
             stroke: strokeColor, 
             strokeWidth: 6, 
-            bowing: 6, 
+            bowing: 6, 
             fill: fillColor, 
             fillStyle: 'solid' 
         }
