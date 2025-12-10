@@ -609,7 +609,7 @@ if (!window.calculateScrollbarDimensions) {
 const dims = window.calculateScrollbarDimensions(canvas.width, canvas.height); // ⬅️ ¡CORREGIDO!
 
 const scrollbarXMin = dims.trackXStart;
-const scrollbarXMax = dims.trackXStart + 8; // trackXStart + SCROLL_WIDTH
+const scrollbarXMax = dims.trackXStart + 8 + 5; // trackXStart + SCROLL_WIDTH
 const scrollbarYMin = dims.trackYStart;
 const scrollbarYMax = dims.trackYStart + dims.trackHeight;
 
