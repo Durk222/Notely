@@ -169,30 +169,68 @@ function drawSettingsButton() { /* ... Código del botón de Configuración ... 
 function drawAddNoteButton() { /* ... Código del botón de Añadir Nota ... */ }
 function drawProfileButton() { /* ... Código del botón de Perfil ... */ }
 // Agrega aquí todas las funciones de dibujo de botones (copia de animation.js)
-
 // ------------------------------------------------------------------
-// 3. DIBUJO DE CONTENIDO ESPECÍFICO DEL PERFIL (NUEVO)
+// 3. DIBUJO DE CONTENIDO ESPECÍFICO DEL PERFIL (NUEVO Y CORREGIDO)
 // ------------------------------------------------------------------
 function drawProfileContent() {
-    // NOTA: Aquí iría el dibujo Rough.js de los elementos visuales del perfil
-    // (Ejemplo: un avatar, una línea divisoria, un marcador de posts)
-    
     const canvas = document.getElementById('notelyCanvas');
     const rc = rough.canvas(canvas);
     const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
     
-    const centerX = canvas.width / 2;
-    const containerTop = document.getElementById('frame-container').offsetTop;
-    const contentYStart = containerTop + NAV_BAR_MARGIN_TOP;
+    const container = document.getElementById('frame-container');
+    const profileContent = document.getElementById('profile-content');
     
-    // Ejemplo: Dibujar un separador horizontal debajo de donde iría la info de usuario
-    rc.line(centerX - 150, contentYStart + 100, centerX + 150, contentYStart + 100, {
-        roughness: 1.5,
-        stroke: strokeColor,
-        strokeWidth: 2
-    });
+    // Si no existe el contenido o el contenedor, salimos.
+    if (!profileContent || !container) {
+        return;
+    }
+    
+    // --- 1. Calcular Centro Horizontal (Centrado) ---
+    // Posición X inicial del área de dibujo del contenido (después de la barra de navegación)
+    const contentXStart = NAV_BAR_WIDTH + 2 * THEME_BTN_MARGIN; 
+    const contentWidth = container.clientWidth - contentXStart - 2 * MARGIN; // Ancho del marco menos el margen derecho
 
-    // Añadir el código específico del dibujo de tu perfil aquí.
+    // Centro real del contenido
+    const centerX = contentXStart + contentWidth / 2;
+    
+    // --- 2. Calcular Posición Vertical (Debajo del Texto) ---
+    // top: Posición vertical desde el borde superior del 'notelyCanvas'
+    // profileContent.offsetHeight: Altura del contenido HTML visible.
+    // profileContent.offsetTop: La posición vertical del contenido dentro de 'feed-container',
+    //                         PERO ESTE VALOR ES RELATIVO A 'feed-container'.
+    
+    // Para obtener la posición en el canvas, usamos la posición del contenedor de frame 
+    // MÁS la posición del contenido dentro de él.
+    // Dado que profile-content está dentro de feed-container (que se scrollea), usamos:
+    // profileContent.offsetTop + profileContent.offsetHeight: Posición Y ABSOLUTA del fondo del elemento HTML.
+    
+    // Usamos el contenedor del marco como referencia para el Top.
+    const containerTop = container.offsetTop; // Posición Y donde empieza el marco
+    
+    // Altura total del contenido HTML, ajustada por el scroll
+    const contentBottomY = containerTop + profileContent.offsetTop + profileContent.offsetHeight;
+
+    // Queremos que el separador esté 20px debajo del contenido de perfil
+    const separatorY = contentBottomY + 20; 
+    
+    // --- 3. DIBUJAR: Separador Horizontal Centrado ---
+    const LINE_LENGTH = 150; // Longitud total del separador (300px)
+    
+    rc.line(
+        centerX - LINE_LENGTH, 
+        separatorY, 
+        centerX + LINE_LENGTH, 
+        separatorY, 
+        {
+            roughness: 1.5,
+            stroke: strokeColor,
+            strokeWidth: 2
+        }
+    );
+    
+    // 💡 NOTA PARA EL CENTRADO DE TEXTO:
+    // El centrado del *texto* HTML debe hacerse con CSS (ej: text-align: center) 
+    // en la hoja de estilos de #profile-content.
 }
 // ------------------------------------------------------------------
 // 11. DIBUJO DE LA BARRA DE SCROLL (Rough.js Sketchy) - ¡COMPLETA!
