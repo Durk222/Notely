@@ -19,6 +19,7 @@ var SEARCH_ICON_SIZE = 12;
 // Configuraciones para la animación de 4 FPS
 var FPS = 4;
 var FRAME_INTERVAL = 1000 / FPS; 
+let lastTime = 0;
 // ------------------------------------------------------------------
 // 1. DIBUJO DEL FONDO (Textura) - ¡MODIFICADO!
 // ------------------------------------------------------------------
@@ -179,50 +180,66 @@ function drawProfileContent() {
     // Añadir el código específico del dibujo de tu perfil aquí.
 }
 // ------------------------------------------------------------------
-// 3B. DIBUJO DE LA BARRA DE SCROLL (Rough.js Sketchy) - ¡NUEVO!
+// 11. DIBUJO DE LA BARRA DE SCROLL (Rough.js Sketchy) - ¡COMPLETA!
 // ------------------------------------------------------------------
 var SCROLL_BAR_WIDTH = 5;
 var SCROLL_BAR_MARGIN = 5;
 
-// El ratio (0.0 a 1.0) indica la posición actual del scroll.
 function drawSketchyScrollbar(scrollRatio) {
     const canvas = document.getElementById('notelyCanvas');
+    // Comprobar si el canvas existe antes de continuar
+    if (!canvas) return;
+    
     const rc = rough.canvas(canvas);
 
     const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
-    const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim(); // ⬅️ Nuevo: Obtenemos el color de fondo
+    const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
     
     // Altura y margen del área de contenido (donde debe ir el scroll)
-    const contentYStart = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 5 + BUTTON_SPACING;
+    // 💡 CORRECCIÓN DEL ÁREA DEL TRACK: Va desde el margen superior (5px)
+    const FRAME_MARGIN = 5;
+    const contentYStart = FRAME_MARGIN;
+    // Hasta antes del botón de tema
     const contentYEnd = canvas.height - THEME_BTN_MARGIN - THEME_BTN_SIZE - BUTTON_SPACING;
     const contentHeight = contentYEnd - contentYStart;
     
-    // Posición X (borde derecho, margen interior)
-    const x = canvas.width - SCROLL_BAR_MARGIN - SCROLL_BAR_WIDTH;
-    
+    // Posición X (borde derecho, margen interior del marco)
+    const x = canvas.width - SCROLL_BAR_MARGIN - SCROLL_BAR_WIDTH - FRAME_MARGIN; // - FRAME_MARGIN para alinearse al marco
+
     // --- 1. Dibujar el TRACK (Fondo de la barra) ---
-    // Se dibuja como un rectángulo hueco o con un color de fondo sutil.
     const trackHeight = contentHeight;
     const trackY = contentYStart;
     
+    // Dibujamos el track completo con el color de fondo para que se vea como un "riego"
     rc.rectangle(x, trackY, SCROLL_BAR_WIDTH, trackHeight, {
         roughness: 1.5,
         stroke: strokeColor,
-        strokeWidth: 1, // Borde fino para el track
-        fill: fillColor, // Relleno con el color de fondo para que sea visible
+        strokeWidth: 1, 
+        fill: fillColor, // Relleno con el color de fondo
         fillStyle: 'solid'
     });
     
     // --- 2. Calcular el tamaño y posición del "pulgar" (thumb) ---
     const thumbMinHeight = 40; 
-    const thumbHeight = Math.max(thumbMinHeight, trackHeight * 0.1); 
     
+    // ⚠️ RE-CALCULAR LA ALTURA DEL THUMB basado en el contenido del feed
+    const feedContainer = document.getElementById('feed-container');
+    const scrollMax = feedContainer.scrollHeight;
+    const scrollVisible = feedContainer.clientHeight;
+    
+    // Proporción de contenido visible: (scrollVisible / scrollMax) * trackHeight
+    let thumbHeight = trackHeight;
+    if (scrollMax > scrollVisible) {
+        thumbHeight = (scrollVisible / scrollMax) * trackHeight;
+    }
+    thumbHeight = Math.max(thumbMinHeight, thumbHeight); // Altura mínima
+
     // La posición superior del pulgar se calcula con el ratio
     const yMaxTravel = trackHeight - thumbHeight;
     const y = contentYStart + (yMaxTravel * scrollRatio);
 
     // Si no hay suficiente contenido para scroll, no dibujamos el pulgar.
-    if (trackHeight < thumbMinHeight * 2) { 
+    if (feedContainer.scrollHeight <= feedContainer.clientHeight) { 
         return;
     }
     
@@ -250,14 +267,11 @@ function handleNativeScroll() {
     const maxScroll = feedContainer.scrollHeight - feedContainer.clientHeight;
     
     if (maxScroll <= 0) {
+        // No se necesita código aquí.
         return;
     }
-
-    // Calcula la proporción de scroll nativa (0.0 a 1.0)
-    // Este valor de `feedContainer.scrollTop` se leerá en `animate()`
-    // para dibujar el pulgar en la posición correcta.
-    // No es necesario forzar el redibujado aquí.
-}        
+        // No se necesita ninguna acción aquí, la función animate() hará el trabajo.
+    }   
 // ------------------------------------------------------------------
 // 4. BUCLE DE ANIMACIÓN (Limitado a 4 FPS) - ¡RECICLADO COMPLETO!
 // ------------------------------------------------------------------
@@ -301,16 +315,15 @@ function animate(timestamp) {
     // 3. DIBUJAR ELEMENTOS SOBRE EL ÁREA DE CONTENIDO
     // El botón de autenticación debe ir AQUÍ, para estar SOBRE el marco principal.
     // drawAuthButton(); // ⬅️ Si no está definida, coméntala.
-    // ✅ CÓDIGO DE SCROLL SKETCHY: LLAMADA CORRECTA DENTRO DEL BUCLE
-    const feedContainer = document.getElementById('feed-container');
-    let scrollbarYRatio = 0; 
-    
-    if (feedContainer && feedContainer.scrollHeight > feedContainer.clientHeight) {
-        scrollbarYRatio = feedContainer.scrollTop / (feedContainer.scrollHeight - feedContainer.clientHeight);
-    }
-    
-    // 💡 APLICAR LA COMPROBACIÓN AQUÍ Y DIBUJAR:
-    drawSketchyScrollbar(scrollbarYRatio); // ⬅️ Dibuja en cada frame de 4 FPS.
+   // ✅ CÓDIGO DE SCROLL SKETCHY
+const feedContainer = document.getElementById('feed-container');
+let scrollbarYRatio = 0; 
+
+if (feedContainer && feedContainer.scrollHeight > feedContainer.clientHeight) {
+    scrollbarYRatio = feedContainer.scrollTop / (feedContainer.scrollHeight - feedContainer.clientHeight);
+}
+
+drawSketchyScrollbar(scrollbarYRatio);
     
     // 3. Solicitar el próximo frame
     requestAnimationFrame(animate);
