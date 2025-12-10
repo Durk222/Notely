@@ -167,11 +167,47 @@ function drawProfileContent() {
 }
 
 // ------------------------------------------------------------------
-// 4. BUCLE DE ANIMACIÓN (Limitado a 4 FPS) - ¡RECICLADO!
+// 4. BUCLE DE ANIMACIÓN (Limitado a 4 FPS) - ¡RECICLADO COMPLETO!
 // ------------------------------------------------------------------
-// (MANTENER ESTA FUNCIÓN IGUAL)
+//let lastTime = 0; // Comentada para evitar conflictos con animation.js
+
 function animate(timestamp) {
-    // ... (cuerpo de la función animate, que llama a drawBackgroundTexture, etc.) ...
+    // 1. Manejo del Frame Rate (4 FPS)
+    if (timestamp < lastTime + FRAME_INTERVAL) {
+        requestAnimationFrame(animate);
+        return;
+    }
+    
+    // Actualizar el tiempo del último frame dibujado
+    lastTime = timestamp;
+
+    // 2. Ejecutar las funciones de dibujo
+    // Nota: drawBackgroundTexture() se llama fuera del bucle para mejor rendimiento,
+    // pero si necesita animación (p.ej. ruido), debe ir aquí.
+    
+    // Limpiamos el notelyCanvas
+    const canvas = document.getElementById('notelyCanvas');
+    const ctx = canvas.getContext('2d');
+    const container = document.getElementById('frame-container');
+    
+    // Necesario para que los dibujos no se superpongan
+    ctx.clearRect(0, 0, container.clientWidth, container.clientHeight);
+    
+    // Redibujar el Marco y los Elementos que requieren animación (ej. Rough.js)
+    drawNotelyFrame();
+    
+    // DIBUJAR TODOS LOS BOTONES Y ELEMENTOS DE LA INTERFAZ
+    drawThemeButton();
+    drawVerticalNavBar();
+    drawSearchButton();
+    drawHomeButton(); 
+    drawSettingsButton();
+    drawProfileButton(); 
+    drawAddNoteButton(); 
+    drawProfileContent(); // Elementos específicos del perfil
+    
+    // 3. Solicitar el próximo frame
+    requestAnimationFrame(animate);
 }
 
 // ------------------------------------------------------------------
