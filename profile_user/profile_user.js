@@ -327,6 +327,147 @@ function handleNativeScroll() {
         // No se necesita ninguna acción aquí, la función animate() hará el trabajo.
     }   
 // ------------------------------------------------------------------
+// 11. DIBUJO DEL BOTÓN DE ESTADO DE SESIÓN (Candado / Icono de Avatar)
+// ------------------------------------------------------------------
+function drawSessionStateButton() { // <-- ¡Nuevo nombre de función!
+    const canvas = document.getElementById('notelyCanvas');
+    const rc = rough.canvas(canvas);
+
+    const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
+    const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
+    
+    // Coordenadas del centro de la CELDA: ÍNDICE 5
+    // ¡Ojo! Si Añadir Nota es Índice 4, este es Índice 5.
+    const centerX = THEME_BTN_MARGIN + NAV_BAR_WIDTH / 2;
+    // CÁLCULO: NAV_BAR_MARGIN_TOP + (BUTTON_HEIGHT * ÍNDICE) + (BUTTON_HEIGHT / 2)
+    const centerY = NAV_BAR_MARGIN_TOP + (BUTTON_HEIGHT * 5) + (BUTTON_HEIGHT / 2); 
+    
+    // Parámetros del Candado
+    const lockWidth = 16;
+    const lockHeight = 12;
+    const handleRadius = 6;
+    
+    const x = centerX - lockWidth / 2;
+    const y = centerY - lockHeight / 2 + handleRadius * 0.5; // Ajuste Y para el asa
+    
+    // --- 1. Cuerpo del Candado (Rectángulo) ---
+    rc.rectangle(x, y, lockWidth, lockHeight, {
+        roughness: 2,
+        stroke: strokeColor,
+        strokeWidth: 2,
+        fill: strokeColor, // Relleno sólido
+        fillStyle: 'solid'
+    });
+    
+    // --- 2. Asa del Candado (Arco) ---
+    // Posición: Centrada sobre el cuerpo del candado
+    const arcX = centerX;
+    const arcY = y; // Comienza en el tope del rectángulo
+    
+    // Dibujamos un círculo con el color de fondo para 'vaciar' el asa.
+    // Esto crea un efecto de medio círculo hueco.
+    rc.arc(arcX, arcY, handleRadius, handleRadius, Math.PI, 2 * Math.PI, false, {
+        roughness: 2.5,
+        stroke: strokeColor,
+        strokeWidth: 2.5, // Más grueso para cubrir el fondo
+        fill: fillColor, // Relleno con el color de fondo para que se vea hueco
+        fillStyle: 'solid'
+    });
+    
+    // --- 3. Hueco de la cerradura (Círculo pequeño) ---
+    rc.circle(centerX, y + lockHeight * 0.7, 2, {
+        roughness: 1,
+        stroke: strokeColor,
+        strokeWidth: 1,
+        fill: fillColor, // Relleno de fondo para simular hueco
+        fillStyle: 'solid'
+    });
+}
+// ------------------------------------------------------------------
+// 12. DIBUJO DEL BOTÓN DE AUTENTICACIÓN GRANDE (Esquina Superior Derecha)
+// ------------------------------------------------------------------
+/**
+ * Dibuja el botón de "Iniciar Sesión o Crear Cuenta" en la esquina superior derecha.
+ * Asume que el usuario está "desconectado".
+ */
+function drawAuthButton() { // <-- ¡Esta es la función de animation_right.js!
+    const canvas = document.getElementById('notelyCanvas');
+    const rc = rough.canvas(canvas);
+    const ctx = canvas.getContext('2d');
+
+    const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
+    const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
+    
+    // --- Posicionamiento y Dimensiones ---
+    const btnWidth = 230; // Ancho ajustado
+    const btnHeight = 40;
+    
+    // Usamos las variables globales de profile_user.js:
+    const margin = THEME_BTN_MARGIN; // Margen de 20px
+    const navBarMarginTop = NAV_BAR_MARGIN_TOP; // Margen de 20px
+
+    // Calcula la posición X (desde la derecha)
+    const x = canvas.width - margin - btnWidth; 
+    
+    // Calcula la posición Y (desde arriba)
+    const y = navBarMarginTop;
+
+    // 1. Dibujar el marco del botón (Rectángulo) con Rough.js
+    rc.rectangle(x, y, btnWidth, btnHeight, {
+        roughness: 2.5,
+        stroke: strokeColor,
+        strokeWidth: 2,
+        fill: fillColor, 
+        fillStyle: 'solid'
+    });
+
+    // 2. Dibujar el texto (usando el contexto 2D estándar)
+    const text = "Inicia Sesión o Crea una Cuenta";
+
+    ctx.font = `bold 14px 'Flabby Bums', cursive`; 
+    ctx.fillStyle = strokeColor;
+    ctx.textAlign = 'center'; 
+    ctx.textBaseline = 'middle';
+
+    // Posición del texto (centro del botón)
+    const textX = x + btnWidth / 2;
+    const textY = y + btnHeight / 2;
+
+    ctx.fillText(text, textX, textY);
+}
+// ------------------------------------------------------------------
+// 7B. DETECCIÓN DE CLICS ESPECÍFICOS DE PROFILE_USER
+// ------------------------------------------------------------------
+/**
+ * Procesa los clics en los elementos exclusivos de la página de perfil.
+ * @param {number} x Coordenada X del clic.
+ * @param {number} y Coordenada Y del clic.
+ * @returns {boolean} True si se manejó un clic, False si no.
+ */
+function handleProfilePageClicks(x, y, canvas) {
+    // --- 1. Coordenadas y detección del botón de Estado de Sesión (Candado/Índice 5) ---
+    const buttonSessionXMin = THEME_BTN_MARGIN;
+    const buttonSessionXMax = THEME_BTN_MARGIN + NAV_BAR_WIDTH;
+    // Sexto segmento de la barra:
+    const buttonSessionYMin = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 5; 
+    const buttonSessionYMax = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 6; 
+
+    if (x >= buttonSessionXMin && x <= buttonSessionXMax && y >= buttonSessionYMin && y <= buttonSessionYMax) {
+        console.log("Clic en el botón de Estado de Sesión.");
+        // Lógica de acción aquí (e.g., window.toggleSessionModal())
+        return true; // ¡Importante! Devuelve true para detener la detección
+    }
+    
+    // Si tienes más botones nuevos en la página de perfil, añádelos aquí
+    // ...
+    
+    // Si el clic no coincide con ningún botón de perfil
+    return false;
+}
+
+// Hacemos la función disponible globalmente para que animation.js pueda llamarla.
+window.handleProfilePageClicks = handleProfilePageClicks;
+// ------------------------------------------------------------------
 // 4. BUCLE DE ANIMACIÓN (Limitado a 4 FPS) - ¡RECICLADO COMPLETO!
 // ------------------------------------------------------------------
 //let lastTime = 0; // Comentada para evitar conflictos con animation.js
@@ -365,11 +506,9 @@ function animate(timestamp) {
     drawSettingsButton();
     drawProfileButton(); 
     drawAddNoteButton(); 
-    drawProfileContent(); // Elementos específicos del perfil
-    // 3. DIBUJAR ELEMENTOS SOBRE EL ÁREA DE CONTENIDO
-    // El botón de autenticación debe ir AQUÍ, para estar SOBRE el marco principal.
-    // drawAuthButton(); // ⬅️ Si no está definida, coméntala.
-   // ✅ CÓDIGO DE SCROLL SKETCHY
+    drawProfileContent();
+    drawSessionStateButton();
+    drawAuthButton();
 const feedContainer = document.getElementById('feed-container');
 let scrollbarYRatio = 0; 
 
@@ -396,7 +535,9 @@ function initialDraw() {
     drawSettingsButton();
     drawProfileButton(); 
     drawAddNoteButton(); 
-    drawProfileContent(); // Elementos específicos del perfil
+    drawProfileContent();
+    drawSessionStateButton();
+    drawAuthButton();
     
     // Aquí iría el dibujo inicial del scrollbar si es necesario
     const feedContainer = document.getElementById('feed-container');
