@@ -15,11 +15,6 @@ var SEARCH_ICON_SIZE = 12; // Radio del círculo de la lupa
 var FPS = 4;
 var FRAME_INTERVAL = 1000 / FPS; // Intervalo en milisegundos entre cuadros (1000ms / 4 = 250ms)
 let lastTime = 0;
-
-// --- NUEVA VARIABLE GLOBAL ---
-var ICON_SIZE = 30; // Tamaño del ícono Sol/Luna
-var ICON_MARGIN = 20; // Margen desde la esquina inferior izquierda
-
 // ------------------------------------------------------------------
 // 1. DIBUJO DEL FONDO (Textura)
 // ------------------------------------------------------------------
