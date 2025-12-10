@@ -1,19 +1,209 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notely - Perfil de Usuario</title> 
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="https://unpkg.com/roughjs@4.6.6/bundled/rough.js"></script>
     <link rel="stylesheet" href="../style.css">
-    </head>
+    
+    <style>
+        /* ---------------------------------------------------- */
+        /* 1. SISTEMA DE VARIABLES DE NOTELY (Temas B/N) */
+        /* ---------------------------------------------------- */
+        :root {
+            /* PALETA ESTÁTICA (6 PARES B/N) */
+            --color-light-ecru: #F3F2EE;
+            --color-dark-ecru: #21211D;
+            --color-light-swizzle: #F7F6E3;
+            --color-dark-swizzle: #060409;
+            --color-light-satin: #E2E2DF;
+            --color-dark-satin: #131212;
+            --color-light-timber: #D9D4C8;
+            --color-dark-timber: #2B3031;
+            --color-light-coffee: #E8DED6;
+            --color-dark-coffee: #2C261E;
+            --color-light-olive: #E7E4DB;
+            --color-dark-olive: #383F33;
+
+            /* VARIABLES DINÁMICAS (DEFAULT: Ecru Light) */
+            --color-bg: var(--color-light-ecru);
+            --color-fg: var(--color-dark-ecru);
+
+            /* Almacena el modo claro y oscuro */
+            --theme-mode: light;
+            
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body[data-theme="dark"] {
+            --color-bg: var(--color-dark-ecru); 
+            --color-fg: var(--color-light-ecru); 
+            --theme-mode: dark;
+        }
+        /* ---------------------------------------------------- */
+        /* 2. ESTILOS GLOBALES BÁSICOS Y LIENZO */
+        /* ---------------------------------------------------- */
+        html, body {
+            margin: 0; 
+            padding: 0;
+            /* CLAVE: Evitar scroll horizontal y vertical en el body */
+            overflow-x: hidden; 
+            overflow-y: hidden;
+        }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-fg);
+            min-height: 100vh; 
+            font-family:'Exin Regular', sans-serif; 
+            position: relative; 
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Flabby Bums', cursive;
+        }
+        
+        /* NUEVA REGLA: El Canvas de Fondo Ocupa toda la ventana */
+        #backgroundCanvas {
+            position: fixed; 
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1; 
+            pointer-events: none;
+        }
+        
+        /* Contenedor del Canvas: 98% del viewport */
+        #frame-container {
+            width: 98vw; 
+            height: 98vh; 
+            margin: 1vh auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* El Canvas que dibuja el borde */
+        #notelyCanvas {
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* Wrapper para el contenido de la App (se superpone al canvas) */
+        #app-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            padding: 15px; 
+            overflow: hidden; 
+            pointer-events: none; 
+        }
+
+        /* Contenedor del Scroll del Feed */
+        #feed-container {
+            position: absolute;
+            /* Estos valores son CLAVE y dependen de las variables JS (40+20=60, etc.) */
+            top: 70px; 
+            left: 80px; 
+            
+            width: calc(100% - 80px - 20px); 
+            height: calc(100% - 70px - 20px); 
+            
+            overflow-y: scroll; 
+            pointer-events: auto; /* Permite que el feed reciba clics/scroll */
+            
+            -webkit-overflow-scrolling: touch;
+            
+            display: flex;
+            justify-content: center; /* Centra el contenido horizontalmente */
+        }
+
+        /* Contenido dentro del Feed */
+        #feed-scroller {
+            width: auto;
+        }
+
+        /* Ocultar la barra de scroll en Webkit (Chrome, Safari, Edge) */
+        #feed-container::-webkit-scrollbar {
+            width: 0; 
+            height: 0; 
+        }
+
+        /* Ocultar la barra de scroll en Firefox */
+        #feed-container {
+            scrollbar-width: none; 
+        }
+
+        /* LA PANTALLA DE CARGA */
+        #loading-screen-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1000; 
+            background-color: var(--color-bg); 
+            opacity: 1; 
+            transition: opacity 0.5s ease-out; 
+        }
+        #loadingCanvas {
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* --- Fuentes --- */
+        @font-face {
+            font-family: 'Flabby Bums'; 
+            src: url('../assets/Flabby_Bums_handwriting.ttf') format('truetype'); 
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Exin Regular'; 
+            src: url('../assets/exin_memesbruh03.ttf') format('truetype'); 
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        /* Aunque no hay posts, mantenemos las animaciones de posts por si se añaden */
+        .post-placeholder {
+            animation: appear 1s ease-out; 
+            animation-timeline: view();
+            animation-range: entry 0% cover 30%; 
+        }
+
+        @keyframes appear{
+            from{
+                opacity: 0;
+                scale: 0.9;
+            }
+            to{
+                opacity: 1;
+                scale: 1;
+            }
+        }
+    </style>
+</head>
 <body data-theme="light">
     <canvas id="backgroundCanvas"></canvas> 
     
     <div id="frame-container">
         <canvas id="notelyCanvas"></canvas>
-    </div>
-    
-    <div id="app-wrapper">
-        <div id="feed-container"> 
-            <div id="profile-content">
+        
+        <div id="app-wrapper">
+            <div id="feed-container"> 
+                <div id="profile-content">
+                    <h2>¡Este es tu Perfil!</h2>
+                    <p>Bienvenido/a.</p>
+                </div>
             </div>
         </div>
     </div>
