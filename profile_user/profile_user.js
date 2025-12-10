@@ -78,7 +78,7 @@ function drawNotelyFrame() {
         {
             // Baja rugosidad para parecer más sólido y limpio
             roughness: 0.5, 
-            strokeWidth: 0, // Sin borde, solo relleno
+            strokeWidth: 2, // Sin borde, solo relleno
             fill: fillColor, 
             fillStyle: 'solid'
         }
@@ -93,7 +93,7 @@ function drawNotelyFrame() {
         {
             roughness: 2.8, 
             stroke: strokeColor, 
-            strokeWidth: 6, 
+            strokeWidth: 3, 
             bowing: 6, // Alto bowing para el efecto "arrugado"
             fill: fillColor, 
             fillStyle: 'solid' 
