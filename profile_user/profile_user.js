@@ -22,7 +22,6 @@ var FRAME_INTERVAL = 1000 / FPS;
 
 // --- VARIABLES GLOBALES DEL MARCO Y ANIMACIÓN ---
 var MARGIN = 5; // ⬅️ AÑADIDO: Margen interior estándar de 5px.
-var lastTime = 0; // ⬅️ CORREGIDO: Usar 'var' para evitar el error de re-declaración con 'let' de otro archivo.
 // ------------------------------------------------------------------
 // 1. DIBUJO DEL FONDO (Textura) - ¡MODIFICADO!
 // ------------------------------------------------------------------
