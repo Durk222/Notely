@@ -162,6 +162,21 @@
 #feed-container {
     scrollbar-width: none; /* 'none' oculta la barra */
 }
+/* LA PANTALLA DE CARGA */
+#loading-screen-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000; /* Asegura que esté por encima de todo */
+    background-color: var(--color-bg); /* Fondo sólido */
+    transition: opacity 0.5s ease-out; /* Para el desvanecimiento final */
+}
+#loadingCanvas {
+    width: 100%;
+    height: 100%;
+}
         /* --- Flabby Bums para Títulos --- */
 @font-face {
     font-family: 'Flabby Bums'; /* Nombre que usarás para referirte a ella */
@@ -211,6 +226,9 @@
                 </div>
         </div>
     </div>
+<div id="loading-screen-overlay">
+    <canvas id="loadingCanvas"></canvas>
+</div>
 <script src="animation.js"></script> 
 <script src="animation_right.js"></script>
 <script src="scroll_handler.js"></script>
