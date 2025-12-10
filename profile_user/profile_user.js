@@ -94,7 +94,7 @@ function drawNotelyFrame() {
             roughness: 2.8, 
             stroke: strokeColor, 
             strokeWidth: 3, 
-            bowing: 6, // Alto bowing para el efecto "arrugado"
+            bowing: 2, // Alto bowing para el efecto "arrugado"
             fill: fillColor, 
             fillStyle: 'solid' 
         }
