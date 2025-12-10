@@ -247,17 +247,23 @@ function drawSketchyScrollbar(scrollRatio) {
 
     const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
     const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
+
+    // Altura y margen del área de contenido (donde debe ir el scroll)
+    // 💡 NUEVO CÁLCULO PARA contentYStart 💡
+    
+    // Altura del botón de Autenticación (Sección 12): 40px
+    const btnHeight = 40;
+    // Margen superior (Sección 12): NAV_BAR_MARGIN_TOP (20px)
+    const navBarMarginTop = NAV_BAR_MARGIN_TOP;
     
-    // Altura y margen del área de contenido (donde debe ir el scroll)
-    // Usamos la variable global MARGIN para el margen del marco.
-    const contentYStart = MARGIN;
-    // Hasta antes del botón de tema
-    const contentYEnd = canvas.height - THEME_BTN_MARGIN - THEME_BTN_SIZE - BUTTON_SPACING;
-    const contentHeight = contentYEnd - contentYStart;
+    //      Altura y margen del área de contenido (donde debe ir el scroll)
+    //      COMIENZO: Debajo del Botón de Autenticación (20px + 40px + 5px de margen)
+    const contentYStart = navBarMarginTop + btnHeight + MARGIN; // 20 + 40 + 5 = 65px    
+    // FIN: Hasta antes del botón de tema
+    const contentYEnd = canvas.height - THEME_BTN_MARGIN - THEME_BTN_SIZE - BUTTON_SPACING;
+    const contentHeight = contentYEnd - contentYStart;
     
     // Posición X (borde derecho, margen interior del marco)
-    // Utilizamos el MARGIN global (5) y los nuevos valores de SCROLL_BAR_WIDTH (10)
-    // SCROLL_BAR_MARGIN ahora es el espacio visible entre el marco y la barra.
     const x = canvas.width - SCROLL_BAR_MARGIN - SCROLL_BAR_WIDTH - MARGIN;
     
     // --- 1. Dibujar el TRACK (Fondo de la barra) ---
