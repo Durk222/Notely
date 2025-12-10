@@ -57,6 +57,7 @@ function drawAuthButton() {
 // ------------------------------------------------------------------
 // (Las funciones futuras como drawPostFrame irán aquí)
 // ------------------------------------------------------------------
+// ------------------------------------------------------------------
 // --- NUEVA FUNCIÓN CORREGIDA EN animation_right.js ---
 function drawSketchyScrollbar(scrollbarYRatio) {
     const canvas = document.getElementById('notelyCanvas');
@@ -66,24 +67,21 @@ function drawSketchyScrollbar(scrollbarYRatio) {
     const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
 
     // ✅ OBTENEMOS LAS CONSTANTES GLOBALES DE animation.js
-    const AUTH_BTN_HEIGHT = 40; 
-    const NAV_BAR_MARGIN_TOP = window.NAV_BAR_MARGIN_TOP || 20; // Usar global o default
-    const THEME_BTN_MARGIN = window.THEME_BTN_MARGIN || 20; // Usar global o default
+    const AUTH_BTN_HEIGHT = 40; // Altura del botón de autentificación (fijo)
+    const NAV_BAR_MARGIN_TOP = window.NAV_BAR_MARGIN_TOP || 20; // Margen superior
+    const THEME_BTN_MARGIN = window.THEME_BTN_MARGIN || 20; // Margen inferior
 
-    const dims = calculateScrollbarDimensions(canvas.width, canvas.height); // ⬅️ Debe pasar ANCHO y ALTO
-    
-    // 1. DIMENSIONES Y POSICIÓN DEL TRACK (Contenedor de la barra)
-    const SCROLL_WIDTH = 8; 
+    const SCROLL_WIDTH = 8; // Ancho del track y del thumb
 
-    // CALCULAMOS LAS POSICIONES DINÁMICAMENTE
-    // trackYStart: NAV_BAR_MARGIN_TOP (20) + AUTH_BTN_HEIGHT (40) + ESPACIO (10) = 70.
-    const trackYStart = NAV_BAR_MARGIN_TOP + AUTH_BTN_HEIGHT + 10; 
+    // 1. CÁLCULO DE DIMENSIONES Y POSICIÓN DEL TRACK (Contenedor de la barra)
+    // trackYStart: NAV_BAR_MARGIN_TOP + AUTH_BTN_HEIGHT + ESPACIO (10px).
+    const trackYStart = NAV_BAR_MARGIN_TOP + AUTH_BTN_HEIGHT + 10;
     
-    // trackHeight: canvas.height - trackYStart - THEME_BTN_MARGIN
-    const trackHeight = canvas.height - trackYStart - THEME_BTN_MARGIN; 
+    // trackHeight: canvas.height - (Todo lo de arriba) - (Margen de abajo).
+    const trackHeight = canvas.height - trackYStart - THEME_BTN_MARGIN;
     
-    // trackXStart: canvas.width - THEME_BTN_MARGIN - SCROLL_WIDTH
-    const trackXStart = dims.trackXStart;
+    // trackXStart: Posición X desde la derecha.
+    const trackXStart = canvas.width - THEME_BTN_MARGIN - SCROLL_WIDTH;
 
     // Dibujar el TRACK (Fondo de la barra)
     rc.rectangle(trackXStart, trackYStart, SCROLL_WIDTH, trackHeight, {
@@ -94,12 +92,15 @@ function drawSketchyScrollbar(scrollbarYRatio) {
         fillStyle: 'solid'
     });
 
-    // 2. DIBUJO DEL THUMB (El 'pulgar' que se mueve)
+    // 2. CÁLCULO Y DIBUJO DEL THUMB (El 'pulgar' que se mueve)
     const thumbMinHeight = 20; 
+    
+    // Calcula la altura inicial del thumb (15% del track o minHeight)
     let thumbHeight = Math.max(thumbMinHeight, trackHeight * 0.15); 
-    if (thumbHeight > trackHeight) thumbHeight = trackHeight;
+    if (thumbHeight > trackHeight) thumbHeight = trackHeight; // Asegura que no exceda el track
 
     const maxThumbMovement = trackHeight - thumbHeight;
+    // La posición Y se calcula aplicando el ratio al máximo movimiento posible
     const thumbY = trackYStart + maxThumbMovement * scrollbarYRatio;
 
     // Dibujar el THUMB
@@ -132,45 +133,6 @@ function animateAllPlaceholders() {
         }
     });
 }
-
-// ✅ Exponer la nueva función
-window.animateAllPlaceholders = animateAllPlaceholders;
-
-
-// animation_right.js (al final)
-
-function calculateScrollbarDimensions(canvasWidth, canvasHeight) { // ⬅️ ¡CORREGIDO!
-    const AUTH_BTN_HEIGHT = 40; 
-    const NAV_BAR_MARGIN_TOP = window.NAV_BAR_MARGIN_TOP || 20;
-    const THEME_BTN_MARGIN = window.THEME_BTN_MARGIN || 20;
-
-    const SCROLL_WIDTH = 8; 
-
-    // CALCULAMOS LAS POSICIONES DINÁMICAMENTE
-    const trackYStart = NAV_BAR_MARGIN_TOP + AUTH_BTN_HEIGHT + 10;
-    
-    // 💥 REVISIÓN CLAVE: Asegurarnos de que el track termina antes del margen inferior.
-    // Altura total del canvas - trackYStart (todo lo de arriba) - THEME_BTN_MARGIN (margen inferior).
-    const trackHeight = canvasHeight - trackYStart - THEME_BTN_MARGIN;
-    
-    // ✅ VERIFICACIÓN: El cálculo de X es correcto para el borde derecho.
-    const trackXStart = canvasWidth - THEME_BTN_MARGIN - SCROLL_WIDTH;
-
-    // CÁLCULO DEL THUMB
-    const thumbMinHeight = 20; 
-    let thumbHeight = Math.max(thumbMinHeight, trackHeight * 0.15); 
-    if (thumbHeight > trackHeight) thumbHeight = trackHeight;
-
-    return {
-        trackYStart,
-        trackHeight,
-        trackXStart, // ⬅️ Ahora usamos la variable local calculada con canvasWidth
-        thumbHeight
-    };
-}
-
-// ✅ EXPORTAR LA FUNCIÓN
-window.calculateScrollbarDimensions = calculateScrollbarDimensions;
-
-// EXPORTS
+// EXPORTS LIMPIOS
 window.drawSketchyScrollbar = drawSketchyScrollbar;
+window.animateAllPlaceholders = animateAllPlaceholders;
