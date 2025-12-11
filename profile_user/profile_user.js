@@ -200,7 +200,7 @@ function drawProfileContent() {
     );
 }
 // ------------------------------------------------------------------
-// 11. DIBUJO DE LA BARRA DE SCROLL
+// 4. DIBUJO DE LA BARRA DE SCROLL
 // ------------------------------------------------------------------
 var SCROLL_BAR_WIDTH = 10;
 var SCROLL_BAR_MARGIN = 12;
@@ -274,23 +274,13 @@ function drawSketchyScrollbar(scrollRatio) {
     });
 }
 // ------------------------------------------------------------------
-// 8B. MANEJADOR DE SCROLL NATIVO (NUEVO)
+// 4B. MANEJADOR DE SCROLL NATIVO (Corregido)
 // ------------------------------------------------------------------
 function handleNativeScroll() {
-    
-    const feedContainer = document.getElementById('feed-container');
-    
-    // Solo proceder si el scroll es posible
-    const maxScroll = feedContainer.scrollHeight - feedContainer.clientHeight;
-    
-    if (maxScroll <= 0) {
-        // No se necesita código aquí.
-        return;
-    }
-        // No se necesita ninguna acción aquí, la función animate() hará el trabajo.
-    }   
+    // No es necesario que haga nada explícitamente
+}
 // ------------------------------------------------------------------
-// 11. DIBUJO DEL BOTÓN DE ESTADO DE SESIÓN (Candado / Icono de Avatar)
+// 5. DIBUJO DEL BOTÓN DE ESTADO DE SESIÓN (Candado / Icono de Avatar)
 // ------------------------------------------------------------------
 function drawSessionStateButton() { // <-- ¡Nuevo nombre de función!
     const canvas = document.getElementById('notelyCanvas');
@@ -323,7 +313,7 @@ function drawSessionStateButton() { // <-- ¡Nuevo nombre de función!
     // --- 2. Asa del Candado (Arco) ---
     // Posición: Centrada sobre el cuerpo del candado
     const arcX = centerX;
-    const arcY = y; // Comienza en el tope del rectángulo
+    const arcY = y;
     
     // Dibujamos un círculo con el color de fondo para 'vaciar' el asa.
     rc.arc(arcX, arcY, handleRadius, handleRadius, Math.PI, 2 * Math.PI, false, {
@@ -344,7 +334,7 @@ function drawSessionStateButton() { // <-- ¡Nuevo nombre de función!
     });
 }
 // ------------------------------------------------------------------
-// 12. DIBUJO DEL BOTÓN DE AUTENTICACIÓN (Esquina Superior Derecha)
+// 6. DIBUJO DEL BOTÓN DE AUTENTICACIÓN (Esquina Superior Derecha)
 // ------------------------------------------------------------------
 function drawAuthButton() { 
     const canvas = document.getElementById('notelyCanvas');
@@ -392,7 +382,7 @@ function drawAuthButton() {
     ctx.fillText(text, textX, textY);
 }
 // ------------------------------------------------------------------
-// 7B. DETECCIÓN DE CLICS ESPECÍFICOS DE PROFILE_USER (CON NAVEGACIÓN CORREGIDA)
+// 7. DETECCIÓN DE CLICS ESPECÍFICOS DE PROFILE_USER (CON NAVEGACIÓN CORREGIDA)
 // ------------------------------------------------------------------
 function handleProfilePageClicks(x, y, canvas) {
     // Definiciones de área (copiadas de animation.js para HOME y PROFILE)
@@ -552,7 +542,7 @@ function drawHomeButton() {
         roughness: 1.5,
         stroke: strokeColor,
         strokeWidth: 1,
-        fill: strokeColor, // Relleno con el color de la tinta para que se vea sólido
+        fill: strokeColor,
         fillStyle: 'solid'
     });
 }
@@ -706,7 +696,7 @@ function drawProfileButton() {
         roughness: 2,
         stroke: strokeColor,
         strokeWidth: 1.5,
-        fill: strokeColor, // ✅ CAMBIO CRÍTICO: Relleno con color de tinta (SILUETA SÓLIDA)
+        fill: strokeColor,
         fillStyle: 'solid'
     });
     
@@ -722,6 +712,35 @@ function drawProfileButton() {
     });
 }
 window.handleProfilePageClicks = handleProfilePageClicks;
+// ==================================================================
+// GESTIÓN DEL CLICK EN EL CANVAS
+// ==================================================================
+function handleCanvasMouseDown(event) {
+    const canvas = document.getElementById('notelyCanvas');
+    const rect = canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    // 1. Manejar clics específicos de la página de perfil (Navegación Corregida)
+    if (window.handleProfilePageClicks(x, y, canvas)) {
+        return;
+    }
+
+    // 2. Manejar clic en el botón de Tema (Lógica estándar)
+    const btnSize = THEME_BTN_SIZE;
+    const btnMargin = THEME_BTN_MARGIN;
+    const themeBtnXMin = btnMargin;
+    const themeBtnXMax = btnMargin + btnSize;
+    const themeBtnYMin = canvas.height - btnMargin - btnSize;
+    const themeBtnYMax = canvas.height - btnMargin;
+
+    if (x >= themeBtnXMin && x <= themeBtnXMax && y >= themeBtnYMin && y <= themeBtnYMax) {
+        console.log("Clic en el botón de Tema.");
+        if (window.toggleTheme) {
+            window.toggleTheme();
+        }
+    }
+}
 // ------------------------------------------------------------------
 // 4. ANIMACIÓN (4 FPS) - ¡RECICLADO!
 // ------------------------------------------------------------------
@@ -800,7 +819,6 @@ function initialDraw() {
     drawSketchyScrollbar(scrollbarYRatio);
 }
 
-// Punto de Entrada Principal (VERSIÓN ÚNICA CON LÓGICA DE CARGA)
 function startApp() {
     // 1. Dibuja todos los elementos de la interfaz la primera vez (para tener tamaños correctos)
     initialDraw();
@@ -820,7 +838,7 @@ function startApp() {
     requestAnimationFrame(animate); 
 
     // ==========================================================
-    // ✅ GESTIÓN DE LA DESAPARICIÓN DE LA PANTALLA DE CARGA (Añadido)
+    // PANTALLA DE CARGA
     // ==========================================================
     const loadingOverlay = document.getElementById('loading-screen-overlay');
 
@@ -865,5 +883,5 @@ function setupEventListeners() {
 }
 // Para iniciar la aplicación.
 setupEventListeners();
-// Llamar a startApp cuando la ventana esté cargada (incluyendo Rough.js y fuentes)
+
 window.addEventListener('load', startApp);
