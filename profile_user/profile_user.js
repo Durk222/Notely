@@ -721,11 +721,6 @@ function handleCanvasMouseDown(event) {
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
-    // 1. Manejar clics específicos de la página de perfil (Navegación Corregida)
-    if (window.handleProfilePageClicks(x, y, canvas)) {
-        return;
-    }
-
     // 2. Manejar clic en el botón de Tema (Lógica estándar)
     const btnSize = THEME_BTN_SIZE;
     const btnMargin = THEME_BTN_MARGIN;
@@ -740,6 +735,12 @@ function handleCanvasMouseDown(event) {
             window.toggleTheme();
         }
     }
+
+    // 2. Manejar clics específicos de la página de perfil (Navegación Corregida)
+    if (window.handleProfilePageClicks(x, y, canvas)) {
+        return;
+    }
+
 }
 // ------------------------------------------------------------------
 // 4. ANIMACIÓN (4 FPS) - ¡RECICLADO!
