@@ -396,7 +396,7 @@ function handleProfilePageClicks(x, y, canvas) {
     if (x >= navXMin && x <= navXMax && y >= buttonHomeYMin && y <= buttonHomeYMax) {
         console.log("Clic en el botón de Casa (Home).");
         if (window.startOutroTransition) {
-            // ✅ CORRECCIÓN CLAVE: Sube un nivel para ir al index.html
+
             window.startOutroTransition('../index.html'); 
         }
         return true;
@@ -712,6 +712,23 @@ function drawProfileButton() {
     });
 }
 window.handleProfilePageClicks = handleProfilePageClicks;
+// ------------------------------------------------------------------
+// 5. LÓGICA DE ALTERNANCIA DEL TEMA (¡FALTANTE!)
+// ------------------------------------------------------------------
+function toggleTheme() {
+    const body = document.body;
+    // Alternar el atributo data-theme, que activa las reglas CSS de tema
+    if (body.getAttribute('data-theme') === 'dark') {
+        body.removeAttribute('data-theme'); // Volver al modo light (sin atributo)
+    } else {
+        body.setAttribute('data-theme', 'dark'); // Activar modo dark
+    }
+    // Forzar el redibujado de todos los elementos para que usen los nuevos colores
+    // ¡Asegúrate de que initialDraw() esté accesible globalmente!
+    if (window.initialDraw) {
+        initialDraw();
+    }
+}
 // ==================================================================
 // GESTIÓN DEL CLICK EN EL CANVAS
 // ==================================================================
@@ -720,22 +737,19 @@ function handleCanvasMouseDown(event) {
     const rect = canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
+    // ------------------------------------------------------------
+    // ✅ INSERCIÓN CRÍTICA: DETECCIÓN DEL BOTÓN DE TEMA
+    // ------------------------------------------------------------
+// Coordenadas del área del botón de tema (Cuadrado 40x40px, margen 20px)
+    const buttonXMin = THEME_BTN_MARGIN;
+    const buttonXMax = THEME_BTN_MARGIN + THEME_BTN_SIZE;
+    const buttonYMin = canvas.height - THEME_BTN_MARGIN - THEME_BTN_SIZE;
+    const buttonYMax = canvas.height - THEME_BTN_MARGIN;
 
-    // 2. Manejar clic en el botón de Tema (Lógica estándar)
-    const btnSize = THEME_BTN_SIZE;
-    const btnMargin = THEME_BTN_MARGIN;
-    const themeBtnXMin = btnMargin;
-    const themeBtnXMax = btnMargin + btnSize;
-    const themeBtnYMin = canvas.height - btnMargin - btnSize;
-    const themeBtnYMax = canvas.height - btnMargin;
-
-    if (x >= themeBtnXMin && x <= themeBtnXMax && y >= themeBtnYMin && y <= themeBtnYMax) {
-        console.log("Clic en el botón de Tema.");
-        if (window.toggleTheme) {
-            window.toggleTheme();
-        }
-        // ✅ DEVOLVER INMEDIATAMENTE: Esto evita que handleProfilePageClicks lo intercepte.
-        return;
+    // Chequeamos si el clic ocurrió dentro del área del botón del tema
+    if (x >= buttonXMin && x <= buttonXMax && y >= buttonYMin && y <= buttonYMax) {
+        toggleTheme(); // ¡Llama a la función que acabamos de añadir!
+        return; // Detenemos la ejecución después de un clic exitoso
     }
 
     // 2. Manejar clics específicos de la página de perfil (Navegación Corregida)
