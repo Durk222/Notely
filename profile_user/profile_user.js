@@ -712,23 +712,6 @@ function drawProfileButton() {
     });
 }
 window.handleProfilePageClicks = handleProfilePageClicks;
-// ------------------------------------------------------------------
-// 5. LÓGICA DE ALTERNANCIA DEL TEMA
-// ------------------------------------------------------------------
-function toggleTheme() {
-    const body = document.body;
-    
-    // 1. Alternar el atributo data-theme
-    if (body.getAttribute('data-theme') === 'dark') {
-        body.removeAttribute('data-theme'); // MODO CLARO
-    } else {
-        body.setAttribute('data-theme', 'dark'); // MODO OSCURO
-    }
-    
-    // 2. Llama DIRECTAMENTE a la función de redibujado. 
-    // Esto fuerza a Rough.js a usar los nuevos colores CSS inmediatamente.
-    initialDraw(); 
-}
 // ==================================================================
 // GESTIÓN DE CLICK EN EL CANVAS
 // ==================================================================
@@ -737,18 +720,6 @@ function handleCanvasMouseDown(event) {
     const rect = canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
-
-// Coordenadas del área del botón de tema (Cuadrado 40x40px, margen 20px)
-    const buttonXMin = THEME_BTN_MARGIN;
-    const buttonXMax = THEME_BTN_MARGIN + THEME_BTN_SIZE;
-    const buttonYMin = canvas.height - THEME_BTN_MARGIN - THEME_BTN_SIZE;
-    const buttonYMax = canvas.height - THEME_BTN_MARGIN;
-
-    // Chequeamos si el clic ocurrió dentro del área del botón del tema
-    if (x >= buttonXMin && x <= buttonXMax && y >= buttonYMin && y <= buttonYMax) {
-        toggleTheme(); // ¡Llama a la función que acabamos de añadir!
-        return; // Detenemos la ejecución después de un clic exitoso
-    }
 
     // 2. Manejar clics específicos de la página de perfil (Navegación Corregida)
     if (window.handleProfilePageClicks(x, y, canvas)) {
