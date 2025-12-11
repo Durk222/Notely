@@ -713,33 +713,31 @@ function drawProfileButton() {
 }
 window.handleProfilePageClicks = handleProfilePageClicks;
 // ------------------------------------------------------------------
-// 5. LÓGICA DE ALTERNANCIA DEL TEMA (¡FALTANTE!)
+// 5. LÓGICA DE ALTERNANCIA DEL TEMA
 // ------------------------------------------------------------------
 function toggleTheme() {
     const body = document.body;
-    // Alternar el atributo data-theme, que activa las reglas CSS de tema
+    
+    // 1. Alternar el atributo data-theme
     if (body.getAttribute('data-theme') === 'dark') {
-        body.removeAttribute('data-theme'); // Volver al modo light (sin atributo)
+        body.removeAttribute('data-theme'); // MODO CLARO
     } else {
-        body.setAttribute('data-theme', 'dark'); // Activar modo dark
+        body.setAttribute('data-theme', 'dark'); // MODO OSCURO
     }
-    // Forzar el redibujado de todos los elementos para que usen los nuevos colores
-    // ¡Asegúrate de que initialDraw() esté accesible globalmente!
-    if (window.initialDraw) {
-        initialDraw();
-    }
+    
+    // 2. Llama DIRECTAMENTE a la función de redibujado. 
+    // Esto fuerza a Rough.js a usar los nuevos colores CSS inmediatamente.
+    initialDraw(); 
 }
 // ==================================================================
-// GESTIÓN DEL CLICK EN EL CANVAS
+// GESTIÓN DE CLICK EN EL CANVAS
 // ==================================================================
 function handleCanvasMouseDown(event) {
     const canvas = document.getElementById('notelyCanvas');
     const rect = canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
-    // ------------------------------------------------------------
-    // ✅ INSERCIÓN CRÍTICA: DETECCIÓN DEL BOTÓN DE TEMA
-    // ------------------------------------------------------------
+
 // Coordenadas del área del botón de tema (Cuadrado 40x40px, margen 20px)
     const buttonXMin = THEME_BTN_MARGIN;
     const buttonXMax = THEME_BTN_MARGIN + THEME_BTN_SIZE;
