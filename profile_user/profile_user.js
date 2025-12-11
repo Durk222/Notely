@@ -733,7 +733,6 @@ window.handleProfilePageClicks = handleProfilePageClicks;
 // ------------------------------------------------------------------
 // 4. BUCLE DE ANIMACIÓN (Limitado a 4 FPS) - ¡RECICLADO COMPLETO!
 // ------------------------------------------------------------------
-//let lastTime = 0; // Comentada para evitar conflictos con animation.js
 
 function animate(timestamp) {
     // 1. Manejo del Frame Rate (4 FPS)
