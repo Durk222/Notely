@@ -12,14 +12,14 @@ var BUTTON_HEIGHT = THEME_BTN_SIZE + 25;
 
 var SEARCH_ICON_SIZE = 12; 
 
-// Configuraciones para la animación de 4 FPS
+// Animación de 4 FPS
 var FPS = 4;
 var FRAME_INTERVAL = 1000 / FPS; 
 
-// --- VARIABLES GLOBALES DEL MARCO Y ANIMACIÓN ---
+// --- MARCO Y ANIMACIÓN ---
 var MARGIN = 5;
 // ------------------------------------------------------------------
-// 1. DIBUJO DEL FONDO (Textura) - ¡MODIFICADO!
+// 1. DIBUJO DEL FONDO (Textura)
 // ------------------------------------------------------------------
 function drawBackgroundTexture() {
     const canvas = document.getElementById('backgroundCanvas');
@@ -38,49 +38,47 @@ function drawBackgroundTexture() {
         strokeWidth: 3,
         stroke: strokeColor, 
         fill: strokeColor, 
-        fillStyle: 'cross-hatch' // ⬅️ CAMBIO: Nueva textura de fondo
+        fillStyle: 'cross-hatch'
     });
 }
 // ------------------------------------------------------------------
-// 2. DIBUJO DEL MARCO PRINCIPAL (Relleno Sólido) - ¡CORREGIDO Y REFORZADO!
+// 2. DIBUJO DEL MARCO PRINCIPAL
 // ------------------------------------------------------------------
 function drawNotelyFrame() {
-    // 💡 PASO 1: Inicialización de variables
+    // PASO 1: Inicialización de variables
     const canvas = document.getElementById('notelyCanvas');
     const container = document.getElementById('frame-container');
 
     const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
     const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
     
-    // 💡 PASO 2: Obtener el contexto 2D (ctx) y ajustar el tamaño del canvas
+    // PASO 2: Obtener el contexto 2D (ctx) y ajustar el tamaño del canvas
     const ctx = canvas.getContext('2d');
     
     canvas.width = container.clientWidth;
     canvas.height = container.clientHeight;
     
-    // 💡 PASO 3: Limpiar el Canvas Completo
+    // PASO 3: Limpiar el Canvas Completo
     ctx.clearRect(0, 0, canvas.width, canvas.height); 
 
     const rc = rough.canvas(canvas);
     
-    // --- 1. CAPA INFERIOR: Relleno anti-bowing (Ligeramente más grande y menos rugoso) ---
-    const ANTI_BOWING_OFFSET = 8; // Mover 8px más allá del límite para asegurar cobertura
+    // --- A. CAPA INFERIOR: Relleno anti-bowing ---
+    const ANTI_BOWING_OFFSET = 8;
 
     rc.rectangle(
-        MARGIN - ANTI_BOWING_OFFSET,  // Más a la izquierda
-        MARGIN - ANTI_BOWING_OFFSET,  // Más arriba
-        canvas.width - 2 * MARGIN + 2 * ANTI_BOWING_OFFSET, // Más ancho
-        canvas.height - 2 * MARGIN + 2 * ANTI_BOWING_OFFSET, // Más alto
+        MARGIN - ANTI_BOWING_OFFSET,  
+        MARGIN - ANTI_BOWING_OFFSET, 
+        canvas.width - 2 * MARGIN + 2 * ANTI_BOWING_OFFSET,
+        canvas.height - 2 * MARGIN + 2 * ANTI_BOWING_OFFSET,
         {
-            // Baja rugosidad para parecer más sólido y limpio
             roughness: 0.5, 
-            strokeWidth: 2, // Sin borde, solo relleno
+            strokeWidth: 2, 
             fill: fillColor, 
             fillStyle: 'solid'
         }
     );
-
-    // --- 2. CAPA SUPERIOR: El Marco Principal (Con Alto Bowing y Roughness) ---
+    // --- B. Marco Principal ---
     rc.rectangle(
         MARGIN, 
         MARGIN, 
@@ -90,14 +88,13 @@ function drawNotelyFrame() {
             roughness: 2.8, 
             stroke: strokeColor, 
             strokeWidth: 3, 
-            bowing: 2, // Alto bowing para el efecto "arrugado"
+            bowing: 2,
             fill: fillColor, 
             fillStyle: 'solid' 
         }
     );
 }
-// --- FUNCIONES DE DIBUJO DE BOTONES (Copias sin cambios internos, solo para dibujar) ---
-
+// --- DIBUJO DE BOTONES (Copias sin cambios, solo dibuja) ---
 function drawThemeButton() {
     const canvas = document.getElementById('notelyCanvas');
     const rc = rough.canvas(canvas);
@@ -134,7 +131,6 @@ function drawThemeButton() {
         });
     }
 }
-
 function drawVerticalNavBar() {
     const canvas = document.getElementById('notelyCanvas');
     const rc = rough.canvas(canvas);
@@ -158,7 +154,7 @@ function drawVerticalNavBar() {
     });
 }
 // ------------------------------------------------------------------
-// 3. DIBUJO DE CONTENIDO ESPECÍFICO DEL PERFIL (NUEVO Y CORREGIDO)
+// 3. DIBUJO DEL PERFIL
 // ------------------------------------------------------------------
 function drawProfileContent() {
     const canvas = document.getElementById('notelyCanvas');
@@ -180,7 +176,6 @@ function drawProfileContent() {
     const centerX = contentXStart + contentWidth / 2;
     
     // --- 2. Calcular Posición Vertical (Debajo del Texto) ---    
-    // Usamos el contenedor del marco como referencia para el Top.
     const containerTop = container.offsetTop; // Posición Y donde empieza el marco
     
     // Altura total del contenido HTML, ajustada por el scroll
@@ -190,7 +185,7 @@ function drawProfileContent() {
     const separatorY = contentBottomY + 20; 
     
     // --- 3. DIBUJAR: Separador Horizontal Centrado ---
-    const LINE_LENGTH = 150; // Longitud total del separador (300px)
+    const LINE_LENGTH = 150;
     
     rc.line(
         centerX - LINE_LENGTH, 
@@ -205,7 +200,7 @@ function drawProfileContent() {
     );
 }
 // ------------------------------------------------------------------
-// 11. DIBUJO DE LA BARRA DE SCROLL (Rough.js Sketchy) - ¡COMPLETA!
+// 11. DIBUJO DE LA BARRA DE SCROLL
 // ------------------------------------------------------------------
 var SCROLL_BAR_WIDTH = 10;
 var SCROLL_BAR_MARGIN = 12;
@@ -349,9 +344,9 @@ function drawSessionStateButton() { // <-- ¡Nuevo nombre de función!
     });
 }
 // ------------------------------------------------------------------
-// 12. DIBUJO DEL BOTÓN DE AUTENTICACIÓN GRANDE (Esquina Superior Derecha)
+// 12. DIBUJO DEL BOTÓN DE AUTENTICACIÓN (Esquina Superior Derecha)
 // ------------------------------------------------------------------
-function drawAuthButton() { // <-- ¡Esta es la función de animation_right.js!
+function drawAuthButton() { 
     const canvas = document.getElementById('notelyCanvas');
     const rc = rough.canvas(canvas);
     const ctx = canvas.getContext('2d');
@@ -360,12 +355,12 @@ function drawAuthButton() { // <-- ¡Esta es la función de animation_right.js!
     const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
     
     // --- Posicionamiento y Dimensiones ---
-    const btnWidth = 230; // Ancho ajustado
+    const btnWidth = 230; // Ancho
     const btnHeight = 40;
     
     // Usamos las variables globales de profile_user.js:
-    const margin = THEME_BTN_MARGIN; // Margen de 20px
-    const navBarMarginTop = NAV_BAR_MARGIN_TOP; // Margen de 20px
+    const margin = THEME_BTN_MARGIN; 
+    const navBarMarginTop = NAV_BAR_MARGIN_TOP;
 
     // Calcula la posición X (desde la derecha)
     const x = canvas.width - margin - btnWidth; 
@@ -461,7 +456,6 @@ function handleProfilePageClicks(x, y, canvas) {
     // Si el clic no coincide con ningún botón de perfil ni navegación
     return false;
 }
-// --- DIBUJO DE ICONOS (asumiendo que son copias exactas de animation.js) ---
 // ------------------------------------------------------------------
 // 5. DIBUJO DEL BOTÓN DE BÚSQUEDA (Lupa)
 // ------------------------------------------------------------------
@@ -550,8 +544,7 @@ function drawHomeButton() {
         strokeWidth: 2,
         fill: fillColor,
         fillStyle: 'solid'
-    });
-    
+    });   
     // --- 3. Puerta (Pequeño rectángulo con relleno sólido) ---
     const doorWidth = 6;
     const doorHeight = 8;
@@ -563,9 +556,8 @@ function drawHomeButton() {
         fillStyle: 'solid'
     });
 }
-
 // ------------------------------------------------------------------
-// 8. DIBUJO DEL BOTÓN DE AÑADIR NOTA (Hoja con +) - AHORA POSICIÓN FIJA (Índice 4)
+// 8. DIBUJO DEL BOTÓN DE AÑADIR NOTA
 // ------------------------------------------------------------------
 function drawAddNoteButton() {
     const canvas = document.getElementById('notelyCanvas');
@@ -593,7 +585,7 @@ function drawAddNoteButton() {
         fillStyle: 'solid'
     });
     
-    // --- 2. Pliegue de la Esquina Superior Derecha (rc.path) ---
+    // --- 2. Pliegue de la Esquina Superior Derecha ---
     const foldSize = 6;
     const foldPath = `M ${x + sheetWidth - foldSize} ${y} L ${x + sheetWidth} ${y + foldSize} L ${x + sheetWidth - foldSize} ${y + foldSize} Z`;
     
@@ -611,7 +603,7 @@ function drawAddNoteButton() {
         strokeWidth: 1
     });
 
-    // --- 3. Símbolo de + (rc.line) ---
+    // --- 3. Símbolo de + ---
     const plusSize = 10;
     const plusMargin = 5;
     const plusX = x + plusMargin;
@@ -629,7 +621,7 @@ function drawAddNoteButton() {
     });
 }
 // ------------------------------------------------------------------
-// 9. DIBUJO DEL BOTÓN DE CONFIGURACIÓN (Engranaje)
+// 9. DIBUJO DEL BOTÓN DE CONFIGURACIÓN
 // ------------------------------------------------------------------
 function drawSettingsButton() {
     const canvas = document.getElementById('notelyCanvas');
@@ -673,7 +665,7 @@ function drawSettingsButton() {
         fillStyle: 'solid'
     });
     
-    // --- 2. Crear el Hueco (rc.circle con fill: fillColor) ---
+    // --- 2. Crear el Hueco ---
     rc.circle(centerX, centerY, gearInnerRadius, {
         roughness: 1.5,
         stroke: strokeColor,
@@ -731,177 +723,147 @@ function drawProfileButton() {
 }
 window.handleProfilePageClicks = handleProfilePageClicks;
 // ------------------------------------------------------------------
-// 4. BUCLE DE ANIMACIÓN (Limitado a 4 FPS) - ¡RECICLADO COMPLETO!
+// 4. ANIMACIÓN (4 FPS) - ¡RECICLADO!
 // ------------------------------------------------------------------
 
 function animate(timestamp) {
-    // 1. Manejo del Frame Rate (4 FPS)
-    if (timestamp < lastTime + FRAME_INTERVAL) {
-        requestAnimationFrame(animate);
-        return;
-    }
-    
-    // Actualizar el tiempo del último frame dibujado
-    lastTime = timestamp;
+    // 1. Manejo del Frame Rate (4 FPS)
+    if (timestamp < lastTime + FRAME_INTERVAL) {
+        requestAnimationFrame(animate);
+        return;
+    }
+    
+    // Actualizar el tiempo del último frame dibujado
+    lastTime = timestamp;
 
-    // 2. Ejecutar las funciones de dibujo
-    
-    // Limpiamos el notelyCanvas
-    const canvas = document.getElementById('notelyCanvas');
-    const ctx = canvas.getContext('2d');
-    const container = document.getElementById('frame-container');
-    
-    // Necesario para que los dibujos no se superpongan
-    ctx.clearRect(0, 0, container.clientWidth, container.clientHeight);
-    
-    // Redibujar el Marco y los Elementos que requieren animación (ej. Rough.js)
-    drawNotelyFrame();
-    
-    // DIBUJAR TODOS LOS BOTONES Y ELEMENTOS DE LA INTERFAZ
-    drawBackgroundTexture();
-    drawThemeButton();
-    drawVerticalNavBar();
-    drawSearchButton();
-    drawHomeButton(); 
-    drawSettingsButton();
-    drawProfileButton(); 
-    drawAddNoteButton(); 
-    drawProfileContent();
-    drawSessionStateButton();
-    drawAuthButton();
+    // 2. Ejecutar las funciones de dibujo
+    
+    // Limpiamos el notelyCanvas
+    const canvas = document.getElementById('notelyCanvas');
+    const ctx = canvas.getContext('2d');
+    const container = document.getElementById('frame-container');
+    
+    // Necesario para que los dibujos no se superpongan
+    ctx.clearRect(0, 0, container.clientWidth, container.clientHeight);
+    
+    // Redibujar el Marco y los Elementos que requieren animación (ej. Rough.js)
+    drawNotelyFrame();
+    
+    // DIBUJAR TODOS LOS BOTONES Y ELEMENTOS DE LA INTERFAZ
+    drawBackgroundTexture();
+    drawThemeButton();
+    drawVerticalNavBar();
+    drawSearchButton();
+    drawHomeButton(); 
+    drawSettingsButton();
+    drawProfileButton(); 
+    drawAddNoteButton(); 
+    drawProfileContent();
+    drawSessionStateButton();
+    drawAuthButton();
 const feedContainer = document.getElementById('feed-container');
-let scrollbarYRatio = 0; 
+let scrollbarYRatio = 0; 
 
 if (feedContainer && feedContainer.scrollHeight > feedContainer.clientHeight) {
-    scrollbarYRatio = feedContainer.scrollTop / (feedContainer.scrollHeight - feedContainer.clientHeight);
+    scrollbarYRatio = feedContainer.scrollTop / (feedContainer.scrollHeight - feedContainer.clientHeight);
 }
 
 drawSketchyScrollbar(scrollbarYRatio);
-    
-    // 3. Solicitar el próximo frame
-    requestAnimationFrame(animate);
+    
+    // 3. Solicitar el próximo frame
+    requestAnimationFrame(animate);
 }
 // ------------------------------------------------------------------
-// 5. INICIALIZACIÓN Y PUNTO DE ENTRADA - ¡CORREGIDO EL CIERRE DE CARGA!
+// 5. INICIALIZACIÓN
 // ------------------------------------------------------------------
 function initialDraw() {
-    // Dibujo inicial de los elementos de Rough.js
-    drawBackgroundTexture();
-    drawNotelyFrame();
-    drawThemeButton();
-    drawVerticalNavBar();
-    drawSearchButton();
-    drawHomeButton(); 
-    drawSettingsButton();
-    drawProfileButton(); 
-    drawAddNoteButton(); 
-    drawProfileContent();
-    drawSessionStateButton();
-    drawAuthButton();
-    
-    // Aquí iría el dibujo inicial del scrollbar si es necesario
-    const feedContainer = document.getElementById('feed-container');
-    let scrollbarYRatio = 0;
-    if (feedContainer && feedContainer.scrollHeight > feedContainer.clientHeight) {
-        scrollbarYRatio = feedContainer.scrollTop / (feedContainer.scrollHeight - feedContainer.clientHeight);
-    }
-    drawSketchyScrollbar(scrollbarYRatio);
+    // Dibujo inicial de los elementos de Rough.js
+    drawBackgroundTexture();
+    drawNotelyFrame();
+    drawThemeButton();
+    drawVerticalNavBar();
+    drawSearchButton();
+    drawHomeButton(); 
+    drawSettingsButton();
+    drawProfileButton(); 
+    drawAddNoteButton(); 
+    drawProfileContent();
+    drawSessionStateButton();
+    drawAuthButton();
+    
+    // Aquí iría el dibujo inicial del scrollbar si es necesario
+    const feedContainer = document.getElementById('feed-container');
+    let scrollbarYRatio = 0;
+    if (feedContainer && feedContainer.scrollHeight > feedContainer.clientHeight) {
+        scrollbarYRatio = feedContainer.scrollTop / (feedContainer.scrollHeight - feedContainer.clientHeight);
+    }
+    drawSketchyScrollbar(scrollbarYRatio);
 }
 
-// Punto de Entrada Principal
+// Punto de Entrada Principal (VERSIÓN ÚNICA CON LÓGICA DE CARGA)
 function startApp() {
-    // 1. Dibuja todos los elementos de la interfaz la primera vez (para tener tamaños correctos)
-    initialDraw();
+    // 1. Dibuja todos los elementos de la interfaz la primera vez (para tener tamaños correctos)
+    initialDraw();
 
-    // 💡 SOLUCIÓN RÁPIDA PARA ANULAR EL FEED (SE MANTIENE)
-    const feedContainer = document.getElementById('feed-container');
-    const profileContent = document.getElementById('profile-content');
-    
-    if (feedContainer && profileContent) {
-        const profileContentElement = feedContainer.removeChild(profileContent);
-        feedContainer.innerHTML = '';
-        feedContainer.appendChild(profileContentElement);
-    }
-    // FIN DE SOLUCIÓN RÁPIDA
+    // 💡 SOLUCIÓN RÁPIDA PARA ANULAR EL FEED (Mantiene el contenido del perfil)
+    const feedContainer = document.getElementById('feed-container');
+    const profileContent = document.getElementById('profile-content');
+    
+    if (feedContainer && profileContent) {
+        const profileContentElement = feedContainer.removeChild(profileContent);
+        feedContainer.innerHTML = '';
+        feedContainer.appendChild(profileContentElement);
+    }
+    // FIN DE SOLUCIÓN RÁPIDA
 
-    // 2. Inicia el bucle de animación para el redibujado de 4 FPS
-    requestAnimationFrame(animate); 
+    // 2. Inicia el bucle de animación para el redibujado de 4 FPS
+    requestAnimationFrame(animate); 
 
-    // ==========================================================
-    // ✅ GESTIÓN DE LA DESAPARICIÓN DE LA PANTALLA DE CARGA (Añadido)
-    // ==========================================================
-    const loadingOverlay = document.getElementById('loading-screen-overlay');
+    // ==========================================================
+    // ✅ GESTIÓN DE LA DESAPARICIÓN DE LA PANTALLA DE CARGA (Añadido)
+    // ==========================================================
+    const loadingOverlay = document.getElementById('loading-screen-overlay');
 
-    if (loadingOverlay) {
-        // 1. Detener la animación de los puntos
-        if (window.stopLoadingAnimation) {
-            window.stopLoadingAnimation();
-        }
+    if (loadingOverlay) {
+        // 1. Detener la animación de los puntos
+        if (window.stopLoadingAnimation) {
+            window.stopLoadingAnimation();
+        }
 
-        // 2. Efecto Flash Blanco (Llama a drawLoadingScreen con color de tinta por 200ms)
-        if (window.drawLoadingScreen) {
-            const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
-            window.drawLoadingScreen(performance.now(), strokeColor); 
-        }
+        // 2. Efecto Flash Blanco (Llama a drawLoadingScreen con color de tinta por 200ms)
+        if (window.drawLoadingScreen) {
+            const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
+            window.drawLoadingScreen(performance.now(), strokeColor); 
+        }
 
-        setTimeout(() => {
-            // 3. Iniciar el desvanecimiento gradual (cambiando la opacidad CSS)
-            loadingOverlay.style.opacity = '0';
+        setTimeout(() => {
+            // 3. Iniciar el desvanecimiento gradual (cambiando la opacidad CSS)
+            loadingOverlay.style.opacity = '0';
 
-            // 4. Eliminar del DOM después de que termine la transición (600ms total)
-            setTimeout(() => {
-                loadingOverlay.remove();
-            }, 600); 
+            // 4. Eliminar del DOM después de que termine la transición (600ms total)
+            setTimeout(() => {
+                loadingOverlay.remove();
+            }, 600); 
 
-        }, 200); // Duración del "flash"
-    } else {
-        // Si no hay pantalla de carga, solo iniciamos la animación de la app
-    }
+        }, 200); // Duración del "flash"
+    } else {
+        // Si no hay pantalla de carga, solo iniciamos la animación de la app
+    }
 }
 // ------------------------------------------------------------------
-// 6. MANEJADORES DE EVENTOS Y ARRANQUE - ¡MODIFICADO!
+// 6. MANEJADORES DE EVENTOS Y ARRANQUE
 // ------------------------------------------------------------------
-
 function setupEventListeners() {
-    document.getElementById('notelyCanvas').addEventListener('mousedown', handleCanvasMouseDown);
-    window.addEventListener('resize', initialDraw);
 
-    const feedContainer = document.getElementById('feed-container');
-    if (feedContainer) {
-        feedContainer.addEventListener('scroll', handleNativeScroll); 
-    }
+    document.getElementById('notelyCanvas').addEventListener('mousedown', handleCanvasMouseDown);
+    window.addEventListener('resize', initialDraw);
+
+    const feedContainer = document.getElementById('feed-container');
+    if (feedContainer) {
+        feedContainer.addEventListener('scroll', handleNativeScroll); 
+    }
 }
-
-// Punto de Entrada Principal
-function startApp() {
-    // 1. Dibuja todos los elementos de la interfaz la primera vez
-    initialDraw();
-
-    // 💡 SOLUCIÓN RÁPIDA PARA ANULAR EL FEED
-    const feedContainer = document.getElementById('feed-container');
-    const profileContent = document.getElementById('profile-content');
-    
-    if (feedContainer && profileContent) {
-        // 1. Guarda el contenido del perfil (lo saca del DOM, pero mantiene el elemento)
-        const profileContentElement = feedContainer.removeChild(profileContent);
-        
-        // 2. Limpia el contenedor (esto elimina cualquier post inyectado por otro script)
-        feedContainer.innerHTML = '';
-        
-        // 3. Reinserta solo el contenido del perfil
-        feedContainer.appendChild(profileContentElement);
-    }
-
-    // 2. Inicia el bucle de animación para el redibujado de 4 FPS
-    requestAnimationFrame(animate); 
-    
-    // 3. Inicia la animación de la pantalla de carga (si existe en loading_screen.js)
-    if (window.startLoadingAnimation) {
-        window.startLoadingAnimation(); 
-    }
-}
-
-// Aseguramos que los eventos se configuren lo antes posible
+// Para iniciar la aplicación.
 setupEventListeners();
-// Llamar a startApp cuando la ventana esté completamente cargada (incluyendo Rough.js y fuentes)
+// Llamar a startApp cuando la ventana esté cargada (incluyendo Rough.js y fuentes)
 window.addEventListener('load', startApp);
