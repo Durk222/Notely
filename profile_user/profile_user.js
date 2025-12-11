@@ -397,22 +397,47 @@ function drawAuthButton() { // <-- ¡Esta es la función de animation_right.js!
     ctx.fillText(text, textX, textY);
 }
 // ------------------------------------------------------------------
-// 7B. DETECCIÓN DE CLICS ESPECÍFICOS DE PROFILE_USER
+// 7B. DETECCIÓN DE CLICS ESPECÍFICOS DE PROFILE_USER (CON NAVEGACIÓN CORREGIDA)
 // ------------------------------------------------------------------
-/**
- * Procesa los clics en los elementos exclusivos de la página de perfil.
- **/
 function handleProfilePageClicks(x, y, canvas) {
-    // ------------------------------------------------------------------
-    // A. DETECCIÓN DEL BOTÓN GRANDE DE AUTENTICACIÓN (Superior Derecha)
-    // ------------------------------------------------------------------
-    // Dimensiones recicladas de drawAuthButton() (Sección 12)
+    // Definiciones de área (copiadas de animation.js para HOME y PROFILE)
+    const navXMin = THEME_BTN_MARGIN;
+    const navXMax = THEME_BTN_MARGIN + NAV_BAR_WIDTH;
+
+    // --- 1. DETECCIÓN DEL BOTÓN DE CASA (Home) (Index 1) ---
+    const buttonHomeYMin = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 1;
+    const buttonHomeYMax = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 2;
+
+    if (x >= navXMin && x <= navXMax && y >= buttonHomeYMin && y <= buttonHomeYMax) {
+        console.log("Clic en el botón de Casa (Home).");
+        if (window.startOutroTransition) {
+            // ✅ CORRECCIÓN CLAVE: Sube un nivel para ir al index.html
+            window.startOutroTransition('../index.html'); 
+        }
+        return true;
+    }
+
+    // --- 2. DETECCIÓN DEL BOTÓN DE PERFIL (Profile) (Index 3) ---
+    const buttonProfileYMin = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 3;
+    const buttonProfileYMax = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 4;
+
+    if (x >= navXMin && x <= navXMax && y >= buttonProfileYMin && y <= buttonProfileYMax) {
+        console.log("Clic en el botón de Perfil (Recargar).");
+        if (window.startOutroTransition) {
+            // ✅ CORRECCIÓN CLAVE: Recargar la página actual.
+            // Esto evita que se añada otra carpeta a la ruta: profile_user/profile.html
+            window.startOutroTransition('profile.html'); 
+        }
+        return true;
+    }
+    
+    // --- 3. DETECCIÓN DEL BOTÓN GRANDE DE AUTENTICACIÓN (Superior Derecha) ---
+    // (Mantengo tu lógica anterior para este botón)
     const btnWidth = 230; 
     const btnHeight = 40;
     const margin = THEME_BTN_MARGIN; 
     const navBarMarginTop = NAV_BAR_MARGIN_TOP; 
 
-    // Replicar el cálculo de la posición:
     const buttonAuthXMin = canvas.width - margin - btnWidth; 
     const buttonAuthXMax = canvas.width - margin; 
     const buttonAuthYMin = navBarMarginTop;
@@ -423,23 +448,17 @@ function handleProfilePageClicks(x, y, canvas) {
         // Lógica futura para iniciar el proceso de login/registro
         return true; 
     }
-
-    // ------------------------------------------------------------------
-    // B. DETECCIÓN DEL BOTÓN DE ESTADO DE SESIÓN (Candado/Índice 5 en barra lateral)
-    // ------------------------------------------------------------------
-    const buttonSessionXMin = THEME_BTN_MARGIN;
-    const buttonSessionXMax = THEME_BTN_MARGIN + NAV_BAR_WIDTH;
-    // Sexto segmento de la barra (Índice 5):
+        // --- 4. DETECCIÓN DEL BOTÓN DE ESTADO DE SESIÓN (Candado/Índice 5) ---
     const buttonSessionYMin = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 5; 
     const buttonSessionYMax = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT * 6; 
 
-    if (x >= buttonSessionXMin && x <= buttonSessionXMax && y >= buttonSessionYMin && y <= buttonSessionYMax) {
+    if (x >= navXMin && x <= navXMax && y >= buttonSessionYMin && y <= buttonSessionYMax) {
         console.log("Clic en el botón de Estado de Sesión (Candado).");
         // Lógica de acción aquí (e.g., window.toggleSessionModal())
         return true; 
     }
     
-    // Si el clic no coincide con ningún botón de perfil
+    // Si el clic no coincide con ningún botón de perfil ni navegación
     return false;
 }
 // --- DIBUJO DE ICONOS (asumiendo que son copias exactas de animation.js) ---
@@ -727,8 +746,6 @@ function animate(timestamp) {
     lastTime = timestamp;
 
     // 2. Ejecutar las funciones de dibujo
-    // Nota: drawBackgroundTexture() se llama fuera del bucle para mejor rendimiento,
-    // pero si necesita animación (p.ej. ruido), debe ir aquí.
     
     // Limpiamos el notelyCanvas
     const canvas = document.getElementById('notelyCanvas');
@@ -840,8 +857,6 @@ function startApp() {
         }, 200); // Duración del "flash"
     } else {
         // Si no hay pantalla de carga, solo iniciamos la animación de la app
-        // (Aunque ya se inició arriba, esto es un fallback)
-        // requestAnimationFrame(animate); // Ya llamado, se deja solo la lógica de carga
     }
 }
 // ------------------------------------------------------------------
@@ -889,6 +904,5 @@ function startApp() {
 
 // Aseguramos que los eventos se configuren lo antes posible
 setupEventListeners();
-
 // Llamar a startApp cuando la ventana esté completamente cargada (incluyendo Rough.js y fuentes)
 window.addEventListener('load', startApp);
