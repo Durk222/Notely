@@ -734,6 +734,8 @@ function handleCanvasMouseDown(event) {
         if (window.toggleTheme) {
             window.toggleTheme();
         }
+        // ✅ DEVOLVER INMEDIATAMENTE: Esto evita que handleProfilePageClicks lo intercepte.
+        return;
     }
 
     // 2. Manejar clics específicos de la página de perfil (Navegación Corregida)
