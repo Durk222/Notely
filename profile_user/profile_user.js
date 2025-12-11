@@ -1,10 +1,6 @@
 // ==================================================================
-// PROFILE.JS - Lógica de Dibujo y Animación para la Página de Perfil
+// PROFILE.JS - Dibujos y Animaciones de la página
 // ==================================================================
-
-// NOTA: Este archivo contiene el código reciclado de animación y dibujo de Rough.js 
-// para mantener el look and feel de Notely en la página de perfil.
-
 // --- VARIABLES RECICLADAS ---
 var THEME_BTN_SIZE = 40; 
 var THEME_BTN_MARGIN = 20; 
@@ -21,7 +17,7 @@ var FPS = 4;
 var FRAME_INTERVAL = 1000 / FPS; 
 
 // --- VARIABLES GLOBALES DEL MARCO Y ANIMACIÓN ---
-var MARGIN = 5; // ⬅️ AÑADIDO: Margen interior estándar de 5px.
+var MARGIN = 5;
 // ------------------------------------------------------------------
 // 1. DIBUJO DEL FONDO (Textura) - ¡MODIFICADO!
 // ------------------------------------------------------------------
@@ -161,14 +157,6 @@ function drawVerticalNavBar() {
         fillStyle: 'solid'
     });
 }
-
-// --- DIBUJO DE ICONOS (Se omiten para brevedad, asumiendo que son copias exactas) ---
-function drawSearchButton() { /* ... Código del botón de Búsqueda ... */ }
-function drawHomeButton() { /* ... Código del botón de Casa ... */ }
-function drawSettingsButton() { /* ... Código del botón de Configuración ... */ }
-function drawAddNoteButton() { /* ... Código del botón de Añadir Nota ... */ }
-function drawProfileButton() { /* ... Código del botón de Perfil ... */ }
-// Agrega aquí todas las funciones de dibujo de botones (copia de animation.js)
 // ------------------------------------------------------------------
 // 3. DIBUJO DE CONTENIDO ESPECÍFICO DEL PERFIL (NUEVO Y CORREGIDO)
 // ------------------------------------------------------------------
@@ -180,30 +168,18 @@ function drawProfileContent() {
     const container = document.getElementById('frame-container');
     const profileContent = document.getElementById('profile-content');
     
-    // Si no existe el contenido o el contenedor, salimos.
     if (!profileContent || !container) {
         return;
     }
     
     // --- 1. Calcular Centro Horizontal (Centrado) ---
-    // Posición X inicial del área de dibujo del contenido (después de la barra de navegación)
     const contentXStart = NAV_BAR_WIDTH + 2 * THEME_BTN_MARGIN; 
     const contentWidth = container.clientWidth - contentXStart - 2 * MARGIN; // Ancho del marco menos el margen derecho
 
     // Centro real del contenido
     const centerX = contentXStart + contentWidth / 2;
     
-    // --- 2. Calcular Posición Vertical (Debajo del Texto) ---
-    // top: Posición vertical desde el borde superior del 'notelyCanvas'
-    // profileContent.offsetHeight: Altura del contenido HTML visible.
-    // profileContent.offsetTop: La posición vertical del contenido dentro de 'feed-container',
-    //                         PERO ESTE VALOR ES RELATIVO A 'feed-container'.
-    
-    // Para obtener la posición en el canvas, usamos la posición del contenedor de frame 
-    // MÁS la posición del contenido dentro de él.
-    // Dado que profile-content está dentro de feed-container (que se scrollea), usamos:
-    // profileContent.offsetTop + profileContent.offsetHeight: Posición Y ABSOLUTA del fondo del elemento HTML.
-    
+    // --- 2. Calcular Posición Vertical (Debajo del Texto) ---    
     // Usamos el contenedor del marco como referencia para el Top.
     const containerTop = container.offsetTop; // Posición Y donde empieza el marco
     
@@ -227,10 +203,6 @@ function drawProfileContent() {
             strokeWidth: 2
         }
     );
-    
-    // 💡 NOTA PARA EL CENTRADO DE TEXTO:
-    // El centrado del *texto* HTML debe hacerse con CSS (ej: text-align: center) 
-    // en la hoja de estilos de #profile-content.
 }
 // ------------------------------------------------------------------
 // 11. DIBUJO DE LA BARRA DE SCROLL (Rough.js Sketchy) - ¡COMPLETA!
@@ -247,17 +219,12 @@ function drawSketchyScrollbar(scrollRatio) {
 
     const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
     const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
-
-    // Altura y margen del área de contenido (donde debe ir el scroll)
-    // 💡 NUEVO CÁLCULO PARA contentYStart 💡
-    
     // Altura del botón de Autenticación (Sección 12): 40px
     const btnHeight = 40;
     // Margen superior (Sección 12): NAV_BAR_MARGIN_TOP (20px)
     const navBarMarginTop = NAV_BAR_MARGIN_TOP;
     
     //      Altura y margen del área de contenido (donde debe ir el scroll)
-    //      COMIENZO: Debajo del Botón de Autenticación (20px + 40px + 5px de margen)
     const contentYStart = navBarMarginTop + btnHeight + MARGIN + 35; // 20 + 40 + 5 + 35 = 100px    
     // FIN: Hasta antes del botón de tema
     const contentYEnd = canvas.height - THEME_BTN_MARGIN - THEME_BTN_SIZE - BUTTON_SPACING;
@@ -275,14 +242,13 @@ function drawSketchyScrollbar(scrollRatio) {
         roughness: 1.5,
         stroke: strokeColor,
         strokeWidth: 1, 
-        fill: fillColor, // Relleno con el color de fondo
+        fill: fillColor,
         fillStyle: 'solid'
     });
     
     // --- 2. Calcular el tamaño y posición del "pulgar" (thumb) ---
     const thumbMinHeight = 40; 
     
-    // ⚠️ RE-CALCULAR LA ALTURA DEL THUMB basado en el contenido del feed
     const feedContainer = document.getElementById('feed-container');
     const scrollMax = feedContainer.scrollHeight;
     const scrollVisible = feedContainer.clientHeight;
@@ -316,10 +282,6 @@ function drawSketchyScrollbar(scrollRatio) {
 // 8B. MANEJADOR DE SCROLL NATIVO (NUEVO)
 // ------------------------------------------------------------------
 function handleNativeScroll() {
-    // 💡 NOTA: Ya no necesitamos llamar a drawSketchyScrollbar aquí
-    // El bucle `animate` se encargará de dibujar la posición actualizada
-    // en el próximo frame de 4 FPS. Solo necesitamos que el scroll ocurra.
-    // El código actual está bien, ya que solo calcula el ratio y no hace nada más.
     
     const feedContainer = document.getElementById('feed-container');
     
@@ -343,9 +305,7 @@ function drawSessionStateButton() { // <-- ¡Nuevo nombre de función!
     const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
     
     // Coordenadas del centro de la CELDA: ÍNDICE 5
-    // ¡Ojo! Si Añadir Nota es Índice 4, este es Índice 5.
     const centerX = THEME_BTN_MARGIN + NAV_BAR_WIDTH / 2;
-    // CÁLCULO: NAV_BAR_MARGIN_TOP + (BUTTON_HEIGHT * ÍNDICE) + (BUTTON_HEIGHT / 2)
     const centerY = NAV_BAR_MARGIN_TOP + (BUTTON_HEIGHT * 5) + (BUTTON_HEIGHT / 2); 
     
     // Parámetros del Candado
@@ -371,12 +331,11 @@ function drawSessionStateButton() { // <-- ¡Nuevo nombre de función!
     const arcY = y; // Comienza en el tope del rectángulo
     
     // Dibujamos un círculo con el color de fondo para 'vaciar' el asa.
-    // Esto crea un efecto de medio círculo hueco.
     rc.arc(arcX, arcY, handleRadius, handleRadius, Math.PI, 2 * Math.PI, false, {
         roughness: 1.5,
         stroke: strokeColor,
-        strokeWidth: 2.5, // Más grueso para cubrir el fondo
-        fill: fillColor, // Relleno con el color de fondo para que se vea hueco
+        strokeWidth: 2.5, 
+        fill: fillColor, 
         fillStyle: 'solid'
     });
     
@@ -392,10 +351,6 @@ function drawSessionStateButton() { // <-- ¡Nuevo nombre de función!
 // ------------------------------------------------------------------
 // 12. DIBUJO DEL BOTÓN DE AUTENTICACIÓN GRANDE (Esquina Superior Derecha)
 // ------------------------------------------------------------------
-/**
- * Dibuja el botón de "Iniciar Sesión o Crear Cuenta" en la esquina superior derecha.
- * Asume que el usuario está "desconectado".
- */
 function drawAuthButton() { // <-- ¡Esta es la función de animation_right.js!
     const canvas = document.getElementById('notelyCanvas');
     const rc = rough.canvas(canvas);
@@ -446,10 +401,7 @@ function drawAuthButton() { // <-- ¡Esta es la función de animation_right.js!
 // ------------------------------------------------------------------
 /**
  * Procesa los clics en los elementos exclusivos de la página de perfil.
- * @param {number} x Coordenada X del clic.
- * @param {number} y Coordenada Y del clic.
- * @returns {boolean} True si se manejó un clic, False si no.
- */
+ **/
 function handleProfilePageClicks(x, y, canvas) {
     // ------------------------------------------------------------------
     // A. DETECCIÓN DEL BOTÓN GRANDE DE AUTENTICACIÓN (Superior Derecha)
@@ -490,8 +442,274 @@ function handleProfilePageClicks(x, y, canvas) {
     // Si el clic no coincide con ningún botón de perfil
     return false;
 }
+// --- DIBUJO DE ICONOS (asumiendo que son copias exactas de animation.js) ---
+// ------------------------------------------------------------------
+// 5. DIBUJO DEL BOTÓN DE BÚSQUEDA (Lupa)
+// ------------------------------------------------------------------
+function drawSearchButton() {
+    const canvas = document.getElementById('notelyCanvas');
+    const rc = rough.canvas(canvas);
 
-// MANTENEMOS ESTO:
+    const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
+    const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
+    
+    // Coordenadas del centro del botón (parte superior de la barra):
+    const centerX = THEME_BTN_MARGIN + NAV_BAR_WIDTH / 2;
+    const centerY = NAV_BAR_MARGIN_TOP + BUTTON_HEIGHT / 2; 
+
+    // --- 1. Círculo de la Lupa ---
+    const circleRadius = SEARCH_ICON_SIZE;
+    rc.circle(centerX, centerY - 2, circleRadius, { // -2 para centrar verticalmente mejor
+        roughness: 2,
+        stroke: strokeColor,
+        strokeWidth: 2,
+        fill: fillColor, // La lupa debe estar hueca
+        fillStyle: 'solid'
+    });
+    
+    // --- 2. Mango de la Lupa (rc.line) ---
+    const lineLength = circleRadius * 0.8; 
+    
+    // Posición de inicio (en el borde inferior derecho del círculo)
+    const x1 = centerX + circleRadius * Math.cos(Math.PI / 4); // x + r*cos(45deg)
+    const y1 = centerY - 2 + circleRadius * Math.sin(Math.PI / 4); // y + r*sin(45deg)
+
+    // Posición final (abajo a la derecha)
+    const x2 = x1 + lineLength * Math.cos(Math.PI / 4);
+    const y2 = y1 + lineLength * Math.sin(Math.PI / 4);
+    
+    rc.line(x1, y1, x2, y2, {
+        roughness: 2,
+        stroke: strokeColor,
+        strokeWidth: 2
+    });
+}
+
+// ------------------------------------------------------------------
+// 7. DIBUJO DEL BOTÓN DE CASA (Home)
+// ------------------------------------------------------------------
+function drawHomeButton() {
+    const canvas = document.getElementById('notelyCanvas');
+    const rc = rough.canvas(canvas);
+
+    const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
+    const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
+    
+    // Coordenadas del centro: 
+    const centerX = THEME_BTN_MARGIN + NAV_BAR_WIDTH / 2;
+    const centerY = NAV_BAR_MARGIN_TOP + (BUTTON_HEIGHT * 1) + (BUTTON_HEIGHT / 2);
+
+    const baseWidth = 22;
+    const baseHeight = 15;
+    const roofHeight = 8;
+    
+    const x = centerX - baseWidth / 2;
+    const y = centerY - baseHeight / 2 + roofHeight / 2; // Ajuste para el tejado
+
+    // --- 1. Cuerpo de la Casa (Rectángulo) ---
+    rc.rectangle(x, y, baseWidth, baseHeight, {
+        roughness: 2.5,
+        stroke: strokeColor,
+        strokeWidth: 2,
+        fill: fillColor, 
+        fillStyle: 'solid'
+    });
+    
+    // --- 2. Tejado (rc.path o rc.polygon) ---
+    const roofPoints = [
+        [x, y],
+        [centerX, y - roofHeight],
+        [x + baseWidth, y]
+    ];
+    
+    // Convertir los puntos a una cadena de path SVG y dibujarlos
+    const pathData = `M ${roofPoints[0][0]} ${roofPoints[0][1]} L ${roofPoints[1][0]} ${roofPoints[1][1]} L ${roofPoints[2][0]} ${roofPoints[2][1]} Z`;
+    
+    rc.path(pathData, {
+        roughness: 2.5,
+        stroke: strokeColor,
+        strokeWidth: 2,
+        fill: fillColor,
+        fillStyle: 'solid'
+    });
+    
+    // --- 3. Puerta (Pequeño rectángulo con relleno sólido) ---
+    const doorWidth = 6;
+    const doorHeight = 8;
+    rc.rectangle(centerX - doorWidth / 2, y + baseHeight - doorHeight, doorWidth, doorHeight, {
+        roughness: 1.5,
+        stroke: strokeColor,
+        strokeWidth: 1,
+        fill: strokeColor, // Relleno con el color de la tinta para que se vea sólido
+        fillStyle: 'solid'
+    });
+}
+
+// ------------------------------------------------------------------
+// 8. DIBUJO DEL BOTÓN DE AÑADIR NOTA (Hoja con +) - AHORA POSICIÓN FIJA (Índice 4)
+// ------------------------------------------------------------------
+function drawAddNoteButton() {
+    const canvas = document.getElementById('notelyCanvas');
+    const rc = rough.canvas(canvas);
+
+    const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
+    const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
+    
+    // Coordenadas del centro de la CELDA: Índice 4 (Fijo)
+    const centerX = THEME_BTN_MARGIN + NAV_BAR_WIDTH / 2;
+    const centerY = NAV_BAR_MARGIN_TOP + (BUTTON_HEIGHT * 4) + (BUTTON_HEIGHT / 2); // CÁLCULO FIJO
+    
+    const sheetWidth = 20;
+    const sheetHeight = 25;
+    
+    const x = centerX - sheetWidth / 2;
+    const y = centerY - sheetHeight / 2; // Simplemente centrado en el segmento
+    
+    // --- 1. Base de la Hoja (Rectángulo) ---
+    rc.rectangle(x, y, sheetWidth, sheetHeight, {
+        roughness: 2,
+        stroke: strokeColor,
+        strokeWidth: 2,
+        fill: fillColor, 
+        fillStyle: 'solid'
+    });
+    
+    // --- 2. Pliegue de la Esquina Superior Derecha (rc.path) ---
+    const foldSize = 6;
+    const foldPath = `M ${x + sheetWidth - foldSize} ${y} L ${x + sheetWidth} ${y + foldSize} L ${x + sheetWidth - foldSize} ${y + foldSize} Z`;
+    
+    rc.path(foldPath, {
+        roughness: 1.5,
+        stroke: strokeColor,
+        strokeWidth: 1,
+        fill: fillColor,
+        fillStyle: 'solid'
+    });
+    
+    rc.line(x + sheetWidth - foldSize, y, x + sheetWidth, y + foldSize, {
+        roughness: 1.5,
+        stroke: strokeColor,
+        strokeWidth: 1
+    });
+
+    // --- 3. Símbolo de + (rc.line) ---
+    const plusSize = 10;
+    const plusMargin = 5;
+    const plusX = x + plusMargin;
+    const plusY = y + sheetHeight - plusSize - plusMargin; 
+    
+    rc.line(plusX, plusY + plusSize / 2, plusX + plusSize, plusY + plusSize / 2, {
+        roughness: 1.5,
+        stroke: strokeColor,
+        strokeWidth: 2
+    });
+    rc.line(plusX + plusSize / 2, plusY, plusX + plusSize / 2, plusY + plusSize, {
+        roughness: 1.5,
+        stroke: strokeColor,
+        strokeWidth: 2
+    });
+}
+// ------------------------------------------------------------------
+// 9. DIBUJO DEL BOTÓN DE CONFIGURACIÓN (Engranaje)
+// ------------------------------------------------------------------
+function drawSettingsButton() {
+    const canvas = document.getElementById('notelyCanvas');
+    const rc = rough.canvas(canvas);
+
+    const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
+    const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
+    
+// Coordenadas del centro de la CELDA: Ahora es el Índice 2
+    const centerX = THEME_BTN_MARGIN + NAV_BAR_WIDTH / 2;
+    const centerY = NAV_BAR_MARGIN_TOP + (BUTTON_HEIGHT * 2) + (BUTTON_HEIGHT / 2); // CÁLCULO CORREGIDO
+
+    // Parámetros del Engranaje
+    const gearRadius = 13;
+    const gearInnerRadius = 5;
+    
+    // --- 1. Dibujar la Forma Externa del Engranaje (rc.path) ---
+    const pathSegments = [];
+    const numTeeth = 8;
+    
+    for (let i = 0; i < numTeeth * 2; i++) {
+        const radius = (i % 2 === 0) ? gearRadius : gearRadius * 0.7; 
+        const angle = Math.PI / numTeeth * i - Math.PI / 8;
+        const x = centerX + radius * Math.cos(angle);
+        const y = centerY + radius * Math.sin(angle);
+        
+        if (i === 0) {
+            pathSegments.push(`M ${x} ${y}`);
+        } else {
+            pathSegments.push(`L ${x} ${y}`);
+        }
+    }
+    pathSegments.push('Z'); 
+    const gearPath = pathSegments.join(' ');
+
+    rc.path(gearPath, {
+        roughness: 2.5,
+        stroke: strokeColor,
+        strokeWidth: 2,
+        fill: strokeColor, 
+        fillStyle: 'solid'
+    });
+    
+    // --- 2. Crear el Hueco (rc.circle con fill: fillColor) ---
+    rc.circle(centerX, centerY, gearInnerRadius, {
+        roughness: 1.5,
+        stroke: strokeColor,
+        strokeWidth: 1,
+        fill: fillColor,
+        fillStyle: 'solid'
+    });
+}
+
+// ------------------------------------------------------------------
+// 10. DIBUJO DEL BOTÓN DE PERFIL (Usuario) - AJUSTE FINAL (Silueta Sólida)
+// ------------------------------------------------------------------
+function drawProfileButton() {
+    const canvas = document.getElementById('notelyCanvas');
+    const rc = rough.canvas(canvas);
+
+    const strokeColor = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
+    const fillColor = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
+    
+    // Coordenadas del centro de la CELDA: Índice 3
+    const centerX = THEME_BTN_MARGIN + NAV_BAR_WIDTH / 2;
+    const centerY = NAV_BAR_MARGIN_TOP + (BUTTON_HEIGHT * 3) + (BUTTON_HEIGHT / 2); 
+    
+    // Parámetros del Icono
+    const headRadius = 7;
+    const bodyHeight = 10;
+    
+    // --- 1. Cuerpo/Hombros (Path) ---
+    const bodyWidth = 2 * headRadius + 8;
+    const bodyY = centerY + headRadius * 0.4; // Posición Y baja
+    
+    const bodyPath = `
+        M ${centerX - bodyWidth / 2} ${bodyY} 
+        A ${bodyWidth / 2} ${bodyHeight * 0.8}, 0, 0, 1, ${centerX + bodyWidth / 2} ${bodyY}
+    `;
+    
+    rc.path(bodyPath, {
+        roughness: 2,
+        stroke: strokeColor,
+        strokeWidth: 1.5,
+        fill: strokeColor, // ✅ CAMBIO CRÍTICO: Relleno con color de tinta (SILUETA SÓLIDA)
+        fillStyle: 'solid'
+    });
+    
+    // --- 2. Cabeza (Círculo) ---
+    const headY = bodyY - bodyHeight * 1.1; 
+    
+    rc.circle(centerX, headY, headRadius, {
+        roughness: 2,
+        stroke: strokeColor,
+        strokeWidth: 1.5,
+        fill: strokeColor,
+        fillStyle: 'solid'
+    });
+}
 window.handleProfilePageClicks = handleProfilePageClicks;
 // ------------------------------------------------------------------
 // 4. BUCLE DE ANIMACIÓN (Limitado a 4 FPS) - ¡RECICLADO COMPLETO!
@@ -659,13 +877,11 @@ function startApp() {
         // 3. Reinserta solo el contenido del perfil
         feedContainer.appendChild(profileContentElement);
     }
-    // FIN DE SOLUCIÓN RÁPIDA
-    
+
     // 2. Inicia el bucle de animación para el redibujado de 4 FPS
     requestAnimationFrame(animate); 
     
     // 3. Inicia la animación de la pantalla de carga (si existe en loading_screen.js)
-    // Dejamos que loading_screen.js se encargue de detenerse
     if (window.startLoadingAnimation) {
         window.startLoadingAnimation(); 
     }
