@@ -292,7 +292,24 @@ p, button {
 .utility-icons i {
     color: var(--color-fg);
 }
-
+/* --- NUEVO: QR FUNCIONAL GRANDE (ANCLAJE) --- */
+#qr-code-functional-root {
+    position: fixed;
+    /* Ubicación: Inferior Izquierda, 70px por encima de la base (65px del footer + 5px de margen) */
+    bottom: 70px; 
+    left: 20px;
+    z-index: 850; /* Por debajo del footer (900) pero por encima del contenido principal */
+    
+    /* El tamaño lo definiremos en JS, pero el borde va aquí */
+    padding: 8px; /* Espacio entre el borde del marco y el código QR */
+    border: 3px solid var(--color-fg); /* Marco Brutalista grueso */
+    background-color: var(--color-bg); /* Fondo sólido para legibilidad */
+    
+    /* Para que el QR se vea bien, el contenido debe ser centrado */
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+}
 /* ---------------------------------------------------- */
 /* 3. MOBILE RESPONSIVE ADAPTATIONS */
 /* ---------------------------------------------------- */
@@ -323,5 +340,11 @@ p, button {
     /* Ajuste para el Footer (Si tiene demasiado padding horizontal) */
     #footer-bar {
         padding: 0 8px; /* Reducir el margen interno del footer */
+    }
+}
+@media (max-width: 600px) {
+    /* Ocultar el QR funcional en pantallas muy pequeñas para no estorbar */
+    #qr-code-functional-root {
+        display: none; 
     }
 }
