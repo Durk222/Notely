@@ -71,42 +71,68 @@ window.initNav = function() {
     footerRoot.appendChild(footerBar);
 
     generateQRCode();
+    generateFunctionalQR();
 };
 // ------------------------------------------------------------------
-// NUEVA FUNCIÓN: Generación del Código QR
+// 1. FUNCIÓN DECORATIVA (Reutilizada de antes, solo renombrada)
 // ------------------------------------------------------------------
-function generateQRCode() {
-    // Para asegurar que el DOM esté listo
+function generateDecorativeQR() {
+    const qrContainerId = "actual-qr-code";
     setTimeout(() => {
-        const qrContainerId = "actual-qr-code";
         const qrContainer = document.getElementById(qrContainerId);
-        
-        if (!qrContainer) {
-            console.warn("Contenedor QR no encontrado.");
-            return;
-        }
+        if (!qrContainer || typeof QRCode === 'undefined') return;
 
-        // Definir el contenido que tendrá el QR (ejemplo de la URL de tu repo)
-        const qrContent = "https://durk222.github.io/Notely/2.0/";
-        
-        // Colores dinámicos para el modo Brutalista (tinta y fondo)
         const colorFg = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
         const colorBg = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
+        const qrContent = "https://durk222.github.io/Notely/2.0/";
 
         var qrcode = new QRCode(qrContainerId, {
             text: qrContent,
-            width: 50,  // Reducimos el tamaño para ajustarlo al diseño de 30px
+            width: 50,  // Tamaño de generación
             height: 50,
-            colorDark : colorFg,   // Tinta Brutalista
-            colorLight : colorBg,  // Fondo Brutalista
+            colorDark : colorFg,
+            colorLight : colorBg,
             correctLevel : QRCode.CorrectLevel.H
         });
         
-        // Opcional: ajustar el tamaño final vía CSS si 50px es muy grande
+        // Ajustar el tamaño para que se vea diminuto dentro del marco de 30px del CSS
         qrContainer.style.width = '30px';
         qrContainer.style.height = '30px';
+        
+    }, 100);
+}
 
-    }, 100); // Pequeño retraso para asegurar que el DOM esté completamente renderizado
+
+// ------------------------------------------------------------------
+// 2. FUNCIÓN FUNCIONAL (El QR Grande y Útil)
+// ------------------------------------------------------------------
+function generateFunctionalQR() {
+    const qrContainerId = "qr-code-functional-root";
+    setTimeout(() => {
+        const qrContainer = document.getElementById(qrContainerId);
+        if (!qrContainer || typeof QRCode === 'undefined') return;
+        
+        // 🚨 TAMAÑO FUNCIONAL: 128px es un buen tamaño para escanear
+        const functionalSize = 128; 
+
+        const colorFg = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
+        const colorBg = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
+        const qrContent = "https://durk222.github.io/Notely/2.0/"; // Mismo contenido
+
+        var qrcode = new QRCode(qrContainerId, {
+            text: qrContent,
+            width: functionalSize,
+            height: functionalSize,
+            colorDark : colorFg,
+            colorLight : colorBg,
+            correctLevel : QRCode.CorrectLevel.H
+        });
+        
+        // Ajustar el contenedor para que el tamaño coincida con la generación
+        qrContainer.style.width = `${functionalSize + 16}px`; // 128px + 2x(8px padding)
+        qrContainer.style.height = `${functionalSize + 16}px`;
+        
+    }, 100);
 }
 // Exponer initNav globalmente para que app.js lo llame
 window.initNav = initNav;
