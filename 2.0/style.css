@@ -15,6 +15,12 @@
     --color-ac: var(--color-accent-liqueur); /* Tono de acento */
     
     --theme-mode: light;
+
+    /* DEFINICIÓN DE FAMILIAS DE FUENTE */
+    --font-h1: 'Brasilero', serif;
+    /* Las fuentes H2/H3 se listan como fallback por si falla el JS randomizador */
+    --font-h2-group: 'RoundStyle_Bold', 'Xirod', 'Nasalization', sans-serif; 
+    --font-body: 'Xanmono', monospace; /* Xanmono con monospace como fallback */
 }
 
 /* --- 2. MODO OSCURO (DATA-THEME="DARK") --- */
@@ -30,22 +36,62 @@ body[data-theme="dark"] {
     --theme-mode: dark;
 }
 
-/* --- 3. TIPOGRAFÍA @FONT-FACE (EJEMPLO) --- */
+/* --- 3. TIPOGRAFÍA @FONT-FACE --- */
+
+/* h1: Brasilero (Impacto Principal) */
 @font-face {
     font-family: 'Brasilero'; 
-    /* ¡IMPORTANTE! Asegúrate de usar el formato correcto y la ruta relativa (ej. url('../assets/brasilero.otf')) */
-    src: url('../assets/brasilero.otf') format('opentype'); 
+    src: url('2.0_ASSETS/brasilero.otf') format('opentype'); 
     font-weight: normal;
     font-style: normal;
 }
-/* Agrega aquí los @font-face para las 3 fuentes de h2 y la fuente legible */
+
+/* h2/h3 Random 1: RoundStyle_Bold */
+@font-face {
+    font-family: 'RoundStyle_Bold';
+    src: url('2.0_ASSETS/RoundStyle_Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+/* h2/h3 Random 2: Xirod */
+@font-face {
+    font-family: 'Xirod';
+    src: url('2.0_ASSETS/Xirod.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* h2/h3 Random 3: Nasalization */
+@font-face {
+    font-family: 'Nasalization';
+    src: url('2.0_ASSETS/Nasalization.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Cuerpo de Texto: Xanmono Regular (Legible) */
+@font-face {
+    font-family: 'Xanmono';
+    src: url('2.0_ASSETS/Xanmono_reg.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Cuerpo de Texto: Xanmono Italic (Énfasis) */
+@font-face {
+    font-family: 'Xanmono';
+    src: url('2.0_ASSETS/Xanmono_ita.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
 
 /* --- 4. ESTILOS GLOBALES --- */
 
-/* Aplica el estilo de selección a toda la página */
+/* Estilo de selección */
 ::selection {
     background-color: var(--color-ac); /* fondo naranja */
-    color: var(--color-bg); /* El color del texto es el del fondo (inversión) */
+    color: var(--color-bg);
 }
 /* Para compatibilidad con algunos navegadores antiguos (especialmente Firefox) */
 ::-moz-selection {
@@ -56,21 +102,25 @@ body[data-theme="dark"] {
 body {
     background-color: var(--color-bg);
     color: var(--color-fg);
-    font-family: 'Helvetica', Arial, sans-serif; /* Usaremos una fuente legible de respaldo */
+    font-family: var(--font-body);
     transition: background-color 0.3s, color 0.3s;
-    /* ... (restos de estilos como el borde del main-container) ... */
 }
 
-/* Ejemplo de la Tipografía Brutalista */
 h1 {
-    font-family: 'Brasilero', serif; 
-    /* Estilos como text-transform: uppercase, font-weight: 900, etc. */
+    font-family: var(--font-body);
+    font-size: 4em;
+    line-height: 1;
+    text-transform: uppercase;
 }
 
-/* El h2 requerirá una lógica en JS o una clase CSS para rotar las fuentes */
 h2 {
-    /* Por defecto, una de las tres fuentes */
-    font-family: 'FuenteH2-1', 'FuenteH2-2', 'FuenteH2-3', sans-serif;
+    /* Por defecto, toma la primera de la lista. Usaremos JS para la randomización. */
+    font-family: 'RoundStyle_Bold', var(--font-h2-group); 
+    font-size: 2.5em;
+    /* ... (otros estilos) ... */
 }
 
-/* ... (continúa con la estructura de #main-container, #vertical-nav, etc.) ... */
+/* El texto de párrafo y botones (por defecto) es legible */
+p, button {
+    font-family: var(--font-body);
+}
