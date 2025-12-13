@@ -38,7 +38,7 @@ window.initNav = function() {
             <div class="product-label-group">
                 <div class="rounded-badge">
                     <span>SPECIAL EDITION</span>
-                    <span>2024</span>
+                    <span>2026</span>
                 </div>
                 <div class="barcode-area">
                     <span class="part-no">PART NO: 0090</span>
@@ -47,7 +47,7 @@ window.initNav = function() {
 
             <div class="issue-title">
                 <span>ISSUE</span>
-                <span class="issue-number">888</span>
+                <span class="issue-number">777</span>
             </div>
 
             <div class="qr-and-utility-group">
