@@ -28,7 +28,7 @@
     --theme-mode: light;
 
     /* DEFINICIÓN DE FAMILIAS DE FUENTE */
-    --font-h1: 'Brasilero', serif;
+    --font-h1: 'Xirod', serif;
     /* Las fuentes H2/H3 se listan como fallback por si falla el JS randomizador */
     --font-h2-group: 'RoundStyle_Bold', 'Xirod', 'Nasalization', sans-serif; 
     --font-body: 'Xanmono', monospace; /* Xanmono con monospace como fallback */
@@ -51,8 +51,8 @@ body[data-theme="dark"] {
 
 /* h1: Brasilero (Impacto Principal) */
 @font-face {
-    font-family: 'Brasilero'; 
-    src: url('2.0_ASSETS/Brasilero.otf') format('opentype'); 
+    font-family: 'Xirod'; 
+    src: url('2.0_ASSETS/Xirod.otf') format('opentype'); 
     font-weight: normal;
     font-style: normal;
 }
@@ -137,10 +137,10 @@ h2 {
     display: flex; 
     flex-direction: column; 
     
-    width: 100vw;
+    width: 100%;
     height: calc(100vh - 65px);
     /* PROPIEDADES DEL BORDE */
-    border: 1px solid var(--color-fg);
+    border: 2px solid var(--color-fg);
     border-bottom: none;
     border-radius: 2px 2px 5px 5px;
 }
@@ -148,6 +148,35 @@ h2 {
 /* El texto de párrafo y botones (por defecto) es legible */
 p, button {
     font-family: var(--font-body);
+}
+
+#horizontal-nav {
+    display: flex;
+    justify-content: space-between; /* El logo a la izquierda, botones a la derecha */
+    align-items: center;
+    
+    /* Margen interno para separar del borde del #main-container */
+    padding: 10px 15px; 
+    
+    /* Línea de división Brutalista (delgada) */
+    border-bottom: 2px solid var(--color-fg); 
+    flex-shrink: 0; /* Asegura que la barra no se encoja */
+}
+
+/* Estilos de botones (ejemplo) */
+.nav-buttons-group {
+    display: flex;
+    gap: 15px; /* Espacio normal entre botones */
+}
+
+.nav-icon-button {
+    /* Estilo Brutalista: Sin fondo, solo borde o solo texto/icono */
+    background: none;
+    border: none;
+    color: var(--color-fg);
+    cursor: pointer;
+    font-size: 1.2em; /* Tamaño de ícono estándar */
+    padding: 5px; /* Pequeño padding para área de clic */
 }
 
 /* --- NUEVO: CONTENEDOR RAÍZ DEL FOOTER --- */
@@ -221,7 +250,7 @@ p, button {
 .issue-title {
     display: flex;
     align-items: baseline;
-    font-family: var(--font-h1); /* Fuente Brasilero para impacto */
+    font-family: var(--font-h1);
     font-size: 20px;
     font-weight: 700;
 }
@@ -252,4 +281,37 @@ p, button {
 /* Si usas los sólidos (fas), tendrías que invertir el color o forzar un contorno. */
 .utility-icons i {
     color: var(--color-fg);
+}
+
+/* ---------------------------------------------------- */
+/* 3. MOBILE RESPONSIVE ADAPTATIONS */
+/* ---------------------------------------------------- */
+@media (max-width: 600px) {
+    
+    /* Reducir el marco principal si lo deseas */
+    #main-container {
+        border: 3px solid var(--color-fg); /* Marco más delgado en móvil */
+    }
+
+    /* 🚨 Ajuste de la barra de navegación 🚨 */
+    #horizontal-nav {
+        /* Reducir el padding interno (margen entre el borde y el contenido) */
+        padding: 5px 10px; 
+    }
+
+    /* Reducir el espacio entre los botones */
+    .nav-buttons-group {
+        gap: 8px; /* Reducción del espacio entre íconos */
+    }
+
+    /* Reducir el tamaño de los íconos si es necesario */
+    .nav-icon-button {
+        font-size: 1.1em;
+        padding: 3px;
+    }
+    
+    /* Ajuste para el Footer (Si tiene demasiado padding horizontal) */
+    #footer-bar {
+        padding: 0 8px; /* Reducir el margen interno del footer */
+    }
 }
