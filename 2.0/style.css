@@ -1,1 +1,76 @@
+/* --- 1. LIQUEUR 2.0 --- */
+:root {
+    /* Paleta Fija */
+    --color-light-liqueur: #FFFCF2; /* Blanco */
+    --color-medium-liqueur: #CCC5B9; /* Gris Claro */
+    --color-med-dark-liqueur: #403D39; /* Gris Oscuro */
+    --color-dark-liqueur: #252422; /* Negro */
+    --color-accent-liqueur: #FF3D00; /* Naranja (Accent) */
 
+    /* VARIABLES DINÁMICAS (DEFAULT: Light Mode) */
+    --color-bg: var(--color-light-liqueur); /* Fondo */
+    --color-fg: var(--color-dark-liqueur); /* Foreground */
+    --color-md: var(--color-medium-liqueur); /* Tono medio para elementos secundarios (ej. líneas de división) */
+    --color-dd: var(--color-med-dark-liqueur); /* Tono oscuro para rellenos */
+    --color-ac: var(--color-accent-liqueur); /* Tono de acento */
+    
+    --theme-mode: light;
+}
+
+/* --- 2. MODO OSCURO (DATA-THEME="DARK") --- */
+body[data-theme="dark"] {
+    /* INVERSIÓN: El fondo es oscuro, la tinta es clara */
+    --color-bg: var(--color-dark-liqueur); 
+    --color-fg: var(--color-light-liqueur);
+    
+    /* Inversión sutil de tonos */
+    --color-md: var(--color-med-dark-liqueur); 
+    --color-dd: var(--color-medium-liqueur);
+
+    --theme-mode: dark;
+}
+
+/* --- 3. TIPOGRAFÍA @FONT-FACE (EJEMPLO) --- */
+@font-face {
+    font-family: 'Brasilero'; 
+    /* ¡IMPORTANTE! Asegúrate de usar el formato correcto y la ruta relativa (ej. url('../assets/brasilero.otf')) */
+    src: url('../assets/brasilero.otf') format('opentype'); 
+    font-weight: normal;
+    font-style: normal;
+}
+/* Agrega aquí los @font-face para las 3 fuentes de h2 y la fuente legible */
+
+/* --- 4. ESTILOS GLOBALES --- */
+
+/* Aplica el estilo de selección a toda la página */
+::selection {
+    background-color: var(--color-ac); /* fondo naranja */
+    color: var(--color-bg); /* El color del texto es el del fondo (inversión) */
+}
+/* Para compatibilidad con algunos navegadores antiguos (especialmente Firefox) */
+::-moz-selection {
+    background-color: var(--color-ac);
+    color: var(--color-bg);
+}
+
+body {
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    font-family: 'Helvetica', Arial, sans-serif; /* Usaremos una fuente legible de respaldo */
+    transition: background-color 0.3s, color 0.3s;
+    /* ... (restos de estilos como el borde del main-container) ... */
+}
+
+/* Ejemplo de la Tipografía Brutalista */
+h1 {
+    font-family: 'Brasilero', serif; 
+    /* Estilos como text-transform: uppercase, font-weight: 900, etc. */
+}
+
+/* El h2 requerirá una lógica en JS o una clase CSS para rotar las fuentes */
+h2 {
+    /* Por defecto, una de las tres fuentes */
+    font-family: 'FuenteH2-1', 'FuenteH2-2', 'FuenteH2-3', sans-serif;
+}
+
+/* ... (continúa con la estructura de #main-container, #vertical-nav, etc.) ... */
