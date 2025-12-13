@@ -115,6 +115,7 @@ body {
     color: var(--color-fg);
     font-family: var(--font-body);
     transition: background-color 0.3s, color 0.3s;
+    overflow-x: hidden;
 }
 
 h1 {
