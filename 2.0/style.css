@@ -269,7 +269,17 @@ p, button {
     width: 30px;
     height: 30px;
     border: 1.5px solid var(--color-fg); /* Borde delgado para el QR */
-    /* Aquí se podría dibujar el QR real */
+    overflow: hidden; 
+    display: flex; /* Centrar el QR generado (canvas/img) */
+    align-items: center;
+    justify-content: center;
+}
+/* Estilo para el canvas/img generado por la librería dentro del contenedor */
+.qr-code-placeholder canvas,
+.qr-code-placeholder img {
+    /* Forzar el tamaño interno para que encaje perfectamente si la librería genera más grande */
+    width: 100% !important; 
+    height: 100% !important;
 }
 .utility-icons {
     display: flex;
