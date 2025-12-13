@@ -124,3 +124,56 @@ h2 {
 p, button {
     font-family: var(--font-body);
 }
+
+/* --- 5. ESTRUCTURA LAYOUT (MAIN-CONTAINER) --- */
+#main-container {
+    /* CAMBIO CLAVE: De Flex (row) a Flex (column) */
+    display: flex; 
+    flex-direction: column; 
+    
+    width: 100vw;
+    height: 100vh;
+    border: 5px solid var(--color-fg); /* Marco grueso */
+}
+
+/* --- 6. BARRA DE NAVEGACIÓN HORIZONTAL --- */
+#horizontal-nav {
+    /* Usa Flexbox en dirección de fila para colocar los botones uno al lado del otro */
+    display: flex; 
+    justify-content: space-between; /* Distribuye los elementos (ej. logo a la izq, botones a la der) */
+    align-items: center;
+    
+    height: 60px; /* Altura fija para la barra superior */
+    width: 100%;
+    
+    /* Línea divisoria Brutalista */
+    border-bottom: 5px solid var(--color-fg); 
+    flex-shrink: 0; /* Asegura que la barra no se encoja */
+    padding: 0 20px;
+}
+
+/* --- 7. ÁREA PRINCIPAL DEL CONTENIDO --- */
+#content-area {
+    flex-grow: 1; /* Ocupa el espacio restante */
+    overflow-y: auto; /* Permite desplazamiento en el contenido */
+    padding: 20px;
+}
+
+/* --- 8. ESTILO DE BOTÓN DE NAVEGACIÓN (Ejemplo en nav.js) --- */
+.nav-icon-button {
+    background-color: transparent;
+    border: none;
+    color: var(--color-fg);
+    font-family: var(--font-body);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 5px 10px;
+    text-transform: uppercase;
+    
+    /* Inversión Brutalista al pasar el ratón */
+    transition: background-color 0.1s, color 0.1s;
+}
+.nav-icon-button:hover {
+    background-color: var(--color-fg);
+    color: var(--color-bg);
+}
