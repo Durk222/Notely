@@ -1,0 +1,1 @@
+QRCode generator por davidshimjs: https://github.com/davidshimjs/qrcodejs
