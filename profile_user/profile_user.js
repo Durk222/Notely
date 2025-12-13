@@ -430,7 +430,8 @@ function handleProfilePageClicks(x, y, canvas) {
 
     if (x >= buttonAuthXMin && x <= buttonAuthXMax && y >= buttonAuthYMin && y <= buttonAuthYMax) {
         console.log("Clic en el Botón GRANDE de Autenticación.");
-        // Lógica futura para iniciar el proceso de login/registro
+        // 🚨 ¡INSERCIÓN CRÍTICA AQUÍ! 🚨
+        requestNotificationPermissionAndShow();
         return true; 
     }
         // --- 4. DETECCIÓN DEL BOTÓN DE ESTADO DE SESIÓN (Candado/Índice 5) ---
@@ -726,6 +727,58 @@ function handleCanvasMouseDown(event) {
         return;
     }
 
+}
+// ------------------------------------------------------------------
+// 8. LÓGICA DE NOTIFICACIONES
+// ------------------------------------------------------------------
+
+/**
+ * Muestra la notificación de "Inicia Sesión" utilizando el icono de Android/Chrome.
+ */
+function showNotelyNotification() {
+    // Usamos la ruta relativa al archivo HTML
+    const iconPath = "../assets/android-chrome-192x192.png"; 
+
+    // Opciones de la notificación
+    const options = {
+        body: "No te pierdas de las últimas novedades, ¡inicia sesión en Notely!",
+        icon: iconPath, 
+        // Etiqueta para agrupar notificaciones (opcional pero bueno para la UX)
+        tag: 'login-reminder' 
+    };
+
+    // Crear y mostrar la notificación
+    new Notification("¡Notely!", options);
+}
+
+/**
+ * Solicita permiso y muestra la notificación.
+ * Se llama al hacer clic en el botón de autenticación.
+ */
+function requestNotificationPermissionAndShow() {
+    // 1. Verificación: ¿Soporta el navegador la API?
+    if (!("Notification" in window)) {
+        console.warn("Este navegador no soporta notificaciones de escritorio.");
+        return;
+    }
+
+    // 2. Comprobar estado del permiso
+    if (Notification.permission === "granted") {
+        // Ya hay permiso, la mostramos directamente
+        showNotelyNotification();
+    } else if (Notification.permission !== "denied") {
+        // No ha sido denegado, pedimos permiso.
+        Notification.requestPermission().then(permission => {
+            if (permission === "granted") {
+                // Si el usuario da permiso, mostramos la notificación inmediatamente
+                showNotelyNotification();
+            } else {
+                console.log("Permiso de notificación denegado.");
+            }
+        });
+    } else {
+        console.log("El usuario ha denegado las notificaciones permanentemente.");
+    }
 }
 // ------------------------------------------------------------------
 // 4. ANIMACIÓN (4 FPS) - ¡RECICLADO!
