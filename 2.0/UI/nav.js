@@ -14,8 +14,9 @@ const NAV_BUTTON_CONFIG = [
 window.initNav = function() {
     const mainContainer = document.getElementById('main-container');
     const navBar = document.getElementById('horizontal-nav');
+    const footerRoot = document.getElementById('footer-bar-root');
     
-    if (!mainContainer || !navBar) return;
+    if (!mainContainer || !navBar || !footerRoot) return;
     
     // ------------------------------------------------------------------
     // A. DIBUJAR BARRA DE NAVEGACIÓN SUPERIOR (Ejemplo)
@@ -67,7 +68,7 @@ window.initNav = function() {
     footerBar.innerHTML = footerBarHTML;
     
     // 2. Insertar el footerBar justo antes de cerrar el main-container
-    mainContainer.appendChild(footerBar);
+    footerRoot.appendChild(footerBar);
 };
 
 // Exponer initNav globalmente para que app.js lo llame
