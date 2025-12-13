@@ -120,21 +120,40 @@ h2 {
     /* ... (otros estilos) ... */
 }
 
+/* --- 5. ESTRUCTURA LAYOUT (MAIN-CONTAINER) --- */
+#main-container {
+    display: flex; 
+    flex-direction: column; 
+    
+    width: 100vw;
+    height: calc(100vh - 65px);
+    /* PROPIEDADES DEL BORDE */
+    border: 1px solid var(--color-fg);
+    border-bottom: none;
+    border-radius: 2px 2px 5px 5px;
+}
+
 /* El texto de párrafo y botones (por defecto) es legible */
 p, button {
     font-family: var(--font-body);
 }
 
+/* --- NUEVO: CONTENEDOR RAÍZ DEL FOOTER --- */
+#footer-bar-root {
+    position: fixed; /* CLAVE: Fijo a la ventana */
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 65px; /* Altura de la barra + margen/borde */
+    z-index: 900; /* Asegura que esté sobre otros elementos */
+}
+
 /* --- FOOTER BAR (Etiqueta Decorativa Inferior) --- */
 #footer-bar {
-    /* CLAVE: Lo coloca en la parte inferior del flex-column */
-    flex-shrink: 0; 
     
     width: 100%;
     height: 60px; /* Altura fija */
-    border-top: 2px solid var(--color-fg); /* Línea DELGADA Brutalista */
-    
-    /* Fondo que contraste con el fondo principal si es necesario */
+    border-top: 2px solid var(--color-fg);
     background-color: var(--color-bg); 
     
     padding: 0 15px;
