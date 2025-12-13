@@ -51,7 +51,7 @@ window.initNav = function() {
             </div>
 
             <div class="qr-and-utility-group">
-                <div class="qr-code-placeholder">
+                <div id="actual-qr-code" class="qr-code-placeholder">
                     </div>
                 <div class="utility-icons">
                     <i class="far fa-recycle"></i>
@@ -69,7 +69,44 @@ window.initNav = function() {
     
     // 2. Insertar el footerBar justo antes de cerrar el main-container
     footerRoot.appendChild(footerBar);
-};
 
+    generateQRCode();
+};
+// ------------------------------------------------------------------
+// NUEVA FUNCIÓN: Generación del Código QR
+// ------------------------------------------------------------------
+function generateQRCode() {
+    // Para asegurar que el DOM esté listo
+    setTimeout(() => {
+        const qrContainerId = "actual-qr-code";
+        const qrContainer = document.getElementById(qrContainerId);
+        
+        if (!qrContainer) {
+            console.warn("Contenedor QR no encontrado.");
+            return;
+        }
+
+        // Definir el contenido que tendrá el QR (ejemplo de la URL de tu repo)
+        const qrContent = "https://durk222.github.io/Notely/2.0/";
+        
+        // Colores dinámicos para el modo Brutalista (tinta y fondo)
+        const colorFg = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
+        const colorBg = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
+
+        var qrcode = new QRCode(qrContainerId, {
+            text: qrContent,
+            width: 50,  // Reducimos el tamaño para ajustarlo al diseño de 30px
+            height: 50,
+            colorDark : colorFg,   // Tinta Brutalista
+            colorLight : colorBg,  // Fondo Brutalista
+            correctLevel : QRCode.CorrectLevel.H
+        });
+        
+        // Opcional: ajustar el tamaño final vía CSS si 50px es muy grande
+        qrContainer.style.width = '30px';
+        qrContainer.style.height = '30px';
+
+    }, 100); // Pequeño retraso para asegurar que el DOM esté completamente renderizado
+}
 // Exponer initNav globalmente para que app.js lo llame
 window.initNav = initNav;
