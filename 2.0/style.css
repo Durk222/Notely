@@ -153,3 +153,71 @@ p, button {
     align-items: center;
     justify-content: space-between;
 }
+
+/* --- Componentes de la Barra Inferior (Brutalismo Utilitario) --- */
+
+/* 1. Etiqueta de Producto Redondeada (Izquierda) */
+.product-label-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.rounded-badge {
+    border: 1.5px solid var(--color-fg); /* Borde delgado */
+    border-radius: 15px; /* Redondeado */
+    padding: 3px 8px;
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+}
+.barcode-area {
+    /* Borde que simula un código de barras */
+    border: 1.5px solid var(--color-fg);
+    padding: 4px;
+    height: 35px;
+    display: flex;
+    align-items: flex-end;
+}
+.part-no {
+    font-size: 9px;
+    writing-mode: vertical-rl; /* Texto vertical (opcional, si quieres el estilo exacto de la imagen) */
+    text-orientation: mixed;
+    transform: rotate(180deg);
+}
+
+/* 2. Título Central (Grande y Bold) */
+.issue-title {
+    display: flex;
+    align-items: baseline;
+    font-family: var(--font-h1); /* Fuente Brasilero para impacto */
+    font-size: 20px;
+    font-weight: 700;
+}
+.issue-number {
+    font-size: 30px; /* Número más grande y audaz */
+    margin-left: 5px;
+}
+
+/* 3. QR y Utilidad (Derecha) */
+.qr-and-utility-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.qr-code-placeholder {
+    width: 30px;
+    height: 30px;
+    border: 1.5px solid var(--color-fg); /* Borde delgado para el QR */
+    /* Aquí se podría dibujar el QR real */
+}
+.utility-icons {
+    display: flex;
+    gap: 10px;
+    font-size: 18px; /* Tamaño de íconos de Font Awesome */
+}
+
+/* Los íconos de Font Awesome Outline (far) por defecto no tienen fill. */
+/* Si usas los sólidos (fas), tendrías que invertir el color o forzar un contorno. */
+.utility-icons i {
+    color: var(--color-fg);
+}
