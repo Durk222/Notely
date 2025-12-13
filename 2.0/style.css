@@ -52,7 +52,7 @@ body[data-theme="dark"] {
 /* h1: Brasilero (Impacto Principal) */
 @font-face {
     font-family: 'Brasilero'; 
-    src: url('2.0_ASSETS/brasilero.otf') format('opentype'); 
+    src: url('2.0_ASSETS/Brasilero.otf') format('opentype'); 
     font-weight: normal;
     font-style: normal;
 }
@@ -154,7 +154,8 @@ p, button {
     position: fixed; /* CLAVE: Fijo a la ventana */
     bottom: 0;
     left: 0;
-    width: 100vw;
+    right: 0;
+    width: auto;
     height: 65px; /* Altura de la barra + margen/borde */
     z-index: 900; /* Asegura que esté sobre otros elementos */
 }
