@@ -182,6 +182,7 @@ function generateBarcodes() {
         rootLeft.setAttribute("jsbarcode-value", codeLeft); 
         rootLeft.setAttribute("jsbarcode-format", "CODE39"); // Tolerante con alfanuméricos
         rootLeft.setAttribute("jsbarcode-linecolor", colorMedioOscuro);
+        rootLeft.setAttribute("jsbarcode-background", "transparent");
         rootLeft.setAttribute("jsbarcode-width", "1.2");
         rootLeft.setAttribute("jsbarcode-height", "50");
         rootLeft.setAttribute("jsbarcode-fontsize", "10");
@@ -196,7 +197,8 @@ function generateBarcodes() {
     if (rootRight) {
         rootRight.setAttribute("jsbarcode-value", codeRight);
         rootRight.setAttribute("jsbarcode-format", "ITF");
-        rootRight.setAttribute("jsbarcode-linecolor", colorMedio);
+        rootRight.setAttribute("jsbarcode-linecolor", colorMedioOscuro);
+        rootLeft.setAttribute("jsbarcode-background", "transparent");
         rootRight.setAttribute("jsbarcode-width", "4");
         rootRight.setAttribute("jsbarcode-height", "50");
         rootRight.setAttribute("jsbarcode-displayvalue", "false"); 
