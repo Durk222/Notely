@@ -448,44 +448,68 @@ p, button {
     right: 20px; /* Mismo margen que el QR inferior */
     border-radius: 5px 1.2px 5px 1.2px;
 }
-/* --- NUEVO: BARRA DE NAVEGACIÓN DE UTILIDAD (Dock Inferior) --- */
+/* --- NUEVO: BARRA DE NAVEGACIÓN DE UTILIDAD (Dock Inferior 3x3) --- */
 #utility-nav-dock {
-    position: fixed;
-    /* Centrado horizontal */
-    left: 50%;
-    transform: translateX(-50%);
+    /* ... (posición fixed, bottom, z-index, etc., se mantienen) ... */
     
-    /* Ubicado justo encima del footer (que tiene 65px de altura total) */
-    bottom: 75px; 
-    z-index: 870; /* Por encima del QR (850) pero debajo del footer (900) */
+    /* Usamos el color de acento para el BORDE/MARCO */
+    border: 3px solid var(--color-ac); 
+    background-color: var(--color-bg); /* El fondo del dock es el fondo de la app */
+    
+    padding: 10px; 
+    border-radius: 5px 1.2px 5px 1.2px; 
     
     display: flex;
-    align-items: flex-end; /* Alinear las barras a la base */
-    gap: 3px; /* Espacio entre las barras */
+    align-items: center; 
+    gap: 10px; 
     
-    padding: 8px 10px;
-    border: 2px solid var(--color-fg);
-    background-color: var(--color-bg); /* Fondo sólido */
-    
-    /* Pequeño radio para que no sea totalmente cuadrado, como el QR funcional */
-    border-radius: 5px; 
+    width: auto; /* Dejamos que el contenido defina el ancho */
+    height: 170px;
 }
 
-/* Estilo base para las barras internas (usaremos la clase .nav-bar-item) */
-.nav-bar-item {
-    background-color: var(--color-ac); /* El color de acento que solicitaste */
-    transition: background-color 0.3s;
-    height: 30px; /* Altura máxima base */
+/* --- Cuadrícula 3x3 (Contenido funcional) --- */
+.nav-grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 1px; 
+    width: 100px; /* Definimos el tamaño del cuadrado 3x3 */
+    height: 100px;
+}
+
+/* Estilo para cada botón */
+.nav-grid-button {
+    /* 🚨 CLAVE: Botones de TINTA (--color-fg) sobre FONDO (--color-bg) 🚨 */
+    background-color: var(--color-fg); 
+    border: none;
+    color: var(--color-bg); /* Ícono en color de fondo */
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.1em;
     cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
 }
 
-/* Estilos de los íconos de Font Awesome */
-.nav-bar-item i {
-    color: var(--color-bg); /* Ícono de color de fondo */
-    font-size: 1.2em;
-    display: block; /* Para centrar y controlar el tamaño */
-    line-height: 30px; /* Centrado vertical */
-    padding: 0 4px; /* Espacio interno */
+/* 🚨 CLAVE: Efecto Hover Invertido (como querías: se vuelven color acento) 🚨 */
+.nav-grid-button:hover {
+    background-color: var(--color-ac); /* Fondo Naranja */
+    color: var(--color-fg); /* Tinta sobre el naranja */
+}
+
+/* --- Barras Decorativas --- */
+.nav-decoration-bar {
+    display: flex;
+    align-items: flex-end; 
+    gap: 2px;
+    height: 100%; 
+}
+
+.deco-bar-item {
+    background-color: var(--color-ac); /* Color de acento (Naranja) */
+    height: 80%; 
+    border: none;
 }
 /* ---------------------------------------------------- */
 /* 3. MOBILE RESPONSIVE ADAPTATIONS */
