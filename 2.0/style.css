@@ -302,7 +302,7 @@ p, button {
     
     /* El tamaño lo definiremos en JS, pero el borde va aquí */
     padding: 8px; /* Espacio entre el borde del marco y el código QR */
-    border: 1.5px solid var(--color-fg); /* Marco Brutalista grueso */
+    border: 2px solid var(--color-fg); /* Marco Brutalista grueso */
     background-color: var(--color-bg); /* Fondo sólido para legibilidad */
     
     /* Para que el QR se vea bien, el contenido debe ser centrado */
