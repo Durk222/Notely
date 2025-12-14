@@ -131,6 +131,11 @@ function generateFunctionalQR() {
         // Ajustar el contenedor para que el tamaño coincida con la generación
         qrContainer.style.width = `${functionalSize + 16}px`; // 128px + 2x(8px padding)
         qrContainer.style.height = `${functionalSize + 16}px`;
+        // ARRASTRE DESACTIVADO
+        const qrElement = qrContainer.querySelector('canvas, img');
+        if (qrElement) {
+            qrElement.setAttribute('draggable', 'false');
+        }
         
     }, 100);
 }
