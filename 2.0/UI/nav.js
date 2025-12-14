@@ -177,7 +177,7 @@ function generateBarcodes() {
     const colorMedioOscuro = style.getPropertyValue('--color-dd').trim();
     
     // 1. BARCODE IZQUIERDA (Código de serie con Tono Medio Oscuro)
-    const codeLeft = "DX-7729-RS4";
+    const codeLeft = "DX7729RS4";
     JsBarcode("#barcode-root-left", codeLeft, {
         format: "code128", // Formato común para códigos de serie
         lineColor: colorMedioOscuro, 
@@ -191,7 +191,7 @@ function generateBarcodes() {
     // 2. BARCODE DERECHA (Código de utilidad con Tono Medio)
     const codeRight = "483756";
     JsBarcode("#barcode-root-right", codeRight, {
-        format: "pharmacode", // Formato más decorativo/brutalista
+        format: "ITF",
         lineColor: colorMedio, 
         width: 4,          // Barras más gruesas
         height: 50,
