@@ -127,20 +127,20 @@ window.initNav = function() {
 
         // --- 2. Barras Decorativas (Secuencia exacta) ---
         const DECO_BAR_CONFIG = [
-            { width: '4px' },   // Delgada 1
-            { width: '4px' },   // Delgada 2
-            { width: '4px' },   // Delgada 3
+            { width: '8px' },   // Delgada 1
+            { width: '8px' },   // Delgada 2
+            { width: '8px' },   // Delgada 3
             
-            { width: '8px' },   // Semi-delgada 1
-            { width: '8px' },   // Semi-delgada 2
-            { width: '8px' },   // Semi-delgada 3
+            { width: '16px' },   // Semi-delgada 1
+            { width: '16px' },   // Semi-delgada 2
+            { width: '16px' },   // Semi-delgada 3
             
-            { width: '12px' },  // Regular 1
-            { width: '12px' },  // Regular 2
-            { width: '12px' },  // Regular 3
+            { width: '24px' },  // Regular 1
+            { width: '32px' },  // Regular 2
+            { width: '40px' },  // Regular 3
             
-            { width: '16px' },  // Semi-Gruesa
-            { width: '20px' }   // Gruesa
+            { width: '48px' },  // Semi-Gruesa
+            { width: '80px' }   // Gruesa
         ];
 
         let decoBarHTML = '<div class="nav-decoration-bar">';
