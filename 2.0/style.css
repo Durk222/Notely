@@ -331,13 +331,13 @@ p, button {
     align-items: center;
     
     /* El tamaño lo definimos aquí */
-    height: 40px; 
+    height: 35px; 
     width: 100%;
     
     border: 2px solid var(--color-fg); /* Marco Grueso */
     border-radius: 20px; /* Redondeado como en tu imagen */
     background-color: var(--color-bg); 
-    overflow: hidden; /* Importante para que el contenido respete el redondeo */
+    overflow: hidden;
 
     margin-bottom: 5px; /* Espacio extra al final de la barra */
 }
