@@ -191,13 +191,13 @@ function generateBarcodes() {
     }
     
     // 2. BARCODE DERECHA (ITF)
-    const codeRight = "483756";
+    const codeRight = "DX7729RS4";
     const rootRight = document.getElementById("barcode-root-right");
 
     if (rootRight) {
         rootRight.setAttribute("jsbarcode-value", codeRight);
-        rootRight.setAttribute("jsbarcode-format", "ITF");
-        rootRight.setAttribute("jsbarcode-linecolor", colorMedioOscuro);
+        rootRight.setAttribute("jsbarcode-format", "CODE39");
+        rootRight.setAttribute("jsbarcode-linecolor", colorMedio);
         rootLeft.setAttribute("jsbarcode-background", "transparent");
         rootRight.setAttribute("jsbarcode-width", "1.2");
         rootRight.setAttribute("jsbarcode-height", "25");
