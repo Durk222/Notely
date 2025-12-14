@@ -483,8 +483,8 @@ p, button {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 1px; 
-    width: 100px; 
-    height: 100px;
+    width: 80px; 
+    height: 80px;
 }
 
 /* Estilo para cada botón */
