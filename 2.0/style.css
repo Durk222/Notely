@@ -152,8 +152,9 @@ p, button {
 
 #horizontal-nav {
     display: flex;
-    justify-content: flex-start; /* El logo a la izquierda, botones a la derecha */
-    align-items: stretch;
+    flex-direction: row;
+    justify-content: space-between; /* El logo a la izquierda, botones a la derecha */
+    align-items: center;
     
     /* Margen interno para separar del borde del #main-container */
     padding: 10px 15px; 
@@ -161,19 +162,39 @@ p, button {
     /* Línea de división Brutalista (delgada) */
     border-bottom: 2px solid var(--color-fg); 
     flex-shrink: 0; /* Asegura que la barra no se encoja */
+    flex-wrap: nowrap;
 }
 
-.logo-and-buttons-row {
+/* --- LOGO --- */
+.logo-area {
+    /* El logo se queda como está, solo necesita un ancho fijo o mínimo */
+    flex-shrink: 0; /* No se encoge */
+    margin-right: 15px; /* Espacio antes de la barra de búsqueda */
+}
+
+/* --- BARRA DE BÚSQUEDA --- */
+#search-bar {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px; /* Espacio antes de la barra de búsqueda */
+    
+    height: 35px; 
+    /* 🚨 CLAVE: Permitir que la barra crezca y ocupe el espacio central 🚨 */
+    flex-grow: 1; 
+    max-width: 600px; /* Limitar el ancho para que no se vea sobrecargada */
+    
+    border: 2px solid var(--color-fg);
+    border-radius: 20px;
+    background-color: var(--color-bg);
+    overflow: hidden; 
+
+    /* Margen a la izquierda y derecha para separarla del logo y el botón de tema */
+    margin: 0 15px; 
 }
 
-/* Estilos de botones (ejemplo) */
+/* El .nav-buttons-group vuelve a ser un contenedor para el botón de tema */
 .nav-buttons-group {
-    display: flex;
-    gap: 15px; /* Espacio normal entre botones */
+    /* Aquí solo estará el botón de tema */
+    flex-shrink: 0; /* No se encoge */
 }
 
 .nav-icon-button {
