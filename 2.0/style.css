@@ -441,10 +441,12 @@ p, button {
 
 #barcode-root-left {
     left: 20px; /* Mismo margen que el QR inferior */
+    border-radius: 1.2px 5px 1.2px 5px;
 }
 
 #barcode-root-right {
     right: 20px; /* Mismo margen que el QR inferior */
+    border-radius: 5px 1.2px 5px 1.2px;
 }
 /* ---------------------------------------------------- */
 /* 3. MOBILE RESPONSIVE ADAPTATIONS */
