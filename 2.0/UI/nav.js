@@ -201,7 +201,7 @@ function generateBarcodes() {
         rootLeft.setAttribute("jsbarcode-background", "transparent");
         rootRight.setAttribute("jsbarcode-width", "1.2");
         rootRight.setAttribute("jsbarcode-height", "25");
-        rootRight.setAttribute("jsbarcode-displayvalue", "false"); 
+        rootRight.setAttribute("jsbarcode-displayvalue", "true"); 
         rootRight.setAttribute("jsbarcode-textmargin", "0");
     }
 
