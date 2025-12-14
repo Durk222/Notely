@@ -95,6 +95,60 @@ window.initNav = function() {
     // 2. Insertar el footerBar justo antes de cerrar el main-container
     footerRoot.appendChild(footerBar);
 
+    // ------------------------------------------------------------------
+// C. DIBUJAR BARRA DE NAVEGACIÓN FLOTANTE (DOCK INFERIOR)
+// ------------------------------------------------------------------
+
+const utilityDock = document.getElementById('utility-nav-dock');
+if (!utilityDock) return;
+
+// Definición de anchos y si llevan ícono de navegación.
+// Solo los primeros 4 llevarán ícono basado en NAV_BUTTON_CONFIG.
+const BAR_CONFIG = [
+    { width: '4px', index: -1 },    // Delgada 1 (Decorativa)
+    { width: '4px', index: -1 },    // Delgada 2 (Decorativa)
+    { width: '4px', index: 0 },     // Delgada 3 -> search (NAV_BUTTON_CONFIG[0])
+    
+    { width: '8px', index: 1 },     // Semi-delgada 1 -> home (NAV_BUTTON_CONFIG[1])
+    { width: '8px', index: 2 },     // Semi-delgada 2 -> profile (NAV_BUTTON_CONFIG[2])
+    { width: '8px', index: 3 },     // Semi-delgada 3 -> settings (NAV_BUTTON_CONFIG[3])
+    
+    { width: '12px', index: -1 },   // Regular 1 (Decorativa)
+    { width: '12px', index: -1 },   // Regular 2 (Decorativa)
+    { width: '12px', index: -1 },   // Regular 3 (Decorativa)
+    
+    { width: '16px', index: -1 },   // Semi-Gruesa (Decorativa)
+    { width: '20px', index: -1 },   // Gruesa (Decorativa)
+    { width: '24px', index: -1, special: true }, // Rectángulo (Decorativa o Botón +)
+];
+
+let dockHTML = '';
+
+BAR_CONFIG.forEach(config => {
+    let content = '';
+    let action = '';
+    let id = '';
+
+    if (config.index !== -1 && NAV_BUTTON_CONFIG[config.index]) {
+        // Asignar ícono y acción/vista a los primeros 4 botones de NAV_BUTTON_CONFIG
+        const navItem = NAV_BUTTON_CONFIG[config.index];
+        content = `<i class="fas ${navItem.icon}"></i>`;
+        // Implementar la lógica de clic para cambiar de vista (asumiendo window.navigate es global)
+        action = navItem.view ? `onclick="window.navigate('${navItem.view}')"` : `onclick="${navItem.action}()"`;
+        id = `id="nav-btn-${navItem.id}"`;
+    } 
+    // Los demás son solo decoración o futuros botones sin ícono.
+
+    // Construir cada barra
+    dockHTML += `
+        <button ${id} class="nav-bar-item" style="width: ${config.width}; height: 35px; ${config.special ? 'height: 35px;' : ''}" ${action}>
+            ${content}
+        </button>
+    `;
+});
+
+utilityDock.innerHTML = dockHTML;
+
     generateDecorativeQR();
     generateFunctionalQR();
     generateBarcodes();
@@ -214,5 +268,58 @@ function generateBarcodes() {
         console.error("Error al inicializar JsBarcode. Asegúrate de que la librería esté cargada.", e);
     }
 }
+// ------------------------------------------------------------------
+// C. DIBUJAR BARRA DE NAVEGACIÓN FLOTANTE (DOCK INFERIOR)
+// ------------------------------------------------------------------
+
+const utilityDock = document.getElementById('utility-nav-dock');
+if (!utilityDock) return;
+
+// Definición de anchos y si llevan ícono de navegación.
+// Solo los primeros 4 llevarán ícono basado en NAV_BUTTON_CONFIG.
+const BAR_CONFIG = [
+    { width: '4px', index: -1 },    // Delgada 1 (Decorativa)
+    { width: '4px', index: -1 },    // Delgada 2 (Decorativa)
+    { width: '4px', index: 0 },     // Delgada 3 -> search (NAV_BUTTON_CONFIG[0])
+    
+    { width: '8px', index: 1 },     // Semi-delgada 1 -> home (NAV_BUTTON_CONFIG[1])
+    { width: '8px', index: 2 },     // Semi-delgada 2 -> profile (NAV_BUTTON_CONFIG[2])
+    { width: '8px', index: 3 },     // Semi-delgada 3 -> settings (NAV_BUTTON_CONFIG[3])
+    
+    { width: '12px', index: -1 },   // Regular 1 (Decorativa)
+    { width: '12px', index: -1 },   // Regular 2 (Decorativa)
+    { width: '12px', index: -1 },   // Regular 3 (Decorativa)
+    
+    { width: '16px', index: -1 },   // Semi-Gruesa (Decorativa)
+    { width: '20px', index: -1 },   // Gruesa (Decorativa)
+    { width: '24px', index: -1, special: true }, // Rectángulo (Decorativa o Botón +)
+];
+
+let dockHTML = '';
+
+BAR_CONFIG.forEach(config => {
+    let content = '';
+    let action = '';
+    let id = '';
+
+    if (config.index !== -1 && NAV_BUTTON_CONFIG[config.index]) {
+        // Asignar ícono y acción/vista a los primeros 4 botones de NAV_BUTTON_CONFIG
+        const navItem = NAV_BUTTON_CONFIG[config.index];
+        content = `<i class="fas ${navItem.icon}"></i>`;
+        // Implementar la lógica de clic para cambiar de vista (asumiendo window.navigate es global)
+        action = navItem.view ? `onclick="window.navigate('${navItem.view}')"` : `onclick="${navItem.action}()"`;
+        id = `id="nav-btn-${navItem.id}"`;
+    } 
+    // Los demás son solo decoración o futuros botones sin ícono.
+
+    // Construir cada barra
+    dockHTML += `
+        <button ${id} class="nav-bar-item" style="width: ${config.width}; height: 35px; ${config.special ? 'height: 35px;' : ''}" ${action}>
+            ${content}
+        </button>
+    `;
+});
+
+utilityDock.innerHTML = dockHTML;
 // Exponer initNav globalmente para que app.js lo llame
 window.initNav = initNav;
