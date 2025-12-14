@@ -197,7 +197,7 @@ function generateBarcodes() {
     if (rootRight) {
         rootRight.setAttribute("jsbarcode-value", codeRight);
         rootRight.setAttribute("jsbarcode-format", "CODE39");
-        rootRight.setAttribute("jsbarcode-linecolor", colorMedio);
+        rootRight.setAttribute("jsbarcode-linecolor", colorMedioOscuro);
         rootLeft.setAttribute("jsbarcode-background", "transparent");
         rootRight.setAttribute("jsbarcode-width", "1.2");
         rootRight.setAttribute("jsbarcode-height", "25");
