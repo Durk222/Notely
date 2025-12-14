@@ -165,42 +165,52 @@ function generateFunctionalQR() {
         
     }, 100);
 }
-// ------------------------------------------------------------------
-// NUEVA FUNCIÓN: Generación de Códigos de Barras
-// ------------------------------------------------------------------
+// 2.0/UI/nav.js (Tu código final para las barras de escaneo)
+
 function generateBarcodes() {
-    // Obtener los estilos calculados del cuerpo para acceder a las variables CSS
+    // Obtener colores dinámicos
     const style = getComputedStyle(document.body);
-    
-    // Usamos las variables definidas en tu style.css
     const colorMedio = style.getPropertyValue('--color-md').trim();
     const colorMedioOscuro = style.getPropertyValue('--color-dd').trim();
     
-    // 1. BARCODE IZQUIERDA (Código de serie con Tono Medio Oscuro)
-    const codeLeft = "DX7729RS4";
-    JsBarcode("#barcode-root-left", codeLeft, {
-        format: "code128", // Formato común para códigos de serie
-        lineColor: colorMedioOscuro, 
-        width: 1.2,        
-        height: 50,        // Altura decente
-        displayValue: true, // Mostrar el código debajo
-        fontSize: 10,
-        margin: 0
-    });
+    // 1. BARCODE IZQUIERDA (CODE39)
+    const codeLeft = "DX7729RS4"; 
+    const rootLeft = document.getElementById("barcode-root-left");
     
-    // 2. BARCODE DERECHA (Código de utilidad con Tono Medio)
+    if (rootLeft) {
+        // La clave es que setAttribute recibe el VALOR (DX7729RS4) como una cadena.
+        rootLeft.setAttribute("jsbarcode-value", codeLeft); 
+        rootLeft.setAttribute("jsbarcode-format", "CODE39"); // Tolerante con alfanuméricos
+        rootLeft.setAttribute("jsbarcode-linecolor", colorMedioOscuro);
+        rootLeft.setAttribute("jsbarcode-width", "1.2");
+        rootLeft.setAttribute("jsbarcode-height", "50");
+        rootLeft.setAttribute("jsbarcode-fontsize", "10");
+        rootLeft.setAttribute("jsbarcode-textmargin", "0");
+        rootLeft.setAttribute("jsbarcode-displayvalue", "true");
+    }
+    
+    // 2. BARCODE DERECHA (ITF)
     const codeRight = "483756";
-    JsBarcode("#barcode-root-right", codeRight, {
-        format: "ITF",
-        lineColor: colorMedio, 
-        width: 4,          // Barras más gruesas
-        height: 50,
-        displayValue: false, // Solo las barras
-        margin: 0
-    });
-    
-    // Nota: La llamada JsBarcode debe hacerse después de que el DOM esté listo, 
-    // lo cual se garantiza al llamarla dentro de initNav.
+    const rootRight = document.getElementById("barcode-root-right");
+
+    if (rootRight) {
+        rootRight.setAttribute("jsbarcode-value", codeRight);
+        rootRight.setAttribute("jsbarcode-format", "ITF");
+        rootRight.setAttribute("jsbarcode-linecolor", colorMedio);
+        rootRight.setAttribute("jsbarcode-width", "4");
+        rootRight.setAttribute("jsbarcode-height", "50");
+        rootRight.setAttribute("jsbarcode-displayvalue", "false"); 
+        rootRight.setAttribute("jsbarcode-textmargin", "0");
+    }
+
+    // 🚨 LLAMADA FINAL: Inicializa leyendo los atributos 🚨
+    try {
+        // Selecciona todos los SVGs con la clase para la inicialización
+        JsBarcode(".barcode-svg").init();
+    } catch(e) {
+        // En caso de fallo de inicialización (ej. la librería aún no cargó)
+        console.error("Error al inicializar JsBarcode. Asegúrate de que la librería esté cargada.", e);
+    }
 }
 // Exponer initNav globalmente para que app.js lo llame
 window.initNav = initNav;
