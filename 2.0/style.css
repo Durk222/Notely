@@ -420,6 +420,32 @@ p, button {
     /* Añadir algo de estilo para ese look "impreso" */
     letter-spacing: 2px;
 }
+/* --- NUEVO: BARCODE SUPERIOR (ANCLAJE) --- */
+#barcode-root-left,
+#barcode-root-right {
+    position: fixed;
+    top: 70px; /* Separación de la parte superior, suficiente para que esté debajo de la nav bar */
+    z-index: 850; 
+    
+    padding: 5px; 
+    background-color: var(--color-bg); /* Fondo sólido para legibilidad */
+    border: 2px solid var(--color-fg); 
+    
+    /* Prevenir arrastre/selección */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+}
+
+#barcode-root-left {
+    left: 20px; /* Mismo margen que el QR inferior */
+}
+
+#barcode-root-right {
+    right: 20px; /* Mismo margen que el QR inferior */
+}
 /* ---------------------------------------------------- */
 /* 3. MOBILE RESPONSIVE ADAPTATIONS */
 /* ---------------------------------------------------- */
