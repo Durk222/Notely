@@ -113,7 +113,7 @@ function generateFunctionalQR() {
         if (!qrContainer || typeof QRCode === 'undefined') return;
         
         // 🚨 TAMAÑO FUNCIONAL: 128px es un buen tamaño para escanear
-        const functionalSize = 128; 
+        const functionalSize = 100; 
 
         const colorFg = getComputedStyle(document.body).getPropertyValue('--color-fg').trim();
         const colorBg = getComputedStyle(document.body).getPropertyValue('--color-bg').trim();
