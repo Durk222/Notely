@@ -28,6 +28,33 @@ window.initNav = function() {
                                 <i class="fas fa-palette"></i>
                             </button>
                         </div>`;
+
+    // ------------------------------------------------------------------
+    // A.1. DIBUJAR BARRA DE BÚSQUEDA (NUEVO)
+    // ------------------------------------------------------------------
+    const searchBarHTML = `
+        <div id="search-bar">
+            <div class="search-deco left-deco">
+                <span class="glitch-text">🙾🙾</span>
+            </div>
+
+            <input 
+                type="text" 
+                placeholder="INGRESA CÓDIGO DE ACCESO" 
+                class="search-input"
+            />
+            
+            <div class="search-deco right-deco">
+                <div class="scanlines-placeholder"></div>
+                <span class="small-text">N O T E L Y</span>
+            </div>
+        </div>
+    `;
+
+    const searchBarContainer = document.createElement('div');
+    searchBarContainer.innerHTML = searchBarHTML;
+
+    navBar.innerHTML += searchBarHTML;
                         
     // ------------------------------------------------------------------
     // B. DIBUJAR BARRA DE DECORATIVA (FOOTER)
