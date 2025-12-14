@@ -97,6 +97,7 @@ window.initNav = function() {
 
     generateDecorativeQR();
     generateFunctionalQR();
+    generateBarcodes();
 };
 // ------------------------------------------------------------------
 // 1. FUNCIÓN DECORATIVA (Reutilizada de antes, solo renombrada)
@@ -163,6 +164,43 @@ function generateFunctionalQR() {
         }
         
     }, 100);
+}
+// ------------------------------------------------------------------
+// NUEVA FUNCIÓN: Generación de Códigos de Barras
+// ------------------------------------------------------------------
+function generateBarcodes() {
+    // Obtener los estilos calculados del cuerpo para acceder a las variables CSS
+    const style = getComputedStyle(document.body);
+    
+    // Usamos las variables definidas en tu style.css
+    const colorMedio = style.getPropertyValue('--color-md').trim();
+    const colorMedioOscuro = style.getPropertyValue('--color-dd').trim();
+    
+    // 1. BARCODE IZQUIERDA (Código de serie con Tono Medio Oscuro)
+    const codeLeft = "DX-7729-RS4";
+    JsBarcode("#barcode-root-left", codeLeft, {
+        format: "code128", // Formato común para códigos de serie
+        lineColor: colorMedioOscuro, 
+        width: 1.2,        
+        height: 50,        // Altura decente
+        displayValue: true, // Mostrar el código debajo
+        fontSize: 10,
+        margin: 0
+    });
+    
+    // 2. BARCODE DERECHA (Código de utilidad con Tono Medio)
+    const codeRight = "483756";
+    JsBarcode("#barcode-root-right", codeRight, {
+        format: "pharmacode", // Formato más decorativo/brutalista
+        lineColor: colorMedio, 
+        width: 4,          // Barras más gruesas
+        height: 50,
+        displayValue: false, // Solo las barras
+        margin: 0
+    });
+    
+    // Nota: La llamada JsBarcode debe hacerse después de que el DOM esté listo, 
+    // lo cual se garantiza al llamarla dentro de initNav.
 }
 // Exponer initNav globalmente para que app.js lo llame
 window.initNav = initNav;
