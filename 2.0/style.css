@@ -49,7 +49,7 @@ body[data-theme="dark"] {
 
 /* --- 3. TIPOGRAFÍA @FONT-FACE --- */
 
-/* h1: Brasilero (Impacto Principal) */
+/* h1: Xirod (Impacto Principal) */
 @font-face {
     font-family: 'Xirod'; 
     src: url('2.0_ASSETS/Xirod.otf') format('opentype'); 
@@ -152,8 +152,8 @@ p, button {
 
 #horizontal-nav {
     display: flex;
-    justify-content: space-between; /* El logo a la izquierda, botones a la derecha */
-    align-items: center;
+    justify-content: flex-start; /* El logo a la izquierda, botones a la derecha */
+    align-items: stretch;
     
     /* Margen interno para separar del borde del #main-container */
     padding: 10px 15px; 
@@ -161,6 +161,13 @@ p, button {
     /* Línea de división Brutalista (delgada) */
     border-bottom: 2px solid var(--color-fg); 
     flex-shrink: 0; /* Asegura que la barra no se encoja */
+}
+
+.logo-and-buttons-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px; /* Espacio antes de la barra de búsqueda */
 }
 
 /* Estilos de botones (ejemplo) */
@@ -317,6 +324,80 @@ p, button {
     user-select: none;         /* Estándar */
 
     cursor: default;
+}
+/* --- 6. COMPONENTE: BARRA DE BÚSQUEDA (BRUTALISTA) --- */
+#search-bar {
+    display: flex;
+    align-items: center;
+    
+    /* El tamaño lo definimos aquí */
+    height: 40px; 
+    width: 100%;
+    
+    border: 2px solid var(--color-fg); /* Marco Grueso */
+    border-radius: 20px; /* Redondeado como en tu imagen */
+    background-color: var(--color-bg); 
+    overflow: hidden; /* Importante para que el contenido respete el redondeo */
+
+    margin-bottom: 5px; /* Espacio extra al final de la barra */
+}
+
+/* 1. Decoración Izquierda/Derecha */
+.search-deco {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 10px; 
+    flex-shrink: 0;
+}
+
+.left-deco .glitch-text {
+    /* Estilo Sci-Fi/Utilitario */
+    font-family: var(--font-body);
+    font-size: 1.5em; 
+    color: var(--color-fg);
+}
+
+/* 2. Campo de Entrada Central (Input) */
+.search-input {
+    flex-grow: 1; /* Ocupar todo el espacio restante */
+    height: 100%;
+    padding: 0 10px;
+    
+    background: none; /* Fondo transparente */
+    border: none; /* Sin borde */
+    outline: none; /* Sin outline al hacer foco */
+    
+    font-family: var(--font-body);
+    font-size: 0.9em;
+    color: var(--color-fg);
+}
+.search-input::placeholder {
+    color: var(--color-dd); /* Tono más suave para el placeholder */
+    font-style: italic;
+}
+
+/* 3. Decoración Derecha (Scanlines y Texto) */
+.right-deco {
+    /* Aquí forzamos que el contenido vaya a la derecha */
+    gap: 5px; 
+}
+
+.right-deco .scanlines-placeholder {
+    width: 5px;
+    height: 100%;
+    /* Simulación de scanlines: Relleno con el color de tinta */
+    background-color: var(--color-fg); 
+    /* Opcional: Patrón de líneas usando un background complejo o un div con bordes */
+}
+
+.right-deco .small-text {
+    font-family: var(--font-body);
+    font-size: 8px; /* Texto muy pequeño */
+    opacity: 0.7; /* Texto sutil */
+    text-transform: uppercase;
+    /* Añadir algo de estilo para ese look "impreso" */
+    letter-spacing: 2px;
 }
 /* ---------------------------------------------------- */
 /* 3. MOBILE RESPONSIVE ADAPTATIONS */
