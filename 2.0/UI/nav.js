@@ -19,19 +19,12 @@ window.initNav = function() {
     if (!mainContainer || !navBar || !footerRoot) return;
     
     // ------------------------------------------------------------------
-    // A. DIBUJAR BARRA DE NAVEGACIÓN SUPERIOR (Ejemplo)
+    // A. ESTRUCTURA DE TRES COLUMNAS (Logo | Barra de Búsqueda | Tema)
     // ------------------------------------------------------------------
-    // Esta parte la llenaremos después con botones funcionales
-    navBar.innerHTML = `<span class="logo-area">NOTELY 2.0</span>
-                        <div class="nav-buttons-group">
-                            <button class="nav-icon-button" onclick="window.toggleTheme()">
-                                <i class="fas fa-palette"></i>
-                            </button>
-                        </div>`;
+    // 1. Logo (Izquierda)
+    const logoHTML = `<span class="logo-area">NOTELY 2.0</span>`;
 
-    // ------------------------------------------------------------------
-    // A.1. DIBUJAR BARRA DE BÚSQUEDA (NUEVO)
-    // ------------------------------------------------------------------
+   // 2. Barra de Búsqueda (Centro)
     const searchBarHTML = `
         <div id="search-bar">
             <div class="search-deco left-deco">
@@ -50,12 +43,17 @@ window.initNav = function() {
             </div>
         </div>
     `;
-
-    const searchBarContainer = document.createElement('div');
-    searchBarContainer.innerHTML = searchBarHTML;
-
-    navBar.innerHTML += searchBarHTML;
-                        
+    
+       // 3. Botón de Tema (Derecha)
+      const themeButtonHTML = `
+      <div class="nav-buttons-group">
+        <button class="nav-icon-button theme-toggle-btn" onclick="window.toggleTheme()">
+            <i class="fas fa-palette"></i>
+        </button>
+    </div>
+    `;         
+    // DIBUJAMOS LA BARRA
+    navBar.innerHTML = logoHTML + searchBarHTML + themeButtonHTML;
     // ------------------------------------------------------------------
     // B. DIBUJAR BARRA DE DECORATIVA (FOOTER)
     // ------------------------------------------------------------------
