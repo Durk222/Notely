@@ -450,21 +450,27 @@ p, button {
 }
 /* --- NUEVO: BARRA DE NAVEGACIÓN DE UTILIDAD (Dock Inferior 3x3) --- */
 #utility-nav-dock {
-    /* ... (posición fixed, bottom, z-index, etc., se mantienen) ... */
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 75px; 
+    z-index: 870;
+
+    /* Dimensiones ajustadas para ocupar el centro de la pantalla */
+    width: 600px; /* Ancho arbitrario grande */
+    max-width: 80%; /* Máximo el 80% de la pantalla para evitar colisiones */
+    height: 120px; /* Altura ajustada */
     
     /* Usamos el color de acento para el BORDE/MARCO */
     border: 3px solid var(--color-ac); 
     background-color: var(--color-bg); /* El fondo del dock es el fondo de la app */
     
-    padding: 10px; 
-    border-radius: 5px 1.2px 5px 1.2px; 
+    padding: 4px; 
+    border-radius: 15px 1.2px 15px 1.2px; 
     
-    display: flex;
+    display: flex; 
+    justify-content: space-around; /* Distribuye espacio entre los grupos */
     align-items: center; 
-    gap: 10px; 
-    
-    width: auto; /* Dejamos que el contenido defina el ancho */
-    height: 170px;
+    gap: 15px;
 }
 
 /* --- Cuadrícula 3x3 (Contenido funcional) --- */
@@ -473,7 +479,7 @@ p, button {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 1px; 
-    width: 100px; /* Definimos el tamaño del cuadrado 3x3 */
+    width: 100px; 
     height: 100px;
 }
 
