@@ -70,7 +70,7 @@ window.initNav = function() {
     // 2. Insertar el footerBar justo antes de cerrar el main-container
     footerRoot.appendChild(footerBar);
 
-    generateQRCode();
+    generateDecorativeQR();
     generateFunctionalQR();
 };
 // ------------------------------------------------------------------
