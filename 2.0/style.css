@@ -805,7 +805,8 @@ p, button {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 5px solid var(--color-fg);
+    border: 2px solid var(--color-fg);
+    border-radius: 1.5px;
     box-shadow: 10px 10px 0 var(--color-md); 
 }
 
@@ -921,7 +922,7 @@ p, button {
     height: 35px; /* Altura fija del elemento decorativo */
     
     background-color: var(--color-bg); /* Fondo del color de la app (claro/oscuro) */
-    border: 1.5px solid var(--color-fg); /* Borde Brutalista Fino */
+    border: 2px solid var(--color-fg); /* Borde Brutalista Fino */
     
     /* 🚨 CLAVE: CREAR LA FORMA TRAPEZOIDAL (NOTCH) 🚨 */
     clip-path: polygon(
@@ -959,9 +960,6 @@ p, button {
     height: 10px;
     background-color: var(--color-ac); /* Color de acento (naranja) */
     border-radius: 5px; /* Bordes redondeados para la barra */
-    
-    /* Efecto de sombra sutil para el brillo (simulando un LED) */
-    box-shadow: 0 0 5px var(--color-ac), inset 0 0 3px var(--color-bg);
 }
 
 /* Opcional: Ajuste para el tema oscuro, si quieres invertir el fondo del notch */
