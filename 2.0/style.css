@@ -786,10 +786,10 @@ p, button {
     width: 100%;
     /* 💡 Definimos una relación de aspecto cuadrada (1:1) */
     /* El padding-bottom es el que define la altura relativa al ancho */
-    padding-bottom: 100%; /* 100% de padding-bottom = 1:1 (cuadrado) */
+    padding-bottom: 75%%; /* 100% de padding-bottom = 1:1 (cuadrado) */
     
     /* 💡 Aplicamos el límite de altura aquí */
-    max-height: 70vh;
+    max-height: 50vh;
     overflow: hidden; /* Para que el contenido interno no se salga */
 }
 
