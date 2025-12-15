@@ -103,9 +103,18 @@ function createBrutalistContentHTML(data) {
 
     // 2. Imagen Central (Zona de Foco)
     const centralImage = `
-     <div class="image-aspect-wrapper">
+      <div class="image-aspect-wrapper">
             <div class="content-image-zone">
                 <img src="${data.image}" alt="${data.title}" class="content-main-image"/>
+                
+                <div id="image-notch-deco">
+                    <div class="notch-content-container">
+                        <div class="notch-circle left-circle"></div>
+                        <div class="notch-accent-bar"></div>
+                        <div class="notch-circle right-circle"></div>
+                    </div>
+                </div>
+                
                 <div class="image-deco-overlay"></div>
             </div>
         </div>
