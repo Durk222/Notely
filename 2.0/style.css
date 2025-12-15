@@ -801,7 +801,7 @@ p, button {
     height: 100%;
     
     /* Mantener los estilos Brutalistas del marco */
-    background-color: var(--color-dd);
+    background-color: var(--color-bg);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -912,7 +912,7 @@ p, button {
 /* --- NUEVO: DECORACIÓN DE VISOR (Trapezoide Tipo Notch) --- */
 #image-notch-deco {
     position: absolute;
-    bottom: -1.5px; 
+    bottom: -2px; 
     left: 50%; 
     transform: translateX(-50%);
     z-index: 750;
