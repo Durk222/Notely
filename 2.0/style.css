@@ -915,29 +915,29 @@ p, button {
     bottom: -2px; 
     left: 50%; 
     transform: translateX(-50%);
-    z-index: 750;
+    z-index: 750; 
     
-    width: 40%; /* Ancho que ocupa del contenedor de la imagen */
-    height: 35px; /* Altura fija del elemento decorativo */
+    width: 40%; 
+    height: 35px; 
     
-    background-color: var(--color-bg);
+    background-color: var(--color-bg); 
     
-        box-shadow: 
-        0 0 0 2px var(--color-fg), /* Borde principal (los 4 lados, el clip-path lo recorta) */
-        inset 0 2px 0 var(--color-bg), /* TAPA el borde superior de la sombra principal */
-        inset 0 -2px 0 var(--color-bg); /* TAPA el borde inferior, asegurando que solo se vea la parte superior/laterales */
-
-    outline: 1.5px solid var(--color-fg);
-    outline-offset: -1.5px;
-
+    /* 🚨 CLAVE: Borde en ARRIBA, DERECHA, IZQUIERDA, CERO en ABRAJO 🚨 */
+    border-width: 2px 2px 0 2px; 
+    border-style: solid;
+    border-color: var(--color-fg);
+    
+    /* 🚨 AJUSTE DE FORMA: Usamos clip-path para lograr la forma trapezoidal, pero asegurando los bordes laterales */
+    /* La clave es que el clip-path se aplica primero, y luego se dibuja el borde */
+    /* Este clip-path debe coincidir con la forma trapezoidal deseada: */
     clip-path: polygon(
         5% 0,    /* Esquina superior izquierda (con corte) */
-        95% 0,    /* Esquina superior derecha (con corte) */
-        100% 100%, /* Esquina inferior derecha (sin corte) */
-        0% 100%   /* Esquina inferior izquierda (sin corte) */
+        95% 0,   /* Esquina superior derecha (con corte) */
+        100% 100%, /* Esquina inferior derecha */
+        0% 100%    /* Esquina inferior izquierda */
     );
     
-    /* Layout interno */
+    /* Layout interno sigue igual */
     display: flex;
     justify-content: center;
     align-items: center;
