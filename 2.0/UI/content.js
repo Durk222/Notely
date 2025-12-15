@@ -87,7 +87,7 @@ function createCommentBoxHTML() {
     `;
 }
 // ----------------------------------------------------
-// B. DISEÑO BRUTALISTA DEL VISOR (Referencia: Hacked Vandalism Poster)
+// B. DISEÑO BRUTALISTA DEL VISOR
 // ----------------------------------------------------
 
 function createBrutalistContentHTML(data) {
@@ -103,9 +103,11 @@ function createBrutalistContentHTML(data) {
 
     // 2. Imagen Central (Zona de Foco)
     const centralImage = `
-        <div class="content-image-zone">
-            <img src="${data.image}" alt="${data.title}" class="content-main-image"/>
-            <div class="image-deco-overlay"></div>
+     <div class="image-aspect-wrapper">
+            <div class="content-image-zone">
+                <img src="${data.image}" alt="${data.title}" class="content-main-image"/>
+                <div class="image-deco-overlay"></div>
+            </div>
         </div>
     `;
     
