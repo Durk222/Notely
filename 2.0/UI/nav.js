@@ -33,7 +33,7 @@ window.initNav = function() {
 
             <input 
                 type="text" 
-                placeholder="INGRESA CÓDIGO DE ACCESO" 
+                id="search-input-field" placeholder="INGRESA CÓDIGO DE ACCESO"
                 class="search-input"
             />
             
@@ -271,9 +271,7 @@ function generateBarcodes() {
         rootRight.setAttribute("jsbarcode-textmargin", "0");
     }
 
-    // 🚨 LLAMADA FINAL: Inicializa leyendo los atributos 🚨
     try {
-        // Selecciona todos los SVGs con la clase para la inicialización
         JsBarcode(".barcode-svg").init();
     } catch(e) {
         // En caso de fallo de inicialización (ej. la librería aún no cargó)
