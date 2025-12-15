@@ -1,5 +1,5 @@
 // ui/feed.js
-console.log("Notely 2.0: Módulo de Feed cargado. (Modo Prueba de Imagen Activo)");
+console.log("Notely 2.0: Módulo de Feed cargado. (Modo Prueba de Imagen Local Activo)");
 
 // --- DEFINICIONES GLOBALES (FUERA DE RENDERFEED) ---
 
@@ -10,13 +10,13 @@ const TEMPLATE_CONFIG = [
     { class: 'card-filler', type: 'filler' }
 ];
 
-// 🚨 CASE ÚNICO DE PRUEBA (Reemplaza a DEFAULT_CONTENT) 🚨
+// 🚨 CASE ÚNICO DE PRUEBA (Imagen Local Integrada) 🚨
 const TEST_POST = { 
     title: "NOTELY_RENDER_TEST", 
     text: "Prueba de Integración de Contenido e Imagen Cuadrada.", 
     tag: "TEST:001",
-    // Imagen de placeholder Brutalista/abstracta
-    image: "https://images.unsplash.com/photo-1549491689-d41c2c2f42a5?q=80&w=2832&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    // RUTA DE IMAGEN ACTUALIZADA
+    image: "2.0_ASSETS/okmañana.jpg" 
 };
 
 let isGenerating = false; 
@@ -77,16 +77,22 @@ function generatePosts(count) {
     feedArea.innerHTML += postsHTML;
     
     const newCards = feedArea.querySelectorAll('.post-card:not(.gsap-animated)');
-    gsap.from(newCards, {
-        duration: 0.5,
-        opacity: 0,
-        y: 50,
-        stagger: 0.05, 
-        ease: "power2.out",
-        onComplete: function() {
-            newCards.forEach(card => card.classList.add('gsap-animated'));
-        }
-    });
+    
+    // Solo aplicar animación si GSAP existe (para evitar errores en caso de que no esté cargado)
+    if (typeof gsap !== 'undefined') {
+        gsap.from(newCards, {
+            duration: 0.5,
+            opacity: 0,
+            y: 50,
+            stagger: 0.05, 
+            ease: "power2.out",
+            onComplete: function() {
+                newCards.forEach(card => card.classList.add('gsap-animated'));
+            }
+        });
+    } else {
+        newCards.forEach(card => card.style.opacity = 1);
+    }
 
     isGenerating = false;
 }
@@ -104,7 +110,7 @@ function setupInfiniteScroll() {
 
 
 // ----------------------------------------------------
-// C. FUNCIÓN PRINCIPAL DE RENDERIZADO DEL FEED (La única función global)
+// C. FUNCIÓN PRINCIPAL DE RENDERIZADO DEL FEED
 // ----------------------------------------------------
 window.renderFeed = function(containerElement) {
     // 1. Estructura del Encabezado (sin cambios)
@@ -119,7 +125,7 @@ window.renderFeed = function(containerElement) {
     `;
     containerElement.innerHTML = contentHTML;
 
-    // 2. Animación GSAP para el Título (sin cambios)
+    // 2. Animación GSAP para el Título (código mantenido)
     const title = document.getElementById('feed-intro-title');
     if (title && typeof gsap !== 'undefined') {
         gsap.timeline()
