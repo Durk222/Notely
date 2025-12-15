@@ -101,12 +101,19 @@ body[data-theme="dark"] {
     color: var(--color-bg);
 }
 
+html, body {
+    height: 100%; 
+    min-height: 100vh; 
+}
+
 body {
     background-color: var(--color-bg);
     color: var(--color-fg);
     font-family: var(--font-body);
     transition: background-color 0.3s, color 0.3s;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 h1 {
@@ -134,7 +141,7 @@ h2 {
     border: 2px solid var(--color-fg);
     border-bottom: none;
     border-radius: 2px 2px 5px 5px;
-    /* 🚨 CLAVE: NUEVA REGLA Z-INDEX 🚨 */
+    
     position: relative; 
     z-index: 500; 
 }
