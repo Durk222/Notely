@@ -909,6 +909,66 @@ p, button {
     margin: 50px auto;
     width: 80%;
 }
+/* --- NUEVO: DECORACIÓN DE VISOR (Trapezoide Tipo Notch) --- */
+#image-notch-deco {
+    position: absolute;
+    bottom: 0; /* Anclado al fondo de la imagen */
+    left: 50%; /* Centrado horizontalmente */
+    transform: translateX(-50%);
+    z-index: 750; /* Por encima de la imagen y el overlay (si existiera) */
+    
+    width: 40%; /* Ancho que ocupa del contenedor de la imagen */
+    height: 35px; /* Altura fija del elemento decorativo */
+    
+    background-color: var(--color-bg); /* Fondo del color de la app (claro/oscuro) */
+    border: 1.5px solid var(--color-fg); /* Borde Brutalista Fino */
+    
+    /* 🚨 CLAVE: CREAR LA FORMA TRAPEZOIDAL (NOTCH) 🚨 */
+    clip-path: polygon(
+        10% 0,    /* Esquina superior izquierda (con corte) */
+        90% 0,    /* Esquina superior derecha (con corte) */
+        100% 100%, /* Esquina inferior derecha (sin corte) */
+        0% 100%   /* Esquina inferior izquierda (sin corte) */
+    );
+    
+    /* Layout interno para centrar los elementos (círculos y barra) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.notch-content-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Espacio entre los elementos internos */
+    width: 80%; /* Asegurar que los elementos internos no toquen los bordes */
+}
+
+/* 1. Círculos laterales */
+.notch-circle {
+    width: 6px;
+    height: 6px;
+    background-color: var(--color-fg); /* Color de la tinta (negro/blanco) */
+    border-radius: 50%;
+    flex-shrink: 0; /* No se encoge */
+}
+
+/* 2. Barra de acento central */
+.notch-accent-bar {
+    flex-grow: 1; /* Ocupa todo el espacio central restante */
+    height: 10px;
+    background-color: var(--color-ac); /* Color de acento (naranja) */
+    border-radius: 5px; /* Bordes redondeados para la barra */
+    
+    /* Efecto de sombra sutil para el brillo (simulando un LED) */
+    box-shadow: 0 0 5px var(--color-ac), inset 0 0 3px var(--color-bg);
+}
+
+/* Opcional: Ajuste para el tema oscuro, si quieres invertir el fondo del notch */
+[data-theme='dark'] #image-notch-deco {
+    background-color: var(--color-dd); /* Un color intermedio en modo oscuro */
+    border-color: var(--color-fg);
+}
 /* ---------------------------------------------------- */
 /* 3. MOBILE RESPONSIVE ADAPTATIONS */
 /* ---------------------------------------------------- */
