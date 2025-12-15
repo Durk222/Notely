@@ -88,13 +88,16 @@ function generatePosts(count) {
             ease: "power2.out",
             onComplete: function() {
                 newCards.forEach(card => card.classList.add('gsap-animated'));
+                console.log(`[FEED]: ${newCards.length} posts inyectados en el DOM y animados.`);
             }
         });
     } else {
         newCards.forEach(card => card.style.opacity = 1);
+        console.log(`[FEED]: ${newCards.length} posts inyectados en el DOM (Sin animación).`);
     }
 
     isGenerating = false;
+    console.log(`[FEED]: Proceso de generación completado. isGenerating = false.`);
 }
 
 // ----------------------------------------------------
