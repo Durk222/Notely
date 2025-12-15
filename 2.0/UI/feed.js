@@ -106,19 +106,29 @@ function generatePosts(count) {
     isGenerating = false;
     console.log(`[FEED]: Proceso de generación completado. isGenerating = false.`);
 }
-
 // ----------------------------------------------------
-// B. LÓGICA DE SCROLL INFINITO
+// B. LÓGICA DE SCROLL INFINITO (CORREGIDA)
 // ----------------------------------------------------
 function setupInfiniteScroll() {
-    window.addEventListener('scroll', () => {
-        if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 400) {
+    const scrollContainer = document.getElementById('content-area');
+    
+    if (!scrollContainer) {
+        console.error("[FEED ERROR]: No se encontró el contenedor '#content-area' para el scroll.");
+        return;
+    }
+
+    // 🚨 CLAVE: Escuchamos el evento de scroll del contenedor interno 🚨
+    scrollContainer.addEventListener('scroll', () => {
+        const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+
+        // Lógica: Si el scroll actual + la altura visible es mayor o igual que el scroll total - 200px
+        if (scrollTop + clientHeight >= scrollHeight - 200) {
             generatePosts(10); 
         }
     });
+    
+    console.log("[FEED]: Listener de scroll infinito configurado en '#content-area'.");
 }
-
-
 // ----------------------------------------------------
 // C. FUNCIÓN PRINCIPAL DE RENDERIZADO DEL FEED
 // ----------------------------------------------------
