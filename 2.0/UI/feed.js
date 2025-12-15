@@ -157,8 +157,10 @@ window.renderFeed = function(containerElement) {
                 console.log("Animación de título de feed completada. Cargando posts...");
                 
                 // 3. Inicializar el Feed después de la animación
-                generatePosts(15); 
-                setupInfiniteScroll();
+                    setTimeout(() => {
+                    generatePosts(15); 
+                    setupInfiniteScroll();
+                }, 50); // Un pequeño retraso de 50ms
             });
 
     } else if (title) {
