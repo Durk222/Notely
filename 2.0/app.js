@@ -29,7 +29,6 @@ window.toggleTheme = function() {
             contentArea.innerHTML = '<h1 class="error-text">ERROR: Módulo feed.js no cargado.</h1>';
         }
     } 
-    // 🚨 🚨 ¡AÑADIR ESTE BLOQUE! 🚨 🚨
     else if (viewName === 'content') {
         if (window.renderContent) {
             window.renderContent(contentArea, postId); // Llamar a la función y pasar el ID
@@ -37,7 +36,19 @@ window.toggleTheme = function() {
             contentArea.innerHTML = '<h1 class="error-text">ERROR: Módulo content.js no cargado.</h1>';
         }
     }
-    
+    // VISTA DE PERFIL (PROFILE 🚨 🚨
+    else if (viewName === 'profile') {
+        if (window.createProfileHTML) {
+            const profileView = window.createProfileHTML();
+            contentArea.appendChild(profileView);
+            // Asegurar que el scroll se reinicia al inicio
+            contentArea.scrollTop = 0;
+        } else {
+            contentArea.innerHTML = '<p style="text-align: center; margin-top: 50px; color: var(--color-ac);">ERROR: Módulo de Perfil (profile.js) no cargado.</p>';
+        }
+    }
+    // FIN DEL NUEVO BLOQUE
+        
     // Actualizar URL y título si es necesario
     history.pushState({ view: viewName, id: postId }, viewName.toUpperCase(), `#${viewName}${postId ? '?id=' + postId : ''}`);
 };
