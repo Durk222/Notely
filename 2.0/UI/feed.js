@@ -25,13 +25,20 @@ let isGenerating = false;
 // A. FUNCIÓN CENTRAL DE GENERACIÓN DE POSTS
 // ----------------------------------------------------
 function generatePosts(count) {
-    if (isGenerating) return;
+    if (isGenerating) {
+        console.log("[FEED DEBUG]: Llamada bloqueada. Ya está generando.");       
+        return;
+    }
     isGenerating = true;
 
     const feedArea = document.getElementById('feed-content-area');
-    if (!feedArea) return;
-
+    if (!feedArea) { 
+        console.error("[FEED ERROR]: No se encontró el contenedor '#feed-content-area'. Generación cancelada.");
+        isGenerating = false; // Importante resetear la bandera si fallamos aquí        
+        return;
+    }
     let postsHTML = '';
+    console.log(`[FEED DEBUG]: Contenedor encontrado. Generando ${count} posts...`);   
     
     for (let i = 0; i < count; i++) {
         const template = TEMPLATE_CONFIG[Math.floor(Math.random() * TEMPLATE_CONFIG.length)];
