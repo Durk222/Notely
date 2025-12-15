@@ -521,6 +521,26 @@ p, button {
     height: 80%; 
     border: none;
 }
+/* Estilo general para el título del feed */
+.feed-title-animated {
+    /* Centrado en el contenedor principal */
+    text-align: center;
+    padding-top: 50px;
+    
+    /* Fuente y estilo Brutalista/Digital */
+    font-family: var(--font-mono); /* Fuente monoespaciada para efecto digital */
+    font-size: 2.5em; 
+    color: var(--color-fg); 
+    
+    /* Propiedad clave para GSAP: transforma el origen */
+    transform-origin: center center; 
+    
+    /* Asegurar que las transformaciones (scale, filter) funcionen bien */
+    will-change: transform, filter, opacity; 
+    
+    /* Estilo de borde de acento solo para el texto (opcional) */
+    text-shadow: 1px 1px 0 var(--color-ac), -1px -1px 0 var(--color-ac);
+}
 /* ---------------------------------------------------- */
 /* 3. MOBILE RESPONSIVE ADAPTATIONS */
 /* ---------------------------------------------------- */
