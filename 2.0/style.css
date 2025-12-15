@@ -134,6 +134,9 @@ h2 {
     border: 2px solid var(--color-fg);
     border-bottom: none;
     border-radius: 2px 2px 5px 5px;
+    /* 🚨 CLAVE: NUEVA REGLA Z-INDEX 🚨 */
+    position: relative; 
+    z-index: 500; 
 }
 
 /* El texto de párrafo y botones (por defecto) es legible */
@@ -719,6 +722,8 @@ p, button {
     
     /* Opcional: Asegurar que el contenido comienza en la parte superior */
     padding-top: 0;
+    /* Opcional pero útil para asegurar el contraste de las tarjetas: */
+    background-color: var(--color-bg);
 }
 
 /* Opcional: Estilo de la barra de desplazamiento (para navegadores Webkit como Chrome/Safari) */
