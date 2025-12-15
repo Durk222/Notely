@@ -569,6 +569,73 @@ p, button {
         0px 1px 0 0 var(--color-dd), 
         0px 2px 0 0 var(--color-md);
 }
+/* -------------------------------------------------------- */
+/* --- CONTENEDOR DE MAÑONERÍA (PINTEREST STYLE) --- */
+/* -------------------------------------------------------- */
+
+#feed-content-area {
+    /* Centrar la cuadrícula en el viewport */
+    width: 90%; 
+    max-width: 1000px;
+    margin: 40px auto;
+    
+    display: grid;
+    /* 🚨 CLAVE: 3 columnas de ancho igual (auto-fit para adaptabilidad) 🚨 */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    
+    /* Configuración de Mampostería (Masonry) para la colocación de elementos */
+    grid-auto-rows: 20px; /* Tamaño base de la fila (20px) para las proporciones */
+    grid-gap: 15px; /* Espacio entre las tarjetas */
+    
+    padding-bottom: 200px; /* Espacio extra para el scroll infinito */
+}
+
+/* -------------------------------------------------------- */
+/* --- CLASES DE TAMAÑO DE TARJETA (GROSS-GRID) --- */
+/* Las filas se calculan automáticamente con 'grid-auto-rows' */
+/* -------------------------------------------------------- */
+
+.post-card {
+    background-color: var(--color-dd); /* Fondo Gris Oscuro por defecto */
+    border: 1px solid var(--color-fg);
+    border-radius: 2px;
+    padding: 10px;
+    overflow: hidden;
+    position: relative;
+    /* 🚨 Animación de aparición (usaremos GSAP para esto) 🚨 */
+    opacity: 0; 
+}
+
+/* 1. Cuadrado (1x1) - Estándar */
+.card-square {
+    /* Ocupa 1 espacio vertical. 20px (tamaño de fila) * 12 = 240px (más margen) */
+    grid-row-end: span 12; 
+}
+
+/* 2. Largo Vertical (1x2) */
+.card-vertical {
+    /* Ocupa 2 espacios verticales. 20px * 20 = 400px (más margen) */
+    grid-row-end: span 20; 
+}
+
+/* 3. Largo Horizontal (2x1) */
+.card-horizontal {
+    /* Ocupa 2 columnas y 1 espacio vertical */
+    grid-column-end: span 2;
+    grid-row-end: span 12; 
+}
+
+/* 4. Relleno Cuadrado (1x1) - Estético (Misimas propiedades que .card-square) */
+.card-filler {
+    grid-row-end: span 12; 
+    background-color: var(--color-ac); /* Color de Acento (Naranja) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+    color: var(--color-fg);
+    text-shadow: 0 0 5px var(--color-bg);
+}
 /* ---------------------------------------------------- */
 /* 3. MOBILE RESPONSIVE ADAPTATIONS */
 /* ---------------------------------------------------- */
