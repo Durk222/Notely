@@ -3,22 +3,29 @@ console.log("Notely 2.0: Módulo de Feed cargado. (GSAP listo)");
 
 window.renderFeed = function(containerElement) {
     
-    // 1. Crear la estructura para el texto animado
-    const titleHTML = `
-        <h1 id="feed-intro-title" class="feed-title-animated" style="opacity: 0;">
-            Contenido para tí
-        </h1>
+    // 1. Crear la estructura: Contenedor de Encabezado (Título y Divisor) + Área de Contenido
+    const contentHTML = `
+        <div class="feed-header-group">
+            <h1 id="feed-intro-title" class="feed-title-animated" style="opacity: 0;">
+                Contenido para tí
+            </h1>
+            
+            <div class="brutalist-divider"></div>
+        </div>
+
+        <div id="feed-content-area">
+            </div>
     `;
 
-    // 2. Inyectar el texto en el contenedor principal
-    containerElement.innerHTML = titleHTML;
+    // 2. Inyectar el nuevo contenido en el contenedor principal
+    containerElement.innerHTML = contentHTML;
 
-    // 3. 🚨 IMPLEMENTACIÓN DE LA ANIMACIÓN LLAMATIVA CON GSAP 🚨
+    // 3. IMPLEMENTACIÓN DE LA ANIMACIÓN LLAMATIVA CON GSAP 🚨
     const title = document.getElementById('feed-intro-title');
     
     if (title && typeof gsap !== 'undefined') {
         
-        // --- 3.1. Animación de Entrada Llamativa (Typewriter + Glitch/Blur) ---
+        // --- Animación de Entrada Llamativa (Typewriter + Glitch/Blur) ---
         gsap.timeline()
             .to(title, {
                 duration: 0.1, 
@@ -27,12 +34,12 @@ window.renderFeed = function(containerElement) {
             })
             // Efecto de 'Tipo de Impresión' rápido y agresivo con desenfoque
             .fromTo(title, {
-                scaleX: 0.0, // Empezar muy comprimido horizontalmente
+                scaleX: 0.0, 
                 filter: 'blur(10px)',
                 opacity: 0,
             }, {
                 duration: 0.6,
-                scaleX: 1.0, // Estirarse a tamaño normal
+                scaleX: 1.0, 
                 filter: 'blur(0px)',
                 opacity: 1,
                 ease: "power2.out"
@@ -42,7 +49,7 @@ window.renderFeed = function(containerElement) {
                 duration: 0.05,
                 x: 5,
                 y: -5,
-                repeat: 3, // Parpadeo rápido
+                repeat: 3, 
                 yoyo: true,
                 ease: "sine.inOut"
             })
@@ -61,28 +68,4 @@ window.renderFeed = function(containerElement) {
         // Fallback si GSAP no está cargado
         title.style.opacity = 1;
     }
-    // ui/feed.js (Modificación en window.renderFeed)
-
-window.renderFeed = function(containerElement) {
-    
-    // 1. Crear la estructura para el texto animado Y el divisor
-    const contentHTML = `
-        <div class="feed-header-group">
-            <h1 id="feed-intro-title" class="feed-title-animated" style="opacity: 0;">
-                Contenido para tí
-            </h1>
-            
-            <div class="brutalist-divider"></div>
-        </div>
-
-        <div id="feed-content-area">
-            </div>
-    `;
-
-    // 2. Inyectar el nuevo contenido en el contenedor principal
-    containerElement.innerHTML = contentHTML;
-
-    // 3. IMPLEMENTACIÓN DE LA ANIMACIÓN LLAMATIVA CON GSAP 
-    // ... (El código GSAP para animar #feed-intro-title se mantiene sin cambios) ...
-    
 };
