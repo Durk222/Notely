@@ -10,13 +10,14 @@ window.toggleTheme = function() {
     console.log(`Tema cambiado a: ${newTheme}`);
 };
 
-// Define la función de carga de UI (routing) que los botones de nav usarán
-window.loadUI = function(viewName) {
-    console.log(`Cargando vista: ${viewName}`);
-// 🚨 Lógica de Carga de Contenido 🚨
+    window.loadUI = function(viewName, postId = null) {
     const contentArea = document.getElementById('content-area');
     if (!contentArea) return;
     
+    // 🚨 PASO CRÍTICO: Limpiar eventos de módulos anteriores (como el scroll del feed) 🚨
+    if (window.cleanupFeedEvents) {
+        window.cleanupFeedEvents();
+    }
     // Limpiar contenido anterior
     contentArea.innerHTML = ''; 
 
@@ -28,10 +29,17 @@ window.loadUI = function(viewName) {
             contentArea.innerHTML = '<h1 class="error-text">ERROR: Módulo feed.js no cargado.</h1>';
         }
     } 
-    // ... futuras vistas (profile, settings, etc.) ...
+    // 🚨 🚨 ¡AÑADIR ESTE BLOQUE! 🚨 🚨
+    else if (viewName === 'content') {
+        if (window.renderContent) {
+            window.renderContent(contentArea, postId); // Llamar a la función y pasar el ID
+        } else {
+            contentArea.innerHTML = '<h1 class="error-text">ERROR: Módulo content.js no cargado.</h1>';
+        }
+    }
     
     // Actualizar URL y título si es necesario
-    history.pushState({ view: viewName }, viewName.toUpperCase(), `#${viewName}`);
+    history.pushState({ view: viewName, id: postId }, viewName.toUpperCase(), `#${viewName}${postId ? '?id=' + postId : ''}`);
 };
 
 
