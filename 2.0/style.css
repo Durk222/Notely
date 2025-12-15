@@ -592,6 +592,7 @@ p, button {
     display: flex;
     flex-direction: column; 
     padding: 0;
+    z-index: 600;
 }
 
 /* --- Estilos del Contenedor de Imagen --- */
