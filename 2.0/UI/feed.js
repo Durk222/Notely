@@ -1,8 +1,8 @@
-// ui/feed.js
+// ui/feed.js - VERSIÓN FINAL
+
 console.log("Notely 2.0: Módulo de Feed cargado. (Modo Prueba de Imagen Local Activo)");
 
-// --- DEFINICIONES GLOBALES (FUERA DE RENDERFEED) ---
-
+// --- DEFINICIONES GLOBALES ---
 const TEMPLATE_CONFIG = [
     { class: 'card-square', type: 'post' },
     { class: 'card-vertical', type: 'post' },
@@ -10,12 +10,10 @@ const TEMPLATE_CONFIG = [
     { class: 'card-filler', type: 'filler' }
 ];
 
-// 🚨 CASE ÚNICO DE PRUEBA (Imagen Local Integrada) 🚨
 const TEST_POST = { 
     title: "NOTELY_RENDER_TEST", 
     text: "Prueba de Integración de Contenido e Imagen Cuadrada.", 
     tag: "TEST:001",
-    // RUTA DE IMAGEN ACTUALIZADA
     image: "2.0_ASSETS/okmañana.jpg" 
 };
 
@@ -34,21 +32,19 @@ function generatePosts(count) {
     const feedArea = document.getElementById('feed-content-area');
     if (!feedArea) { 
         console.error("[FEED ERROR]: No se encontró el contenedor '#feed-content-area'. Generación cancelada.");
-        isGenerating = false; // Importante resetear la bandera si fallamos aquí        
+        isGenerating = false; 
         return;
     }
     let postsHTML = '';
     console.log(`[FEED DEBUG]: Contenedor encontrado. Generando ${count} posts...`);   
     
+    // ... (El loop de generación de posts HTML sigue igual) ...
     for (let i = 0; i < count; i++) {
         const template = TEMPLATE_CONFIG[Math.floor(Math.random() * TEMPLATE_CONFIG.length)];
         let content = '';
 
-        // 🚨 LÓGICA DE PRUEBA: Solo rellenar si es 'card-square' 🚨
         if (template.class === 'card-square') {
             const data = TEST_POST;
-            
-            // Renderizado del Post Cuadrado con IMAGEN
             content = `
                 <div class="post-image-container">
                     <img src="${data.image}" alt="${data.title}" class="post-image"/>
@@ -63,7 +59,6 @@ function generatePosts(count) {
                 </div>
             `;
         } else {
-            // El resto de plantillas quedan como "PENDIENTE"
             content = `
                 <div class="pending-content">
                     [${template.class.toUpperCase().replace('CARD-', '')}] PENDIENTE DE BACKEND
@@ -72,32 +67,40 @@ function generatePosts(count) {
             `;
         }
 
-        // Crear el HTML del Post Card
         postsHTML += `
             <div class="post-card ${template.class}">
                 ${content}
             </div>
         `;
     }
+    // ... (Fin del loop) ...
 
-    // Inyectar los posts y aplicar animación GSAP
     feedArea.innerHTML += postsHTML;
     
     const newCards = feedArea.querySelectorAll('.post-card:not(.gsap-animated)');
     
-    // Solo aplicar animación si GSAP existe (para evitar errores en caso de que no esté cargado)
     if (typeof gsap !== 'undefined') {
-        gsap.from(newCards, {
-            duration: 0.5,
-            opacity: 0,
-            y: 50,
-            stagger: 0.05, 
-            ease: "power2.out",
-            onComplete: function() {
-                newCards.forEach(card => card.classList.add('gsap-animated'));
-                console.log(`[FEED]: ${newCards.length} posts inyectados en el DOM y animados.`);
+        // 🚨 CORRECCIÓN CLAVE DE OPACIDAD 🚨
+        gsap.fromTo(newCards, 
+            // FROM (Estado Inicial)
+            { opacity: 0, y: 50 },
+            // TO (Estado Final)
+            { 
+                duration: 0.5,
+                opacity: 1, // ¡Aquí forzamos el 1!
+                y: 0,
+                stagger: 0.05, 
+                ease: "power2.out",
+                onComplete: function() {
+                    newCards.forEach(card => {
+                        card.classList.add('gsap-animated');
+                        // Fallback agresivo:
+                        card.style.opacity = 1; 
+                    });
+                    console.log(`[FEED]: ${newCards.length} posts inyectados en el DOM y animados.`);
+                }
             }
-        });
+        );
     } else {
         newCards.forEach(card => card.style.opacity = 1);
         console.log(`[FEED]: ${newCards.length} posts inyectados en el DOM (Sin animación).`);
@@ -106,6 +109,7 @@ function generatePosts(count) {
     isGenerating = false;
     console.log(`[FEED]: Proceso de generación completado. isGenerating = false.`);
 }
+
 // ----------------------------------------------------
 // B. LÓGICA DE SCROLL INFINITO (CORREGIDA)
 // ----------------------------------------------------
@@ -117,11 +121,9 @@ function setupInfiniteScroll() {
         return;
     }
 
-    // 🚨 CLAVE: Escuchamos el evento de scroll del contenedor interno 🚨
     scrollContainer.addEventListener('scroll', () => {
         const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
 
-        // Lógica: Si el scroll actual + la altura visible es mayor o igual que el scroll total - 200px
         if (scrollTop + clientHeight >= scrollHeight - 200) {
             generatePosts(10); 
         }
@@ -129,11 +131,11 @@ function setupInfiniteScroll() {
     
     console.log("[FEED]: Listener de scroll infinito configurado en '#content-area'.");
 }
+
 // ----------------------------------------------------
 // C. FUNCIÓN PRINCIPAL DE RENDERIZADO DEL FEED
 // ----------------------------------------------------
 window.renderFeed = function(containerElement) {
-    // 1. Estructura del Encabezado (sin cambios)
     const contentHTML = `
         <div class="feed-header-group">
             <h1 id="feed-intro-title" class="feed-title-animated" style="opacity: 0;">
@@ -145,7 +147,6 @@ window.renderFeed = function(containerElement) {
     `;
     containerElement.innerHTML = contentHTML;
 
-    // 2. Animación GSAP para el Título (código mantenido)
     const title = document.getElementById('feed-intro-title');
     if (title && typeof gsap !== 'undefined') {
         gsap.timeline()
@@ -156,11 +157,11 @@ window.renderFeed = function(containerElement) {
             .then(() => {
                 console.log("Animación de título de feed completada. Cargando posts...");
                 
-                // 3. Inicializar el Feed después de la animación
-                    setTimeout(() => {
+                // Mantenemos el retraso de 50ms como parche de seguridad final
+                setTimeout(() => {
                     generatePosts(15); 
                     setupInfiniteScroll();
-                }, 50); // Un pequeño retraso de 50ms
+                }, 50); 
             });
 
     } else if (title) {
