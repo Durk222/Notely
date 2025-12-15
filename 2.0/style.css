@@ -30,7 +30,7 @@
     /* DEFINICIÓN DE FAMILIAS DE FUENTE */
     --font-h1: 'Xirod', serif;
     /* Las fuentes H2/H3 se listan como fallback por si falla el JS randomizador */
-    --font-h2-group: 'RoundStyle_Bold', 'Xirod', 'Nasalization', sans-serif; 
+    --font-h2-group: 'Xirod', 'Nasalization', sans-serif; 
     --font-body: 'Xanmono', monospace; /* Xanmono con monospace como fallback */
 }
 
@@ -56,15 +56,6 @@ body[data-theme="dark"] {
     font-weight: normal;
     font-style: normal;
 }
-
-/* h2/h3 Random 1: RoundStyle_Bold */
-@font-face {
-    font-family: 'RoundStyle_Bold';
-    src: url('2.0_ASSETS/RoundStyle_Bold.ttf') format('truetype');
-    font-weight: 700;
-    font-style: normal;
-}
-
 /* h2/h3 Random 2: Xirod */
 @font-face {
     font-family: 'Xirod';
@@ -126,8 +117,8 @@ h1 {
 }
 
 h2 {
-    /* Por defecto, toma la primera de la lista. Usaremos JS para la randomización. */
-    font-family: 'RoundStyle_Bold', var(--font-h2-group); 
+
+    font-family: var(--font-h2-group); 
     font-size: 2.5em;
     /* ... (otros estilos) ... */
 }
