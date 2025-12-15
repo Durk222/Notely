@@ -787,7 +787,7 @@ p, button {
     padding-bottom: 100%%; /* 100% de padding-bottom = 1:1 (cuadrado) */
     
     max-height: 70vh;
-    overflow: hidden; /* Para que el contenido interno no se salga */
+    overflow: hidden;
 }
 
 .content-image-zone {
