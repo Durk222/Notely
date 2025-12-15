@@ -13,7 +13,25 @@ window.toggleTheme = function() {
 // Define la función de carga de UI (routing) que los botones de nav usarán
 window.loadUI = function(viewName) {
     console.log(`Cargando vista: ${viewName}`);
-    // Lógica futura para cambiar el contenido de #content-area
+// 🚨 Lógica de Carga de Contenido 🚨
+    const contentArea = document.getElementById('content-area');
+    if (!contentArea) return;
+    
+    // Limpiar contenido anterior
+    contentArea.innerHTML = ''; 
+
+    // Aquí llamaríamos a la función de renderizado específica
+    if (viewName === 'feed') {
+        if (window.renderFeed) {
+            window.renderFeed(contentArea); // Llamar a la función que definiremos en feed.js
+        } else {
+            contentArea.innerHTML = '<h1 class="error-text">ERROR: Módulo feed.js no cargado.</h1>';
+        }
+    } 
+    // ... futuras vistas (profile, settings, etc.) ...
+    
+    // Actualizar URL y título si es necesario
+    history.pushState({ view: viewName }, viewName.toUpperCase(), `#${viewName}`);
 };
 
 
@@ -28,5 +46,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // 2. Cargar la vista por defecto (por ejemplo, el Perfil o el Feed)
-    window.loadUI('profile'); 
+    window.loadUI('feed'); 
 });
