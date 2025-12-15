@@ -8,17 +8,21 @@ console.log("Notely 2.0: Módulo de Visor de Contenido cargado.");
 // Datos de prueba para simular la respuesta del servidor
 const MOCK_DB = {
     "TEST:001": { 
-        title: "UNSEEN ART & VANDALISM", 
+        title: "SIN TÍTULO", 
+        author: "SIN DEFINIR",
+        type: "IMG_STATIC", // Nuevo metadato
+        date: "2025-SIN DEFINIR", // Nuevo metadato
+        tag: "TEST:001",
         image: "2.0_ASSETS/okmañana.jpg", 
-        text: "La prueba de integración de contenido e imagen UV-Reactiva ha sido exitosa. Módulo de detección: Offline. Mensajes ocultos: Cifrado 777. Archivo de contenido cargado correctamente.",
-        details: [
-            "CHEMISTRY INVOLVED: UV-REACTIVE INKS",
-            "INNOVATION IN VANDALISM: NEW FORM OF GRAFFITI",
-            "DETECTION & REMOVAL: ZERO TRACES. ZERO PROBLEMS."
-        ],
-        tag: "TEST:001"
+        description: "Prueba de Integración de Contenido e Imagen UV-Reactiva ha sido exitosa. Módulo de detección: Offline. Mensajes ocultos: Cifrado 777. Archivo de contenido cargado correctamente. Este es el texto principal.",
+        metadata: [ // Detalles técnicos modulares
+            { label: "CHEMISTRY INVOLVED", value: "UV-REACTIVE INKS" },
+            { label: "TRANSMISSION KEY", value: "DX7729RS4" },
+            { label: "DETECTION & REMOVAL", value: "ZERO TRACES. ZERO PROBLEMS." },
+            { label: "ARCHIVE CLASS", value: "LEVEL B / SECURED" }
+        ]
     },
-    // Añadir futuros posts aquí...
+    // El resto de IDs (PENDING) seguirán siendo null
 };
 
 /**
@@ -37,15 +41,64 @@ function fetchPostById(postId) {
     console.error(`[CONTENT ERROR]: No se encontró contenido para el ID: ${postId}.`);
     return null;
 }
+// --- ESTILOS DECORATIVOS MODULARES ---
+const MODULE_STYLES = [
+    // Estilo 1: Bordes irregulares (Brutalist corner clipping)
+    { border: '1px solid var(--color-fg)', background: 'var(--color-bg)', radius: '15px 2.5px 15px 2.5px' }, 
+    // Estilo 2: Fondo más oscuro (simula una sección técnica)
+    { border: '2px solid var(--color-md)', background: 'var(--color-dd)', radius: '5px' }, 
+    // Estilo 3: Líneas de borde prominentes
+    { border: '3px dashed var(--color-fg)', background: 'var(--color-bg)', radius: '0' } 
+];
 
+/**
+ * Genera una caja modular con estilo aleatorio.
+ * @param {string} contentHTML - El HTML interno del módulo.
+ * @param {string} title - Título del módulo.
+ */
+function createRandomDataModule(contentHTML, title) {
+    const style = MODULE_STYLES[Math.floor(Math.random() * MODULE_STYLES.length)];
+    
+    return `
+        <div class="data-module" style="
+            border: ${style.border}; 
+            background: ${style.background}; 
+            border-radius: ${style.radius};
+        ">
+            <h3 class="module-deco-title">${title}</h3>
+            <div class="module-content">${contentHTML}</div>
+        </div>
+    `;
+}
+
+// --- FUNCIÓN DE CAJA DE COMENTARIOS FIJA ---
+function createCommentBoxHTML() {
+    return `
+        <div id="comment-section-fixed">
+            <h3 class="comment-section-title">003. COMENTARIOS / LOGS</h3>
+            <div class="comment-input-area">
+                <input type="text" placeholder="AUTH USER INPUT..." class="comment-input"/>
+                <button class="comment-submit-btn">SEND 🙾</button>
+            </div>
+            <div class="comment-list-area">
+                <p class="no-comments-msg">-- SIN ENTRADAS DE USUARIO EN ESTE ARCHIVO. --</p>
+            </div>
+        </div>
+    `;
+}
 // ----------------------------------------------------
 // B. DISEÑO BRUTALISTA DEL VISOR (Referencia: Hacked Vandalism Poster)
 // ----------------------------------------------------
 
 function createBrutalistContentHTML(data) {
-    // 1. Título principal (Encabezado)
+    // 1. Título principal (Header Fijo)
     const titleHeader = `
         <h1 class="content-title">${data.title}</h1>
+        <div class="content-header-meta">
+            <span>[AUTHOR: ${data.author}]</span>
+            <span>[TYPE: ${data.type}]</span>
+            <span>[DATE: ${data.date}]</span>
+        </div>
     `;
 
     // 2. Imagen Central (Zona de Foco)
@@ -55,40 +108,57 @@ function createBrutalistContentHTML(data) {
             <div class="image-deco-overlay"></div>
         </div>
     `;
+    
+    // 3. Generación Modular Aleatoria de Detalles
+    let modularContentHTML = '';
 
-    // 3. Área de Detalles/Mensajes Ocultos (Parte Inferior Modular)
-    const detailsHTML = data.details.map(detail => `
-        <div class="detail-module">
-            <span class="detail-label">${detail.split(':')[0].trim()}</span>
-            <p class="detail-text">${detail.split(':')[1] ? detail.split(':')[1].trim() : ''}</p>
+    // Módulo 1: Descripción Principal (Fijo, pero con estilo aleatorio)
+    modularContentHTML += createRandomDataModule(
+        `<p>${data.description}</p>`,
+        "001. DESCRIPCIÓN/ABSTRACT"
+    );
+
+    // Módulo 2: Metadatos Técnicos (Random style)
+    const metadataList = data.metadata.map(item => 
+        `<div class="metadata-item"><span class="metadata-label">${item.label}:</span> <span>${item.value}</span></div>`
+    ).join('');
+    
+    modularContentHTML += createRandomDataModule(
+        metadataList,
+        "002. DETALLES TÉCNICOS"
+    );
+    
+    // Módulo 3: (Simulación de un tercer módulo, por ejemplo, estado de red)
+    modularContentHTML += createRandomDataModule(
+        `
+        <div class="network-status">
+            <span>NETWORK PING: </span><span class="status-ok">ONLINE ${Math.floor(Math.random() * 80) + 10}ms</span>
+            <span class="status-warning">DECRYPTION LEVEL: LOW</span>
         </div>
-    `).join('');
+        `,
+        "004. ESTADO DEL SISTEMA"
+    );
 
-    const footerDetails = `
-        <div class="content-details-grid">
-            ${detailsHTML}
-            <div class="main-text-module">
-                <span class="module-title">TRANSMISIÓN DE DATOS</span>
-                <p>${data.text}</p>
-            </div>
-            <div class="info-tag-module">
-                <span>[TAG: ${data.tag}]</span>
-                <span>[TIME: ${new Date().toLocaleTimeString()}]</span>
-            </div>
-        </div>
-    `;
-
+    // 4. Integración de todos los componentes
     return `
         <div id="content-viewer-container">
             ${titleHeader}
             <div class="content-divider-line"></div>
+            
             ${centralImage}
+            
             <div class="content-divider-line"></div>
-            ${footerDetails}
+
+            <div class="modular-data-area">
+                ${modularContentHTML}
+            </div>
+            
+            <div class="content-divider-line"></div>
+
+            ${createCommentBoxHTML()}
         </div>
     `;
 }
-
 // ----------------------------------------------------
 // C. FUNCIÓN PRINCIPAL DE RENDERIZADO
 // ----------------------------------------------------
@@ -113,9 +183,24 @@ window.renderContent = function(containerElement, postId) {
         
         console.log(`[CONTENT]: Visor de contenido '${postId}' renderizado con éxito.`);
         
-        // Opcional: Aplicar animación GSAP para entrada de la vista
+        // 🚨 NUEVAS ANIMACIONES DE ENTRADA COMPLEJAS 🚨
         if (typeof gsap !== 'undefined') {
-            gsap.from("#content-viewer-container", { duration: 0.6, opacity: 0, y: 30, ease: "power2.out" });
+            const tl = gsap.timeline();
+            
+            // 1. Entrada general del contenedor
+            tl.from("#content-viewer-container", { duration: 0.6, opacity: 0, y: 30, ease: "power2.out" })
+              // 2. Animación del título
+              .from(".content-title", { duration: 0.4, scaleX: 0, transformOrigin: 'left', ease: "power2.out" }, "<0.1")
+              // 3. Entrada de la imagen central
+              .from(".content-image-zone", { duration: 0.5, opacity: 0, scale: 0.9, ease: "back.out(1.7)" }, "-=0.2")
+              // 4. Entrada escalonada de los módulos de datos
+              .from(".data-module", { 
+                  duration: 0.4, 
+                  opacity: 0, 
+                  x: -20, 
+                  stagger: 0.1, 
+                  ease: "power2.out" 
+              }, "-=0.3"); // Comienza mientras la imagen se está completando
         }
         
     } else {
