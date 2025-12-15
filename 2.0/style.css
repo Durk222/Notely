@@ -752,35 +752,47 @@ p, button {
 
 #content-viewer-container {
     padding: 40px 0;
-    width: 90%;
-    max-width: 800px;
+    width: 95%;
+    max-width: 1080px; /* Mayor ancho para la modularidad */
     margin: 0 auto;
 }
 
+/* --- TÍTULO Y METADATOS FIJOS --- */
 .content-title {
     font-family: var(--font-header);
-    font-size: 2.5em;
-    text-align: center;
+    font-size: 3em;
+    text-align: left; /* Título alineado a la izquierda como el poster */
     color: var(--color-fg);
+    margin-bottom: 5px;
+}
+
+.content-header-meta {
+    display: flex;
+    gap: 20px;
+    font-size: 0.85em;
+    font-family: var(--font-mono);
+    color: var(--color-md);
     margin-bottom: 20px;
 }
 
 .content-divider-line {
     height: 1px;
-    background-color: var(--color-dd); /* color oscuro/medio para la línea */
+    background-color: var(--color-dd); 
     margin: 20px 0;
-    box-shadow: 0 1px 0 var(--color-fg); /* Efecto doble línea/glitch */
+    box-shadow: 0 1px 0 var(--color-fg); 
 }
 
+/* --- IMAGEN CENTRAL --- */
 .content-image-zone {
     position: relative;
     overflow: hidden;
     background-color: var(--color-dd);
-    min-height: 400px;
+    min-height: 450px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 3px solid var(--color-fg);
+    border: 5px solid var(--color-fg);
+    box-shadow: 10px 10px 0 var(--color-md); /* Sombra marcada Brutalista */
 }
 
 .content-main-image {
@@ -788,34 +800,89 @@ p, button {
     height: 100%;
     object-fit: cover;
     opacity: 0.9;
-    filter: grayscale(80%) contrast(1.1); /* Toque de estilo 'viejo/hackeado' */
+    filter: grayscale(80%) contrast(1.1); 
 }
 
-/* --- Área Modular de Detalles --- */
-.content-details-grid {
+/* --- ÁREA MODULAR DE DATOS --- */
+.modular-data-area {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-    padding-top: 20px;
-    border-top: 1px solid var(--color-fg);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
 }
 
-.detail-module, .main-text-module, .info-tag-module {
-    border: 1px solid var(--color-dd);
-    padding: 15px;
-    background-color: var(--color-dd); 
-}
-
-.detail-label {
-    display: block;
-    font-size: 0.8em;
-    font-family: var(--font-mono);
+.data-module {
+    /* Los estilos de borde, fondo y border-radius son inyectados vía JS (MODULE_STYLES) */
+    padding: 20px;
     color: var(--color-fg);
-    margin-bottom: 5px;
+    transition: transform 0.2s; /* Para un pequeño efecto al pasar el mouse */
 }
 
-.main-text-module {
-    grid-column: 1 / -1; /* Ocupa todo el ancho */
+.module-deco-title {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    color: var(--color-md);
+    margin-bottom: 15px;
+    border-bottom: 1px dashed var(--color-dd);
+    padding-bottom: 5px;
+}
+
+.metadata-item {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    padding: 5px 0;
+}
+
+.network-status .status-ok { color: var(--color-success); }
+.network-status .status-warning { color: var(--color-error); }
+
+
+/* --- SECCIÓN DE COMENTARIOS (Fija y Legible) --- */
+#comment-section-fixed {
+    padding: 25px;
+    border: 3px solid var(--color-fg);
+    background-color: var(--color-bg);
+    margin-top: 30px;
+}
+
+.comment-section-title {
+    font-family: var(--font-header);
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    border-bottom: 3px solid var(--color-dd);
+}
+
+.comment-input-area {
+    display: flex;
+    gap: 10px;
+}
+
+.comment-input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid var(--color-md);
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-body);
+}
+
+.comment-submit-btn {
+    padding: 10px 15px;
+    background-color: var(--color-fg);
+    color: var(--color-bg);
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-weight: bold;
+}
+
+.no-comments-msg {
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: var(--color-md);
+    font-style: italic;
 }
 
 .server-error-message {
