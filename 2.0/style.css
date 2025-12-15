@@ -964,10 +964,97 @@ p, button {
     border-radius: 5px; /* Bordes redondeados para la barra */
 }
 
-/* Opcional: Ajuste para el tema oscuro, si quieres invertir el fondo del notch */
 [data-theme='dark'] #image-notch-deco {
     background-color: var(--color-dd); /* Un color intermedio en modo oscuro */
     border-color: var(--color-fg);
+}
+/* ==================================================== */
+/* 9. ESTILOS DEL VISOR DE PERFIL (profile.js)          */
+/* ==================================================== */
+
+#profile-viewer-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 40px auto; /* Centrado y con margen superior/inferior */
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- CONTENEDOR PRINCIPAL DEL BANNER --- */
+#profile-banner-container {
+    position: relative;
+    width: 100%;
+    height: 250px; /* Altura fija para el banner */
+    margin-bottom: 30px; /* Espacio debajo del banner */
+    overflow: hidden; /* Oculta cualquier contenido que salga de la forma */
+    
+    border: 3px solid var(--color-fg); /* Marco Grueso Brutalista */
+    background-color: var(--color-dd); /* Fondo Gris/Oscuro */
+    color: var(--color-fg);
+    
+    /* 🚨 CLAVE: DEFINICIÓN DE LA FORMA DEL BANNER 🚨 */
+    clip-path: polygon(
+        0% 0%,       /* 1. Esquina Superior Izquierda */
+        7% 0%,       /* 2. Comienzo del corte superior izquierdo (en el 7% del ancho) */
+        10% 10%,     /* 3. Vértice interno del corte superior izquierdo */
+        90% 10%,     /* 4. Vértice interno del corte superior derecho */
+        93% 0%,      /* 5. Fin del corte superior derecho (en el 93% del ancho) */
+        100% 0%,     /* 6. Esquina Superior Derecha */
+        100% 100%,   /* 7. Esquina Inferior Derecha (sin corte) */
+        0% 100%      /* 8. Esquina Inferior Izquierda (sin corte) */
+    );
+}
+
+/* --- CONTENIDO INTERNO DEL BANNER --- */
+.banner-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    /* Estilo de la imagen de fondo si añades una */
+    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)); /* Overlay sutil */
+}
+
+.banner-title {
+    font-family: var(--font-h1);
+    font-size: 3em;
+    color: var(--color-bg); /* Tinta clara sobre el fondo oscuro del banner */
+    text-shadow: 2px 2px 0 var(--color-ac);
+    z-index: 10;
+}
+
+/* --- DECORACIONES DE ESQUINA (Los rellenos negros de tu imagen) --- */
+.banner-deco {
+    position: absolute;
+    background-color: var(--color-fg); /* Color negro/tinta */
+    z-index: 5; /* Por debajo del título */
+}
+
+.top-left-fill {
+    top: 0;
+    left: 0;
+    width: 7%; /* Coincide con el corte del clip-path */
+    height: 10px;
+    background-color: black;
+}
+
+/* Si quieres el efecto visual completo de la imagen, debes simular las esquinas negras.
+   La forma más fácil de hacerlo es con divs adicionales o box-shadows.
+   
+   Usaremos los divs ya definidos en JS para crear los bloques negros.
+*/
+.top-right-fill {
+    top: 0;
+    right: 0;
+    width: 7%;
+    height: 10px;
+    background-color: black;
 }
 /* ---------------------------------------------------- */
 /* 3. MOBILE RESPONSIVE ADAPTATIONS */
@@ -978,25 +1065,17 @@ p, button {
     #main-container {
         border: 3px solid var(--color-fg); /* Marco más delgado en móvil */
     }
-
-    /* 🚨 Ajuste de la barra de navegación 🚨 */
     #horizontal-nav {
         /* Reducir el padding interno (margen entre el borde y el contenido) */
         padding: 5px 10px; 
     }
-
-    /* Reducir el espacio entre los botones */
     .nav-buttons-group {
         gap: 8px; /* Reducción del espacio entre íconos */
     }
-
-    /* Reducir el tamaño de los íconos si es necesario */
     .nav-icon-button {
         font-size: 1.1em;
         padding: 3px;
     }
-    
-    /* Ajuste para el Footer (Si tiene demasiado padding horizontal) */
     #footer-bar {
         padding: 0 8px; /* Reducir el margen interno del footer */
     }
