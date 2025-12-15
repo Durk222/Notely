@@ -984,27 +984,59 @@ p, button {
 #profile-banner-container {
     position: relative;
     width: 100%;
-    height: 250px; /* Altura fija para el banner */
-    margin-bottom: 30px; /* Espacio debajo del banner */
-    overflow: hidden; /* Oculta cualquier contenido que salga de la forma */
+    height: 250px; 
+    margin-bottom: 30px; 
+    overflow: hidden; 
     
-    border: 3px solid var(--color-fg); /* Marco Grueso Brutalista */
-    background-color: var(--color-dd); /* Fondo Gris/Oscuro */
+    border: 2px solid var(--color-fg); 
+    background-color: var(--color-bg); 
     color: var(--color-fg);
     
-    /* 🚨 CLAVE: DEFINICIÓN DE LA FORMA DEL BANNER 🚨 */
+    /* 🚨 CLAVE: DEFINICIÓN DE LA FORMA PERSONALIZADA 🚨 */
     clip-path: polygon(
-        0% 0%,       /* 1. Esquina Superior Izquierda */
-        7% 0%,       /* 2. Comienzo del corte superior izquierdo (en el 7% del ancho) */
-        10% 10%,     /* 3. Vértice interno del corte superior izquierdo */
-        90% 10%,     /* 4. Vértice interno del corte superior derecho */
-        93% 0%,      /* 5. Fin del corte superior derecho (en el 93% del ancho) */
-        100% 0%,     /* 6. Esquina Superior Derecha */
-        100% 100%,   /* 7. Esquina Inferior Derecha (sin corte) */
-        0% 100%      /* 8. Esquina Inferior Izquierda (sin corte) */
+        /* Puntos del usuario: 
+           43% 1%, 27% 15%, 8% 16%, 0% 25%, 0% 91%, 
+           18% 91%, 25% 100%, 100% 100%, 100% 1% 
+        */
+        
+        43% 1%,    /* 1. Inicio en la parte superior derecha */
+        27% 15%,   /* 2. Corte diagonal hacia abajo y a la izquierda */
+        8% 16%,    /* 3. Corte horizontal corto */
+        0% 25%,    /* 4. Corte diagonal más pronunciado hasta el borde izquierdo */
+        0% 91%,    /* 5. Baja verticalmente por el borde izquierdo */
+        18% 91%,   /* 6. Corte diagonal/horizontal hacia la derecha (cerca de la base) */
+        25% 100%,  /* 7. Vértice en la esquina inferior izquierda */
+        100% 100%, /* 8. Esquina inferior derecha (estira el polígono por la base) */
+        100% 1%    /* 9. Estira el polígono hacia arriba hasta el borde superior derecho */
     );
 }
-
+/* 🚨 NUEVO: Pseudo-elemento para forzar el Border-Radius en la esquina superior derecha 🚨 */
+#profile-banner-container::after {
+    content: '';
+    position: absolute;
+    /* 🚨 Posición en la esquina superior derecha 🚨 */
+    top: -3px; /* Subir un poco para tapar el borde del padre */
+    right: -3px; /* Mover a la derecha para tapar el borde del padre */
+    
+    /* Definir un tamaño pequeño para el borde redondeado */
+    width: 30px; 
+    height: 30px;
+    
+    /* El color debe ser el mismo que el del fondo del banner */
+    background-color: var(--color-bg); 
+    
+    /* El redondeo que solicitaste (25px) */
+    border-top-right-radius: 25px; 
+    
+    /* Aplicamos el borde del mismo grosor que el contenedor principal */
+    border: 2px solid var(--color-fg); 
+    border-bottom: none; /* Quitamos el borde inferior */
+    border-left: none; /* Quitamos el borde izquierdo */
+    
+    /* Aseguramos que solo se vean el top y el right */
+    clip-path: inset(0 0 100% 100%); /* Solo para referencia, no es lo ideal aquí */
+    z-index: 10;
+}
 /* --- CONTENIDO INTERNO DEL BANNER --- */
 .banner-content {
     position: absolute;
@@ -1035,7 +1067,6 @@ p, button {
     background-color: var(--color-fg); /* Color negro/tinta */
     z-index: 5; /* Por debajo del título */
 }
-
 .top-left-fill {
     top: 0;
     left: 0;
@@ -1043,12 +1074,6 @@ p, button {
     height: 10px;
     background-color: black;
 }
-
-/* Si quieres el efecto visual completo de la imagen, debes simular las esquinas negras.
-   La forma más fácil de hacerlo es con divs adicionales o box-shadows.
-   
-   Usaremos los divs ya definidos en JS para crear los bloques negros.
-*/
 .top-right-fill {
     top: 0;
     right: 0;
