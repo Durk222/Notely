@@ -61,7 +61,28 @@ window.renderFeed = function(containerElement) {
         // Fallback si GSAP no está cargado
         title.style.opacity = 1;
     }
+    // ui/feed.js (Modificación en window.renderFeed)
+
+window.renderFeed = function(containerElement) {
     
-    // 4. Agregar contenido restante (posts, etc.) aquí
-    // ...
+    // 1. Crear la estructura para el texto animado Y el divisor
+    const contentHTML = `
+        <div class="feed-header-group">
+            <h1 id="feed-intro-title" class="feed-title-animated" style="opacity: 0;">
+                Contenido para tí
+            </h1>
+            
+            <div class="brutalist-divider"></div>
+        </div>
+
+        <div id="feed-content-area">
+            </div>
+    `;
+
+    // 2. Inyectar el nuevo contenido en el contenedor principal
+    containerElement.innerHTML = contentHTML;
+
+    // 3. IMPLEMENTACIÓN DE LA ANIMACIÓN LLAMATIVA CON GSAP 
+    // ... (El código GSAP para animar #feed-intro-title se mantiene sin cambios) ...
+    
 };
