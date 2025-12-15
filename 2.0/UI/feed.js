@@ -170,9 +170,15 @@ function generatePosts(count) {
                 </div>
             `;
         }
-
-        postsHTML += `
-            <div class="post-card ${template.class}">
+        // Asignamos el tag para identificar la tarjeta.
+        const postId = (template.class === 'card-square') ? TEST_POST.tag : 'PENDING:' + i;
+            postsHTML += `
+            <div 
+                class="post-card ${template.class}" 
+                data-post-id="${postId}" 
+                onclick="window.loadUI('content', '${postId}')" 
+                style="cursor: pointer;"
+            >
                 ${content}
             </div>
         `;
