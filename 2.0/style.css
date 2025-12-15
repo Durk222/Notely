@@ -807,7 +807,6 @@ p, button {
     align-items: center;
     border: 2px solid var(--color-fg);
     border-radius: 1.5px;
-    box-shadow: 10px 10px 0 var(--color-md); 
 }
 
 .content-main-image {
@@ -913,26 +912,28 @@ p, button {
 /* --- NUEVO: DECORACIÓN DE VISOR (Trapezoide Tipo Notch) --- */
 #image-notch-deco {
     position: absolute;
-    bottom: 0; /* Anclado al fondo de la imagen */
-    left: 50%; /* Centrado horizontalmente */
+    bottom: -1.5px; 
+    left: 50%; 
     transform: translateX(-50%);
-    z-index: 750; /* Por encima de la imagen y el overlay (si existiera) */
+    z-index: 750;
     
     width: 40%; /* Ancho que ocupa del contenedor de la imagen */
     height: 35px; /* Altura fija del elemento decorativo */
     
-    background-color: var(--color-bg); /* Fondo del color de la app (claro/oscuro) */
-    border: 2px solid var(--color-fg); /* Borde Brutalista Fino */
+    background-color: var(--color-bg);
     
-    /* 🚨 CLAVE: CREAR LA FORMA TRAPEZOIDAL (NOTCH) 🚨 */
+    border-width: 2px 2px 0 2px;
+    border-style: solid;
+    border-color: var(--color-fg);
+
     clip-path: polygon(
-        10% 0,    /* Esquina superior izquierda (con corte) */
-        90% 0,    /* Esquina superior derecha (con corte) */
+        5% 0,    /* Esquina superior izquierda (con corte) */
+        95% 0,    /* Esquina superior derecha (con corte) */
         100% 100%, /* Esquina inferior derecha (sin corte) */
         0% 100%   /* Esquina inferior izquierda (sin corte) */
     );
     
-    /* Layout interno para centrar los elementos (círculos y barra) */
+    /* Layout interno */
     display: flex;
     justify-content: center;
     align-items: center;
