@@ -79,7 +79,50 @@ function setupPostHoverAnimations() {
     });
     console.log("[FEED]: Animaciones de hover para posts configuradas.");
 }
+// ----------------------------------------------------
+// E. FUNCIÓN DE FILTRADO Y BÚSQUEDA
+// ----------------------------------------------------
+window.filterPosts = function(query) {
+    const searchTerm = query.toLowerCase().trim();
+    const posts = document.querySelectorAll('.post-card');
 
+    if (searchTerm.length === 0) {
+        // Mostrar todos si la búsqueda está vacía
+        posts.forEach(post => {
+            gsap.to(post, { duration: 0.3, opacity: 1, display: 'flex', ease: "power2.out" });
+        });
+        console.log("[FEED SEARCH]: Búsqueda vacía. Mostrando todos los posts.");
+        return;
+    }
+
+    posts.forEach(post => {
+        // Asumimos que el título del post está dentro de un <h2>
+        const titleElement = post.querySelector('h2');
+        const textElement = post.querySelector('p');
+        
+        let postText = '';
+        if (titleElement) postText += titleElement.textContent.toLowerCase();
+        if (textElement) postText += ' ' + textElement.textContent.toLowerCase();
+        
+        // Verifica si el texto del post contiene el término de búsqueda
+        if (postText.includes(searchTerm)) {
+            // Mostrar el post que coincide
+            gsap.to(post, { duration: 0.3, opacity: 1, display: 'flex', ease: "power2.out" });
+        } else {
+            // Ocultar el post que no coincide
+            gsap.to(post, { 
+                duration: 0.3, 
+                opacity: 0, 
+                ease: "power2.out",
+                onComplete: function() {
+                    // Esconder el display al terminar la animación para liberar el espacio de la cuadrícula
+                    post.style.display = 'none';
+                }
+            });
+        }
+    });
+    console.log(`[FEED SEARCH]: Filtrado por: "${searchTerm}".`);
+};
 // ----------------------------------------------------
 // A. FUNCIÓN CENTRAL DE GENERACIÓN DE POSTS
 // ----------------------------------------------------
@@ -224,6 +267,17 @@ window.renderFeed = function(containerElement) {
                 setTimeout(() => {
                     generatePosts(15); 
                     setupInfiniteScroll();
+
+                    const searchInput = document.getElementById('search-input-field');
+                    if (searchInput) {
+                        searchInput.addEventListener('input', (e) => {
+                            window.filterPosts(e.target.value);
+                        });
+                        console.log("[FEED]: Campo de búsqueda conectado.");
+                    } else {
+                        console.warn("[FEED WARNING]: No se encontró el campo de búsqueda '#search-input-field'.");
+                    }
+                    
                 }, 50); 
             });
 
