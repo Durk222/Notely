@@ -922,9 +922,13 @@ p, button {
     
     background-color: var(--color-bg);
     
-    border-width: 2px 2px 0 2px;
-    border-style: solid;
-    border-color: var(--color-fg);
+        box-shadow: 
+        0 0 0 2px var(--color-fg), /* Borde principal (los 4 lados, el clip-path lo recorta) */
+        inset 0 2px 0 var(--color-bg), /* TAPA el borde superior de la sombra principal */
+        inset 0 -2px 0 var(--color-bg); /* TAPA el borde inferior, asegurando que solo se vea la parte superior/laterales */
+
+    outline: 1.5px solid var(--color-fg);
+    outline-offset: -1.5px;
 
     clip-path: polygon(
         5% 0,    /* Esquina superior izquierda (con corte) */
