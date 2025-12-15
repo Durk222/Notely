@@ -2,13 +2,10 @@
 
 /* --- CORRECCIÓN GLOBAL DE ANCHURA Y MODELO DE CAJA --- */
 *, *::before, *::after {
-    /* CLAVE: Asegura que el padding y el border se incluyan dentro del width/height
-       definido, evitando que 100% + padding > 100vw. */
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
-
 /* --- 1. LIQUEUR 2.0 --- */
 :root {
     /* Paleta Fija */
@@ -782,34 +779,46 @@ p, button {
     box-shadow: 0 1px 0 var(--color-fg); 
 }
 
-/* --- IMAGEN CENTRAL --- */
-.content-image-zone {
+/* --- IMAGEN CENTRAL (Corrección de Aspecto y Límite de Altura) --- */
+
+.image-aspect-wrapper {
     position: relative;
-    overflow: hidden;
-    background-color: var(--color-dd);
-    max-height: 70vh;
     width: 100%;
+    /* 💡 Definimos una relación de aspecto cuadrada (1:1) */
+    /* El padding-bottom es el que define la altura relativa al ancho */
+    padding-bottom: 100%; /* 100% de padding-bottom = 1:1 (cuadrado) */
+    
+    /* 💡 Aplicamos el límite de altura aquí */
+    max-height: 70vh;
+    overflow: hidden; /* Para que el contenido interno no se salga */
+}
+
+.content-image-zone {
+    position: absolute; /* Ocupa el espacio definido por el padding-bottom del padre */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    /* Mantener los estilos Brutalistas del marco */
+    background-color: var(--color-dd);
     display: flex;
     justify-content: center;
     align-items: center;
     border: 5px solid var(--color-fg);
-    box-shadow: 10px 10px 0 var(--color-md); /* Sombra marcada Brutalista */
+    box-shadow: 10px 10px 0 var(--color-md); 
 }
 
 .content-main-image {
+    /* Mantenemos object-fit: contain para ver la imagen completa */
     width: 100%;
     height: 100%;
-    /* Anteriormente usábamos un filtro */
-    /*
-    object-fit: cover;
-    opacity: 0.9;
-    filter: grayscale(80%) contrast(1.1); 
-    */
-    object-fit: contain;
-    opacity: 1;
+    object-fit: contain; 
+    opacity: 1; 
     filter: none;
+    /* Añadimos un padding pequeño para que la imagen no toque los bordes del marco */
+    padding: 10px; 
 }
-
 /* --- ÁREA MODULAR DE DATOS --- */
 .modular-data-area {
     display: grid;
