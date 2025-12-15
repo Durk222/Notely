@@ -293,3 +293,44 @@ window.renderFeed = function(containerElement) {
         setupInfiniteScroll();
     }
 };
+// Variable global para almacenar la función de scroll (para poder eliminarla)
+let scrollListener = null;
+
+// ----------------------------------------------------
+// F. FUNCIÓN DE LIMPIEZA DE EVENTOS
+// ----------------------------------------------------
+window.cleanupFeedEvents = function() {
+    const scrollContainer = document.getElementById('content-area');
+    
+    if (scrollContainer && scrollListener) {
+        scrollContainer.removeEventListener('scroll', scrollListener);
+        console.log("[FEED CLEANUP]: Listener de scroll infinito desactivado.");
+    }
+    // Resetear la variable para evitar llamadas a un listener nulo
+    scrollListener = null; 
+};
+
+// ----------------------------------------------------
+// B. LÓGICA DE SCROLL INFINITO (MODIFICADA para usar variable)
+// ----------------------------------------------------
+function setupInfiniteScroll() {
+    const scrollContainer = document.getElementById('content-area');
+    
+    if (!scrollContainer) {
+        console.error("[FEED ERROR]: No se encontró el contenedor '#content-area' para el scroll.");
+        return;
+    }
+
+    // 🚨 MODIFICACIÓN: Definir la función de scroll en una variable 🚨
+    scrollListener = () => {
+        const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+
+        if (scrollTop + clientHeight >= scrollHeight - 200) {
+            generatePosts(10); 
+        }
+    };
+
+    scrollContainer.addEventListener('scroll', scrollListener);
+    
+    console.log("[FEED]: Listener de scroll infinito configurado en '#content-area'.");
+}
