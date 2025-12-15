@@ -570,7 +570,7 @@ p, button {
         0px 2px 0 0 var(--color-md);
 }
 /* -------------------------------------------------------- */
-/* --- CONTENEDOR DE MAÑONERÍA (PINTEREST STYLE) --- */
+/* --- CONTENEDOR DE POST (PINTEREST STYLE)             --- */
 /* -------------------------------------------------------- */
 
 #feed-content-area {
@@ -590,22 +590,53 @@ p, button {
     padding-bottom: 200px; /* Espacio extra para el scroll infinito */
 }
 
-/* -------------------------------------------------------- */
-/* --- CLASES DE TAMAÑO DE TARJETA (GROSS-GRID) --- */
-/* Las filas se calculan automáticamente con 'grid-auto-rows' */
-/* -------------------------------------------------------- */
-
 .post-card {
     background-color: var(--color-dd); /* Fondo Gris Oscuro por defecto */
     border: 1px solid var(--color-fg);
     border-radius: 2px;
-    padding: 10px;
     overflow: hidden;
     position: relative;
-    /* 🚨 Animación de aparición (usaremos GSAP para esto) 🚨 */
     opacity: 0; 
+    display: flex;
+    flex-direction: column; 
+    padding: 0;
+}
+.post-image-container {
+    width: 100%;
+    /* 🚨 CLAVE: Ratio 1:1 para la imagen cuadrada (esto solo aplica bien en la card-square) 🚨 */
+    padding-top: 100%; 
+    position: relative;
+    overflow: hidden;
 }
 
+.post-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Asegura que la imagen cubra el contenedor sin deformarse */
+}
+
+.post-content-body {
+    padding: 10px;
+    flex-grow: 1; /* Permite que el cuerpo del texto ocupe el espacio restante */
+    background-color: var(--color-dd);
+}
+
+.pending-content {
+    padding: 20px 10px;
+    height: 100%;
+    background-color: var(--color-bg); /* Fondo más claro para destacar el estado "pendiente" */
+    color: var(--color-md);
+    font-family: var(--font-mono);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.9em;
+}
 /* 1. Cuadrado (1x1) - Estándar */
 .card-square {
     /* Ocupa 1 espacio vertical. 20px (tamaño de fila) * 12 = 240px (más margen) */
