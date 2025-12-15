@@ -701,6 +701,37 @@ p, button {
     text-shadow: 0 0 5px var(--color-bg);
 }
 /* ---------------------------------------------------- */
+/* --- NUEVO: ESTILOS PARA LA ZONA DE CONTENIDO DINÁMICO --- */
+/* ---------------------------------------------------- */
+
+#content-area {
+    /* Ocupar todo el espacio restante dentro del #main-container 
+       (Ya que #main-container tiene 'display: flex' y 'flex-direction: column') */
+    flex-grow: 1; 
+    
+    /* 🚨 CLAVE: Habilitar el scroll interno para ver los posts 🚨 */
+    /* La barra de scroll aparecerá en este contenedor, NO en el 'body' */
+    overflow-y: scroll;
+    overflow-x: hidden;
+    
+    /* Altura mínima necesaria para que ocupe todo el espacio disponible */
+    height: 100%; 
+    
+    /* Opcional: Asegurar que el contenido comienza en la parte superior */
+    padding-top: 0;
+}
+
+/* Opcional: Estilo de la barra de desplazamiento (para navegadores Webkit como Chrome/Safari) */
+#content-area::-webkit-scrollbar {
+    width: 8px;
+    background-color: var(--color-bg);
+}
+
+#content-area::-webkit-scrollbar-thumb {
+    background-color: var(--color-dd); /* Color de relleno oscuro */
+    border-radius: 4px;
+}
+/* ---------------------------------------------------- */
 /* 3. MOBILE RESPONSIVE ADAPTATIONS */
 /* ---------------------------------------------------- */
 @media (max-width: 600px) {
