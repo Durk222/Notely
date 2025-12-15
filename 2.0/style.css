@@ -529,7 +529,7 @@ p, button {
     
     /* Fuente y estilo Brutalista/Digital */
     font-family: var(--font-mono); /* Fuente monoespaciada para efecto digital */
-    font-size: 2.5em; 
+    font-size: 1.2em; 
     color: var(--color-fg); 
     
     /* Propiedad clave para GSAP: transforma el origen */
