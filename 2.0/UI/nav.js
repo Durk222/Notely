@@ -104,19 +104,22 @@ window.initNav = function() {
         // --- 1. Botones de la Cuadrícula 3x3 ---
         const GRID_BUTTON_CONFIG = [
             { id: 'profile', icon: 'fa-user', view: 'profile' },     // Fila 1
-            { id: 'home', icon: 'fa-home', view: 'home' },
+            { id: 'home', icon: 'fa-home', view: 'feed' },
             { id: 'settings', icon: 'fa-cog', view: 'settings' },
-            { id: 'eula', icon: 'fa-file-alt', view: 'eula' },       // Fila 2
-            { id: 'extra1', icon: 'fa-ellipsis-h', view: 'otro1' },
-            { id: 'extra2', icon: 'fa-ellipsis-h', view: 'otro2' },
-            { id: 'extra3', icon: 'fa-ellipsis-h', view: 'otro3' },   // Fila 3
-            { id: 'extra4', icon: 'fa-ellipsis-h', view: 'otro4' },
-            { id: 'extra5', icon: 'fa-ellipsis-h', view: 'otro5' },
+            // FILA 2: Tienda, Videos, EULA
+            { id: 'store', icon: 'fa-shopping-bag', view: 'store' },  // 🚨 NUEVO: Tienda
+            { id: 'videos', icon: 'fa-video', view: 'videos' },       // 🚨 NUEVO: Videos
+            { id: 'eula', icon: 'fa-file-alt', view: 'eula' },       // Existente: EULA
+            
+            // FILA 3: Imágenes, Música, Hilos/Foros
+            { id: 'images', icon: 'fa-image', view: 'images' },      
+            { id: 'music', icon: 'fa-music', view: 'music' },         
+            { id: 'threads', icon: 'fa-comments', view: 'threads' },  
         ];
 
         let gridHTML = '';
         GRID_BUTTON_CONFIG.forEach(config => {
-            // 🚨 CORRECCIÓN: Usamos window.loadUI para los clics de vista 🚨
+
             const action = `onclick="window.loadUI('${config.view}')"`; 
             gridHTML += `
                 <button id="nav-grid-btn-${config.id}" class="nav-grid-button" ${action}>
