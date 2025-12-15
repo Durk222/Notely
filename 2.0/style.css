@@ -787,7 +787,8 @@ p, button {
     position: relative;
     overflow: hidden;
     background-color: var(--color-dd);
-    min-height: 450px;
+    max-height: 70vh;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -798,9 +799,15 @@ p, button {
 .content-main-image {
     width: 100%;
     height: 100%;
+    /* Anteriormente usábamos un filtro */
+    /*
     object-fit: cover;
     opacity: 0.9;
     filter: grayscale(80%) contrast(1.1); 
+    */
+    object-fit: contain;
+    opacity: 1;
+    filter: none;
 }
 
 /* --- ÁREA MODULAR DE DATOS --- */
