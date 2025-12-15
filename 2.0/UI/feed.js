@@ -20,6 +20,67 @@ const TEST_POST = {
 let isGenerating = false; 
 
 // ----------------------------------------------------
+// D. FUNCIÓN DE ANIMACIÓN HOVER PARA POSTS
+// ----------------------------------------------------
+function setupPostHoverAnimations() {
+    const postCards = document.querySelectorAll('.post-card');
+    
+    // Aseguramos que los posts no tengan transiciones CSS que interfieran
+    // El 'will-change' le dice al navegador que estas propiedades van a cambiar
+    postCards.forEach(card => {
+        card.style.transition = 'none'; // Desactivar transiciones CSS para GSAP
+        card.style.willChange = 'transform, opacity, box-shadow';
+    });
+
+    postCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            // Animación para la tarjeta actual
+            gsap.to(card, {
+                duration: 0.3,
+                scale: 1.05,
+                y: -10, // Un pequeño levantamiento
+                boxShadow: "0 10px 20px rgba(0,0,0,0.2)",
+                ease: "power2.out",
+                zIndex: 610 // Asegurar que esté por encima de otras tarjetas
+            });
+
+            // Animación para las otras tarjetas
+            gsap.to(Array.from(postCards).filter(c => c !== card), {
+                duration: 0.3,
+                scale: 0.95,
+                opacity: 0.7,
+                boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+                ease: "power2.out",
+                zIndex: 590 // Asegurar que estén por debajo
+            });
+        });
+
+        card.addEventListener('mouseleave', () => {
+            // Animación para la tarjeta actual (regresar a normal)
+            gsap.to(card, {
+                duration: 0.3,
+                scale: 1,
+                y: 0,
+                boxShadow: "0 0px 0px rgba(0,0,0,0)",
+                ease: "power2.out",
+                zIndex: 600 // Regresar al z-index original
+            });
+
+            // Animación para las otras tarjetas (regresar a normal)
+            gsap.to(Array.from(postCards).filter(c => c !== card), {
+                duration: 0.3,
+                scale: 1,
+                opacity: 1,
+                boxShadow: "0 0px 0px rgba(0,0,0,0)",
+                ease: "power2.out",
+                zIndex: 600 // Regresar al z-index original
+            });
+        });
+    });
+    console.log("[FEED]: Animaciones de hover para posts configuradas.");
+}
+
+// ----------------------------------------------------
 // A. FUNCIÓN CENTRAL DE GENERACIÓN DE POSTS
 // ----------------------------------------------------
 function generatePosts(count) {
@@ -98,12 +159,14 @@ function generatePosts(count) {
                         card.style.opacity = 1; 
                     });
                     console.log(`[FEED]: ${newCards.length} posts inyectados en el DOM y animados.`);
+                    setupPostHoverAnimations();
                 }
             }
         );
     } else {
         newCards.forEach(card => card.style.opacity = 1);
         console.log(`[FEED]: ${newCards.length} posts inyectados en el DOM (Sin animación).`);
+        setupPostHoverAnimations();
     }
 
     isGenerating = false;
