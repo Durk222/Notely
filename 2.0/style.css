@@ -460,9 +460,9 @@ p, button {
     z-index: 990; /* Más alto que el footer (900) y los códigos de barra (850) */
     
     /* 🚨 3. EVITAR SCROLL HORIZONTAL 🚨 */
-    width: auto; /* Dejar que el contenido defina el ancho */
-    padding: 10px; /* Padding para el borde interior */
-    max-width: 90vw; /* Aseguramos que nunca exceda el ancho de la ventana */
+    width: auto; 
+    padding: 10px;
+    max-width: 90vw; 
     height: 120px; 
     
     /* Estilos de Marco */
@@ -472,9 +472,9 @@ p, button {
     
     /* Layout Interno */
     display: flex; 
-    justify-content: center; /* Centramos el grupo de barras y la cuadrícula */
+    justify-content: center;
     align-items: center; 
-    gap: 15px; /* Espacio entre las barras decorativas y la cuadrícula */
+    gap: 15px; 
 }
 
 /* --- Cuadrícula 3x3 (Contenido funcional) --- */
@@ -569,29 +569,20 @@ p, button {
         0px 1px 0 0 var(--color-dd), 
         0px 2px 0 0 var(--color-md);
 }
-/* -------------------------------------------------------- */
-/* --- CONTENEDOR DE POST (PINTEREST STYLE)             --- */
-/* -------------------------------------------------------- */
-
 #feed-content-area {
-    /* Centrar la cuadrícula en el viewport */
     width: 90%; 
     max-width: 1000px;
     margin: 40px auto;
-    
     display: grid;
-    /* 🚨 CLAVE: 3 columnas de ancho igual (auto-fit para adaptabilidad) 🚨 */
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    
-    /* Configuración de Mampostería (Masonry) para la colocación de elementos */
-    grid-auto-rows: 20px; /* Tamaño base de la fila (20px) para las proporciones */
-    grid-gap: 15px; /* Espacio entre las tarjetas */
-    
-    padding-bottom: 200px; /* Espacio extra para el scroll infinito */
+    grid-auto-rows: 20px; 
+    grid-gap: 15px;
+    padding-bottom: 200px;
 }
 
 .post-card {
-    background-color: var(--color-dd); /* Fondo Gris Oscuro por defecto */
+    /* Fondo de la tarjeta: Gris Oscuro */
+    background-color: var(--color-dd); 
     border: 1px solid var(--color-fg);
     border-radius: 2px;
     overflow: hidden;
@@ -601,9 +592,10 @@ p, button {
     flex-direction: column; 
     padding: 0;
 }
+
+/* --- Estilos del Contenedor de Imagen --- */
 .post-image-container {
     width: 100%;
-    /* 🚨 CLAVE: Ratio 1:1 para la imagen cuadrada (esto solo aplica bien en la card-square) 🚨 */
     padding-top: 100%; 
     position: relative;
     overflow: hidden;
@@ -615,21 +607,73 @@ p, button {
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Asegura que la imagen cubra el contenedor sin deformarse */
+    object-fit: cover;
 }
 
+/* 🚨 BLOQUE CORREGIDO: Estilos para el Cuerpo del Contenido 🚨 */
 .post-content-body {
     padding: 10px;
-    flex-grow: 1; /* Permite que el cuerpo del texto ocupe el espacio restante */
-    background-color: var(--color-dd);
+    flex-grow: 1; 
+    /* CLAVE DE CONTRASTE: Fondo Claro, Tinta Oscura (usando variables) */
+    background-color: var(--color-bg); 
+    color: var(--color-fg); 
 }
 
+/* --- Estilos para el Encabezado Utilitario (Tag y Timestamp) --- */
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    
+    border-bottom: 1px dashed var(--color-md); 
+    padding-bottom: 5px;
+}
+
+.post-tag, .post-timestamp {
+    font-family: var(--font-body);
+    font-size: 0.75em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.post-tag {
+    color: var(--color-ac);
+    font-weight: bold;
+}
+
+.post-timestamp {
+    color: var(--color-md);
+}
+
+/* --- Estilos para Título (H2) --- */
+.post-content-body h2 {
+    font-family: var(--font-h2-group); 
+    font-size: 1.1em;
+    text-transform: uppercase;
+    line-height: 1.2;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    color: var(--color-fg);
+    text-shadow: 0.5px 0.5px 0 var(--color-ac);
+}
+
+/* --- Estilos para Párrafo (P) --- */
+.post-content-body p {
+    font-family: var(--font-body);
+    font-size: 0.85em;
+    line-height: 1.4;
+    color: var(--color-fg);
+}
+
+/* --- Estilos para Contenido Pendiente --- */
 .pending-content {
     padding: 20px 10px;
     height: 100%;
-    background-color: var(--color-bg); /* Fondo más claro para destacar el estado "pendiente" */
-    color: var(--color-md);
-    font-family: var(--font-mono);
+    /* CLAVE DE CONTRASTE: Fondo de tono medio */
+    background-color: var(--color-md);
+    color: var(--color-fg); 
+    font-family: var(--font-body);
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -637,29 +681,27 @@ p, button {
     align-items: center;
     font-size: 0.9em;
 }
+
 /* 1. Cuadrado (1x1) - Estándar */
 .card-square {
-    /* Ocupa 1 espacio vertical. 20px (tamaño de fila) * 12 = 240px (más margen) */
     grid-row-end: span 12; 
 }
 
 /* 2. Largo Vertical (1x2) */
 .card-vertical {
-    /* Ocupa 2 espacios verticales. 20px * 20 = 400px (más margen) */
     grid-row-end: span 20; 
 }
 
 /* 3. Largo Horizontal (2x1) */
 .card-horizontal {
-    /* Ocupa 2 columnas y 1 espacio vertical */
     grid-column-end: span 2;
     grid-row-end: span 12; 
 }
 
-/* 4. Relleno Cuadrado (1x1) - Estético (Misimas propiedades que .card-square) */
+/* 4. Relleno Cuadrado (1x1) - Estético */
 .card-filler {
     grid-row-end: span 12; 
-    background-color: var(--color-ac); /* Color de Acento (Naranja) */
+    background-color: var(--color-ac); 
     display: flex;
     justify-content: center;
     align-items: center;
