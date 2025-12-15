@@ -541,6 +541,34 @@ p, button {
     /* Estilo de borde de acento solo para el texto (opcional) */
     text-shadow: 1px 1px 0 var(--color-ac), -1px -1px 0 var(--color-ac);
 }
+.feed-header-group {
+    /* Centrar todo el encabezado */
+    text-align: center;
+    padding-bottom: 20px; /* Espacio debajo de la línea */
+}
+
+/* --- LÍNEA DIVISORIA BRUTALISTA DE PLIEGUES --- */
+.brutalist-divider {
+    width: 60%; /* Ocupar una porción del centro */
+    height: 3px; /* Muy delgada */
+    margin: 20px auto 0 auto; /* Centrar horizontalmente y separarse del título */
+    
+    background-color: var(--color-bg); /* Fondo del color de la app */
+    border-top: 1px solid var(--color-md); /* Borde superior con color medio */
+    
+    /* 🚨 CLAVE: El efecto de pliegues/relieve se logra con un box-shadow doble 🚨 */
+    box-shadow: 
+        0px 1px 0 0 var(--color-dd), /* Sombra que simula el borde inferior (Oscuro) */
+        0px 2px 0 0 var(--color-md); /* Sombra que simula la junta (Medio) */
+}
+
+/* Estilo para que se vea bien en tema oscuro */
+[data-theme='dark'] .brutalist-divider {
+    border-top: 1px solid var(--color-fg); /* Usar el color de tinta para el contraste */
+    box-shadow: 
+        0px 1px 0 0 var(--color-dd), 
+        0px 2px 0 0 var(--color-md);
+}
 /* ---------------------------------------------------- */
 /* 3. MOBILE RESPONSIVE ADAPTATIONS */
 /* ---------------------------------------------------- */
