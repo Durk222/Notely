@@ -971,103 +971,72 @@ p, button {
 /* ==================================================== */
 /* 9. ESTILOS DEL VISOR DE PERFIL (profile.js)          */
 /* ==================================================== */
+
+#profile-viewer-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 40px auto; 
+    display: flex;
+    flex-direction: column;
+}
+
 /* --- NUEVO: WRAPPER PARA EL EFECTO DE DOBLE BORDE --- */
 #banner-frame-wrapper {
     position: relative;
     width: 100%;
-    height: 250px; /* Misma altura que el banner */
+    height: 250px; 
     margin-bottom: 30px;
 }
 
-/* --- NUEVO: EL MARCO DE FONDO/RELLENO (Para el efecto de desplazamiento) --- */
+/* --- NUEVO: EL MARCO DE FONDO/RELLENO (Desplazado 2px) --- */
 .banner-background-frame {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1; /* Detrás del banner principal (z-index 2 o superior) */
+    z-index: 1; /* Fondo, en la capa más baja */
     
-    /* 🚨 CLAVE 1: Mismo clip-path que el banner para copiar la forma 🚨 */
     clip-path: polygon(
-        /* [Utiliza aquí la versión LIMPIA y SIMÉTRICA que definimos en la respuesta anterior] */
+        /* Polígono limpio y simétrico */
         40% 0%, 25% 10%, 10% 10%, 0% 20%, 
         0% 85%, 15% 85%, 25% 100%, 
         100% 100%, 100% 0% 
     );
     
-    /* 🚨 CLAVE 2: Estilo de Borde/Relleno para el Desplazamiento 🚨 */
-    background-color: var(--color-bg); /* Relleno del color de fondo de la app */
-    border: 2px solid var(--color-fg); /* Borde de 2px de la tinta */
-    
-    /* Desplazamiento Sutil: Mover 2px hacia abajo y a la derecha */
-    transform: translate(2px, 2px); 
-}
-#profile-viewer-container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 40px auto; /* Centrado y con margen superior/inferior */
-    display: flex;
-    flex-direction: column;
+    background-color: var(--color-bg); 
+    border: 2px solid var(--color-fg); 
+    transform: translate(2px, 2px); /* Desplazamiento Sutil */
 }
 
-/* --- CONTENEDOR PRINCIPAL DEL BANNER --- */
+/* --- CONTENEDOR PRINCIPAL DEL BANNER (DEBE CUBRIR EL WRAPPER) --- */
 #profile-banner-container {
-    position: relative;
-    width: 100%;
-    height: 250px; 
-    margin-bottom: 30px; 
-    overflow: hidden; 
+    /* 🚨 CORRECCIÓN CLAVE: Debe ser ABSOLUTO Y CUBRIR EL WRAPPER 🚨 */
+    position: absolute; 
+    top: 0;
+    left: 0;
+    width: 100%; 
+    height: 100%; 
+    z-index: 5; /* Por encima del marco de fondo (z-index: 1) */
     
     background-color: var(--color-dd); 
     color: var(--color-fg);
+    overflow: hidden; /* Necesario para que el clip-path funcione */
     
-clip-path: polygon(
-        /* CORTES SUPERIORES IZQUIERDOS */
-        40% 0%,     /* 1. Inicia el borde superior */
-        25% 10%,    /* 2. Vértice interior diagonal 1 */
-        10% 10%,    /* 3. Vértice interior horizontal 2 */
-        0% 20%,     /* 4. Corte hasta el borde lateral izquierdo */
-        
-        /* BORDE IZQUIERDO Y CORTE INFERIOR */
-        0% 85%,     /* 5. Baja verticalmente */
-        15% 85%,    /* 6. Corte horizontal hacia la derecha (cerca de la base) */
-        25% 100%,   /* 7. Vértice en la esquina inferior izquierda */
-        
-        /* BORDES RECTOS DERECHO E INFERIOR */
-        100% 100%,  /* 8. Esquina inferior derecha */
-        100% 0%     /* 9. Esquina superior derecha (El redondeo se simula con el ::after) */
+    /* Polígono limpio y simétrico */
+    clip-path: polygon(
+        40% 0%, 25% 10%, 10% 10%, 0% 20%, 
+        0% 85%, 15% 85%, 25% 100%, 
+        100% 100%, 100% 0% 
     );
+    
+    /* QUITAR margin-bottom: 30px; y height: 250px; ya que lo maneja el wrapper */
 }
-#profile-banner-container::after {
-    content: '';
-    position: absolute;
-    /* 🚨 Posición en la esquina superior derecha 🚨 */
-    top: -3px; /* Subir un poco para tapar el borde del padre */
-    right: -3px; /* Mover a la derecha para tapar el borde del padre */
-    
-    /* Definir un tamaño pequeño para el borde redondeado */
-    width: 30px; 
-    height: 30px;
-    
-    /* El color debe ser el mismo que el del fondo del banner */
-    background-color: var(--color-dd); 
-    
-    /* El redondeo que solicitaste (25px) */
-    border-top-right-radius: 25px; 
-    
-    /* Aplicamos el borde del mismo grosor que el contenedor principal */
-    border: 2px solid var(--color-fg); 
-    border-bottom: none; /* Quitamos el borde inferior */
-    border-left: none; /* Quitamos el borde izquierdo */
-    
-    /* Aseguramos que solo se vean el top y el right */
-    clip-path: inset(0 0 100% 100%); /* Solo para referencia, no es lo ideal aquí */
-    z-index: 10;
-}
+
 /* --- CONTENIDO INTERNO DEL BANNER --- */
 .banner-content {
-    position: absolute;
+    /* El contenido interno debe ser ABSOLUTO o FLEXIBLE para centrar las letras */
+    position: absolute; /* Es más seguro si quieres centrar perfectamente */
     top: 0;
     left: 0;
     width: 100%;
@@ -1077,37 +1046,72 @@ clip-path: polygon(
     justify-content: center;
     align-items: center;
     text-align: center;
-    /* Estilo de la imagen de fondo si añades una */
-    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)); /* Overlay sutil */
+    z-index: 15; /* 🚨 CORRECCIÓN: Z-index muy alto para que NADA lo tape 🚨 */
+    
+    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)); 
 }
 
 .banner-title {
     font-family: var(--font-h1);
     font-size: 3em;
-    color: var(--color-bg); /* Tinta clara sobre el fondo oscuro del banner */
+    color: var(--color-bg); 
     text-shadow: 2px 2px 0 var(--color-ac);
-    z-index: 10;
+    z-index: 1; /* Ya no necesita ser 10, ya que el padre es alto */
 }
 
-/* --- DECORACIONES DE ESQUINA (Los rellenos negros de tu imagen) --- */
+/* --- PSEUDO-ELEMENTO REDONDEADO (::after) --- */
+#profile-banner-container::after {
+    content: '';
+    position: absolute;
+    top: -2px; /* Ajuste a 2px para que coincida con el borde del background frame */
+    right: -2px;
+    
+    width: 30px; 
+    height: 30px;
+    
+    background-color: var(--color-dd); 
+    border-top-right-radius: 25px; 
+    
+    border: 2px solid var(--color-fg); 
+    border-bottom: none; 
+    border-left: none; 
+    
+    z-index: 20; /* 🚨 Z-index alto para asegurar que tape la esquina 🚨 */
+}
+
+/* --- DECORACIONES DE ESQUINA (Rellenos Negros - Reestructurados) --- */
 .banner-deco {
     position: absolute;
-    background-color: var(--color-fg); /* Color negro/tinta */
-    z-index: 5; /* Por debajo del título */
+    background-color: var(--color-fg); 
+    z-index: 10; /* Z-index menor al contenido (z-index 15) */
 }
-.top-left-fill {
+
+/* Para el bloque superior izquierdo */
+.top-left-fill-block {
     top: 0;
     left: 0;
-    width: 7%; /* Coincide con el corte del clip-path */
-    height: 10px;
-    background-color: black;
+    width: 20%; 
+    height: 10%;
 }
-.top-right-fill {
+
+/* Para el bloque superior derecho */
+.top-right-fill-block {
     top: 0;
     right: 0;
-    width: 7%;
-    height: 10px;
-    background-color: black;
+    width: 10%; 
+    height: 10%;
+    border-top-right-radius: 25px; /* Para que coincida con el ::after */
+}
+
+/* Para el bloque inferior izquierdo (Rellena el hueco del polígono) */
+.bottom-left-fill-block {
+    bottom: 0;
+    left: 0;
+    width: 30%; 
+    height: 10%; 
+    
+    /* El clip-path para el triángulo de relleno */
+    clip-path: polygon(0 0, 100% 0, 83.33% 100%, 0 100%);
 }
 /* ---------------------------------------------------- */
 /* 3. MOBILE RESPONSIVE ADAPTATIONS */
