@@ -13,20 +13,24 @@ window.createProfileHTML = function(profileData = {}) {
     profileContainer.id = 'profile-viewer-container';
     profileContainer.className = 'module-view-content';
 
+
     // 2. Banner con Cortes (El elemento que recibirá el clip-path)
     const profileBanner = `
-        <div id="profile-banner-container">
-            <div class="banner-content">
-                <h1 class="banner-title">PROFILE: USER_777</h1>
-                
-                <div class="banner-deco top-left-fill"></div>
-                <div class="banner-deco top-right-fill"></div>
-                <div class="banner-deco bottom-left-fill"></div>
-                <div class="banner-deco bottom-right-fill"></div>
+        <div id="banner-frame-wrapper">
+            <div class="banner-background-frame"></div>
+            
+            <div id="profile-banner-container">
+                <div class="banner-content">
+                    <h1 class="banner-title">PROFILE: USER_777</h1>
+                    
+                    <div class="banner-deco top-left-fill"></div>
+                    <div class="banner-deco top-right-fill"></div>
+                    <div class="banner-deco bottom-left-fill"></div>
+                    <div class="banner-deco bottom-right-fill"></div>
+                </div>
             </div>
         </div>
     `;
-
     // 3. Montar el contenido (Por ahora, solo el banner)
     profileContainer.innerHTML = profileBanner;
 
