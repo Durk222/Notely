@@ -102,6 +102,18 @@ window.createProfileHTML = function(profileData = {}) {
             </div>
             
         </div> 
+
+        <div id="profile-tab-nav">
+            <button class="tab-button active-tab" data-view="boards">
+                TABLEROS
+            </button>
+            <button class="tab-button" data-view="user-posts">
+                POSTS DEL USUARIO
+            </button>
+        </div>
+
+        <div id="boards-container">
+        </div>
     `;
     
     return profileContainer;
