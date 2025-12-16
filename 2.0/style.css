@@ -971,7 +971,38 @@ p, button {
 /* ==================================================== */
 /* 9. ESTILOS DEL VISOR DE PERFIL (profile.js)          */
 /* ==================================================== */
+/* --- NUEVO: WRAPPER PARA EL EFECTO DE DOBLE BORDE --- */
+#banner-frame-wrapper {
+    position: relative;
+    width: 100%;
+    height: 250px; /* Misma altura que el banner */
+    margin-bottom: 30px;
+}
 
+/* --- NUEVO: EL MARCO DE FONDO/RELLENO (Para el efecto de desplazamiento) --- */
+.banner-background-frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* Detrás del banner principal (z-index 2 o superior) */
+    
+    /* 🚨 CLAVE 1: Mismo clip-path que el banner para copiar la forma 🚨 */
+    clip-path: polygon(
+        /* [Utiliza aquí la versión LIMPIA y SIMÉTRICA que definimos en la respuesta anterior] */
+        40% 0%, 25% 10%, 10% 10%, 0% 20%, 
+        0% 85%, 15% 85%, 25% 100%, 
+        100% 100%, 100% 0% 
+    );
+    
+    /* 🚨 CLAVE 2: Estilo de Borde/Relleno para el Desplazamiento 🚨 */
+    background-color: var(--color-bg); /* Relleno del color de fondo de la app */
+    border: 2px solid var(--color-fg); /* Borde de 2px de la tinta */
+    
+    /* Desplazamiento Sutil: Mover 2px hacia abajo y a la derecha */
+    transform: translate(2px, 2px); 
+}
 #profile-viewer-container {
     width: 90%;
     max-width: 1200px;
@@ -988,7 +1019,6 @@ p, button {
     margin-bottom: 30px; 
     overflow: hidden; 
     
-    border: 2px solid var(--color-fg); 
     background-color: var(--color-dd); 
     color: var(--color-fg);
     
@@ -1009,7 +1039,6 @@ clip-path: polygon(
         100% 0%     /* 9. Esquina superior derecha (El redondeo se simula con el ::after) */
     );
 }
-/* 🚨 NUEVO: Pseudo-elemento para forzar el Border-Radius en la esquina superior derecha 🚨 */
 #profile-banner-container::after {
     content: '';
     position: absolute;
