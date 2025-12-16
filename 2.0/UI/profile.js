@@ -72,7 +72,36 @@ window.createProfileHTML = function(profileData = {}) {
                 <span class="cover-deco-text">// S E C U R I T Y L O G //</span>
             </div>
         </div>
+
         
+       <div id="profile-info-block">
+            
+            <div class="info-block-header">
+                <span class="header-deco">[</span>
+                <h3 class="info-title">DATOS DE REGISTRO // BIO-LOG</h3>
+                <span class="header-deco">]</span>
+            </div>
+            
+            <div class="info-block-content">
+                <div class="bio-zone">
+                    <h4>// BIOGRAFÍA DEL AGENTE //</h4>
+                    <p id="user-bio">
+                        Esta zona contendrá una descripción detallada del agente o usuario. Es esencial usar una fuente de terminal y asegurarse de que el texto parezca haber sido tecleado o extraído de un archivo de sistema. Se pueden usar efectos de texto tipo 'glitch' o 'scanline' en el contenedor principal.
+                    </p>
+                </div>
+                
+                <div class="classified-data-zone">
+                    <h4>// ARCHIVOS CLASIFICADOS //</h4>
+                    <ul class="data-list">
+                        <li><span class="data-label">Último Login:</span> <span class="data-value">2025/12/15 - 09:55 PST</span></li>
+                        <li><span class="data-label">Ubicación:</span> <span class="data-value">CACHE_ZONE_001</span></li>
+                        <li><span class="data-label">Permisos:</span> <span class="data-value">ROOT_ACCESS</span></li>
+                        <li><span class="data-label">Cargado:</span> <span class="data-value">1,240 ARCHIVOS</span></li>
+                    </ul>
+                </div>
+            </div>
+            
+        </div> 
     `;
     
     return profileContainer;
