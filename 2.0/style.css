@@ -1333,6 +1333,197 @@ p, button {
 .data-value {
     color: var(--color-ac); 
 }
+/* SECCIÓN 10: TABLEROS DEL PERFIL */
+/* --- NAVEGACIÓN DE PESTAÑAS --- */
+#profile-tab-nav {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.tab-button {
+    background-color: var(--color-bg-light);
+    color: var(--color-fg);
+    border: 2px solid var(--color-fg);
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    
+    /* Diseño cortado en la pestaña */
+    clip-path: polygon(0 0, 90% 0, 100% 100%, 0 100%);
+    margin-right: 5px;
+}
+
+.tab-button.active-tab {
+    background-color: var(--color-fg);
+    color: var(--color-bg);
+}
+
+/* --- ESTRUCTURA DEL TABLERO (Boards) --- */
+#boards-container {
+    position: relative;
+    width: 100%;
+    /* Altura fija para que la L y el contenido encajen */
+    height: 600px; 
+    overflow: hidden;
+}
+
+/* 1. Fondo de Relleno Negro (Para generar los triángulos) */
+#board-bg-filler {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-fg); /* Fondo Negro */
+    z-index: 1; 
+}
+
+/* 2. Tarjeta de Portada del Tablero */
+#board-cover-card {
+    position: absolute;
+    top: -30px; /* Posición ligeramente por encima del contenedor */
+    right: 0;
+    width: 75%; /* Ocupa el espacio sobre el área de posts */
+    height: 150px;
+    overflow: hidden;
+    z-index: 5;
+    
+    /* Borde redondeado y corte para que se vea como una tarjeta flotante */
+    border: 3px solid var(--color-ac);
+    border-radius: 10px;
+    
+    /* Corte trapezoidal sutil */
+    clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%);
+}
+
+#board-cover-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 3. El Contenedor de la "L" acostada (Navegación/Info) */
+#board-info-L-frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 25%; /* Ancho de la L */
+    height: 100%;
+    background-color: var(--color-bg-dark); 
+    z-index: 10;
+    
+    /* 🚨 CLAVE: Borde redondeado para generar el corte negro 🚨 */
+    border-top-right-radius: 40px;
+    border-bottom-right-radius: 40px;
+    
+    /* 🚨 La L en sí: Usar box-shadow como borde (opcional, si no, usar border) */
+    border-right: 2px solid var(--color-fg);
+    border-top: 2px solid var(--color-fg);
+    border-bottom: 2px solid var(--color-fg);
+}
+
+.l-content-wrapper {
+    height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+}
+
+.l-rotated-text {
+    position: absolute;
+    top: 50%;
+    left: -20px; /* Mover ligeramente hacia afuera */
+    transform: translateY(-50%) rotate(-90deg);
+    transform-origin: 0 0;
+    font-family: var(--font-h1);
+    color: var(--color-ac);
+    font-size: 1.2em;
+    z-index: 12;
+}
+
+.l-section {
+    position: relative;
+    padding: 15px 15px 15px 30px; /* Padding para el contenido */
+    color: var(--color-md);
+}
+
+.vertical-line-deco {
+    position: absolute;
+    bottom: 0;
+    left: 30px;
+    width: 1px;
+    height: 100%;
+    background-color: var(--color-fg); /* Línea divisoria */
+}
+
+/* Estilos de Contenido dentro de la L */
+.board-title-label {
+    font-size: 0.7em;
+    color: var(--color-fg);
+    margin: 0;
+}
+#board-title-display {
+    font-size: 1.2em;
+    color: var(--color-ac);
+    margin: 5px 0 10px;
+}
+.board-image-placeholder {
+    width: 60px;
+    height: 60px;
+    background-color: var(--color-fg);
+    border: 2px solid var(--color-ac);
+}
+
+/* 4. El Contenedor Derecho que cierra la "]" */
+#board-side-data-closer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 75%; /* Mismo ancho que el área de posts */
+    height: 100px;
+    background-color: var(--color-bg-dark);
+    z-index: 10;
+    
+    padding: 15px;
+    border-top: 2px solid var(--color-fg);
+}
+
+/* 5. Área Central para los Posts (El espacio en el medio) */
+#board-posts-area {
+    position: absolute;
+    top: 100px; /* Bajarlo para que no choque con la portada */
+    left: 25%; /* Comienza donde termina la L */
+    width: 75%; 
+    height: calc(100% - 100px); /* Altura dinámica */
+    z-index: 2;
+    
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas para los posts */
+    gap: 15px;
+    padding: 15px;
+}
+
+/* Estilo para los posts dentro del área */
+.placeholder-post-item {
+    background-color: var(--color-bg-light);
+    border: 2px solid var(--color-fg);
+    padding: 10px;
+    text-align: center;
+    /* 🚨 CLAVE: Alto redondeo para crear el triángulo negro de fondo 🚨 */
+    border-radius: 20px; 
+    overflow: hidden;
+}
+
+/* 6. Botón de Creación */
+.board-action-zone {
+    margin-top: 20px;
+    text-align: center;
+}
 /* ---------------------------------------------------- */
 /* 3. MOBILE RESPONSIVE ADAPTATIONS */
 /* ---------------------------------------------------- */
