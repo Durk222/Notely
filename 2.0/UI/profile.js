@@ -60,6 +60,19 @@ window.createProfileHTML = function(profileData = {}) {
                 </button>
             </div>
         </div>
+        
+        <div id="profile-cover-photo-zone">
+            <img 
+                id="user-cover-img" 
+                src="assets/images/placeholder_cover.jpg" 
+                alt="Foto de portada del perfil"
+                draggable="false"
+            />
+            <div class="cover-photo-overlay">
+                <span class="cover-deco-text">// S E C U R I T Y L O G //</span>
+            </div>
+        </div>
+        
     `;
     
     return profileContainer;
