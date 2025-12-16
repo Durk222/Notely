@@ -1246,6 +1246,93 @@ p, button {
     padding: 5px;
     border: 1px solid var(--color-ac);
 }
+/* --- BLOQUE DE INFORMACIÓN ADICIONAL Y BIOGRAFÍA --- */
+#profile-info-block {
+    margin-top: 30px;
+    padding: 15px;
+    border: 2px solid var(--color-fg);
+    background-color: var(--color-bg-light); /* Un gris claro para el fondo */
+    
+    /* 🚨 CLAVE: Borde cortado en las esquinas para el estilo terminal 🚨 */
+    clip-path: polygon(
+        3% 0%, 100% 0%, 100% 97%, 97% 100%, 0% 100%, 0% 3% 
+    );
+}
+
+/* Encabezado del Bloque */
+.info-block-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    padding-bottom: 5px;
+    border-bottom: 1px dashed var(--color-md);
+}
+
+.info-title {
+    font-size: 1.5em;
+    margin: 0 10px;
+    color: var(--color-ac); /* Color de acento para destacar */
+}
+
+.header-deco {
+    font-size: 1.5em;
+    color: var(--color-fg);
+}
+
+/* Contenido Principal (Biografía + Datos Clasificados) */
+.info-block-content {
+    display: flex;
+    gap: 30px; /* Espacio entre las dos columnas */
+}
+
+/* Estilos de zona */
+.bio-zone {
+    flex: 2; /* Biografía ocupa más espacio */
+}
+
+.classified-data-zone {
+    flex: 1; /* Datos Clasificados ocupa menos espacio */
+    border-left: 1px solid var(--color-md); /* Separador visual */
+    padding-left: 20px;
+}
+
+/* Estilos para todos los elementos de texto */
+#profile-info-block h4 {
+    font-family: 'Monospace', monospace;
+    font-size: 1em;
+    color: var(--color-fg);
+    border-bottom: 1px solid var(--color-fg);
+    padding-bottom: 5px;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+#user-bio {
+    font-family: 'Monospace', monospace;
+    line-height: 1.6;
+    color: var(--color-dd); 
+}
+.data-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-family: 'Monospace', monospace;
+    font-size: 0.9em;
+}
+
+.data-list li {
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.data-label {
+    color: var(--color-fg); 
+}
+
+.data-value {
+    color: var(--color-ac); 
+}
 /* ---------------------------------------------------- */
 /* 3. MOBILE RESPONSIVE ADAPTATIONS */
 /* ---------------------------------------------------- */
