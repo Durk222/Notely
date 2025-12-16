@@ -1113,6 +1113,79 @@ p, button {
     /* El clip-path para el triángulo de relleno */
     clip-path: polygon(0 0, 100% 0, 83.33% 100%, 0 100%);
 }
+/* --- BANNER PRINCIPAL (ID Card) --- */
+#profile-id-card {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 20px;
+    background-color: var(--color-bg-dark); /* Fondo un poco más oscuro que el fondo principal */
+    border: 2px solid var(--color-fg);
+    
+    /* 🚨 CLAVE: Borde trapezoidal inferior para que siga el diseño 🚨 */
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 15% 100%, 0% 90%);
+}
+
+/* --- ZONA DE AVATAR --- */
+.id-card-avatar-zone {
+    flex-shrink: 0; /* No permite que el avatar se reduzca */
+    margin-right: 30px;
+}
+
+#user-avatar-frame {
+    width: 120px;
+    height: 120px;
+    background-color: var(--color-fg); /* Marco de color tinta */
+    padding: 3px;
+    border: 2px solid var(--color-ac); /* Borde de acento */
+    overflow: hidden;
+    
+    /* 🚨 CLAVE: Avatar con corte inferior angular 🚨 */
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 20% 100%, 0% 80%);
+}
+
+#user-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* --- ZONA DE DATOS --- */
+.id-card-data-zone {
+    flex-grow: 1;
+}
+
+#username-display {
+    font-size: 2em;
+    margin-top: 0;
+    margin-bottom: 5px;
+    color: var(--color-ac);
+}
+
+.user-stats-bar {
+    font-size: 0.85em;
+    margin-bottom: 15px;
+    color: var(--color-md);
+}
+
+/* --- MENSAJE DE ESTADO (Con estilo de LOG/Terminal) --- */
+#user-status-message {
+    font-family: 'Monospace', monospace; /* Fuente de terminal */
+    font-size: 0.9em;
+    background-color: var(--color-bg); /* Fondo más claro para simular el log */
+    padding: 8px 10px;
+    border-bottom: 2px solid var(--color-fg); /* Borde de log inferior */
+    margin-top: 0;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+/* --- BOTÓN DE PERFIL --- */
+.action-edit-profile {
+    font-size: 0.9em;
+    padding: 8px 15px;
+}
 /* ---------------------------------------------------- */
 /* 3. MOBILE RESPONSIVE ADAPTATIONS */
 /* ---------------------------------------------------- */
