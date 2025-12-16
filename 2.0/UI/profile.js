@@ -31,9 +31,37 @@ window.createProfileHTML = function(profileData = {}) {
             </div>
         </div>
     `;
-    // 3. Montar el contenido (Por ahora, solo el banner)
-    profileContainer.innerHTML = profileBanner;
-
+// 3. Montar el contenido (Banner Decorativo + Banner Principal)
+    profileContainer.innerHTML = `
+        ${profileBanner}
+        
+        <div id="profile-id-card">
+            <div class="id-card-avatar-zone">
+                <div id="user-avatar-frame">
+                    <img id="user-avatar-img" src="assets/images/default_avatar.png" alt="Avatar del usuario" draggable="false"/>
+                </div>
+            </div>
+            
+            <div class="id-card-data-zone">
+                <h2 id="username-display" class="glitch-text">USER_777 // AGENT_NOTELY</h2>
+                
+                <div class="user-stats-bar">
+                    <span class="stat-item">ID: 0090</span> |
+                    <span class="stat-item">STATUS: ONLINE</span> |
+                    <span class="stat-item">RATING: 9.8</span>
+                </div>
+                
+                <p id="user-status-message">
+                    "ESTE TEXTO DEBE TENER UN ESTILO DE MONOFUENTE Y SIMULAR UN LOG DE ESTADO CON EL BORDE INFERIOR"
+                </p>
+                
+                <button class="brutalist-button action-edit-profile">
+                    <i class="fas fa-edit"></i> EDITAR PERFIL
+                </button>
+            </div>
+        </div>
+    `;
+    
     return profileContainer;
 };
 
