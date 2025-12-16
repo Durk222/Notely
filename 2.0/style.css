@@ -989,25 +989,24 @@ p, button {
     overflow: hidden; 
     
     border: 2px solid var(--color-fg); 
-    background-color: var(--color-bg); 
+    background-color: var(--color-dd); 
     color: var(--color-fg);
     
-    /* 🚨 CLAVE: DEFINICIÓN DE LA FORMA PERSONALIZADA 🚨 */
-    clip-path: polygon(
-        /* Puntos del usuario: 
-           43% 1%, 27% 15%, 8% 16%, 0% 25%, 0% 91%, 
-           18% 91%, 25% 100%, 100% 100%, 100% 1% 
-        */
+clip-path: polygon(
+        /* CORTES SUPERIORES IZQUIERDOS */
+        40% 0%,     /* 1. Inicia el borde superior */
+        25% 10%,    /* 2. Vértice interior diagonal 1 */
+        10% 10%,    /* 3. Vértice interior horizontal 2 */
+        0% 20%,     /* 4. Corte hasta el borde lateral izquierdo */
         
-        43% 1%,    /* 1. Inicio en la parte superior derecha */
-        27% 15%,   /* 2. Corte diagonal hacia abajo y a la izquierda */
-        8% 16%,    /* 3. Corte horizontal corto */
-        0% 25%,    /* 4. Corte diagonal más pronunciado hasta el borde izquierdo */
-        0% 91%,    /* 5. Baja verticalmente por el borde izquierdo */
-        18% 91%,   /* 6. Corte diagonal/horizontal hacia la derecha (cerca de la base) */
-        25% 100%,  /* 7. Vértice en la esquina inferior izquierda */
-        100% 100%, /* 8. Esquina inferior derecha (estira el polígono por la base) */
-        100% 1%    /* 9. Estira el polígono hacia arriba hasta el borde superior derecho */
+        /* BORDE IZQUIERDO Y CORTE INFERIOR */
+        0% 85%,     /* 5. Baja verticalmente */
+        15% 85%,    /* 6. Corte horizontal hacia la derecha (cerca de la base) */
+        25% 100%,   /* 7. Vértice en la esquina inferior izquierda */
+        
+        /* BORDES RECTOS DERECHO E INFERIOR */
+        100% 100%,  /* 8. Esquina inferior derecha */
+        100% 0%     /* 9. Esquina superior derecha (El redondeo se simula con el ::after) */
     );
 }
 /* 🚨 NUEVO: Pseudo-elemento para forzar el Border-Radius en la esquina superior derecha 🚨 */
@@ -1023,7 +1022,7 @@ p, button {
     height: 30px;
     
     /* El color debe ser el mismo que el del fondo del banner */
-    background-color: var(--color-bg); 
+    background-color: var(--color-dd); 
     
     /* El redondeo que solicitaste (25px) */
     border-top-right-radius: 25px; 
