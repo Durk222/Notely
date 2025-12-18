@@ -1,1 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toony</title>
 
+    <script>
+        // Actualizado para Toony 1.0
+        window.TOONY_LOGO_SRC = 'ASSETS/toony_logo.png';
+    </script>
+    
+    <link rel="icon" type="image/png" sizes="32x32" href="ASSETS/favicon.png">
+    <link rel="apple-touch-icon" href="ASSETS/apple-touch.png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Gabarito:wght@400;700&family=Lexend+Deca:wght@300;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body data-theme="dark"> <div id="main-container">
+        <nav id="horizontal-nav"></nav> 
+        
+        <main id="content-area"></main>
+        
+        <div id="popup-root"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12/dist/gsap.min.js"></script>
+
+    <script defer src="UI/nav.js"></script>
+    <script defer src="UI/auth.js"></script>
+    <script defer src="UI/home.js"></script> 
+    <script defer src="UI/content.js"></script>
+    <script defer src="UI/profile.js"></script>
+    <script defer src="UI/search.js"></script>
+    <script defer src="UI/settings.js"></script>
+    <script defer src="UI/pop_ups.js"></script>
+    <script defer src="UI/content_visualizer.js"></script>
+    <script defer src="app.js"></script>
+
+</body>
+</html>
